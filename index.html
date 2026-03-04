@@ -360,6 +360,11 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
 .wf-desc { font-size:0.76rem; color:var(--text-dim); line-height:1.6; }
 .wf-more { margin-top:2rem; text-align:center; }
 
+.live-badge { font-family:'Fira Code',monospace; font-size:0.58rem; color:#28c840; background:rgba(40,200,64,0.1); border:1px solid rgba(40,200,64,0.25); padding:0.15rem 0.5rem; border-radius:3px; letter-spacing:0.08em; vertical-align:middle; margin-left:0.5rem; }
+.project-links { display:flex; gap:1rem; margin-top:1rem; }
+.proj-link { font-family:'Fira Code',monospace; font-size:0.7rem; color:var(--text-dim); text-decoration:none; letter-spacing:0.04em; transition:color 0.2s; padding:0.25rem 0; border-bottom:1px solid var(--border2); }
+.proj-link:hover { color:var(--green); border-color:var(--green); }
+
 /* ══ SKILLS ══ */
 .skills-section { display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; }
 .skill-group-title { font-family:'Fira Code',monospace; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--green); margin-bottom:1.5rem; display:flex; align-items:center; gap:0.75rem; }
@@ -510,7 +515,7 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
     </div>
 
     <div class="sidebar-bottom">
-      <a href="#" class="cv-btn" id="cv-download" download="Olaitan_Hammed_CV.pdf">
+      <a href="/Olaitan_Hammed_Resume.pdf" class="cv-btn" id="cv-download" target="_blank" download="Olaitan_Hammed_Resume.pdf">
         ↓ Download CV
       </a>
       <div class="sidebar-social">
@@ -545,22 +550,30 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
       <div class="section-tag">02. Projects</div>
       <div class="projects-list reveal">
 
-        <a href="https://github.com/hholaitan01/structsolve" target="_blank" class="project-item">
+        <a href="https://structsolve.streamlit.app" target="_blank" class="project-item">
           <span class="project-num">01</span>
           <div class="project-body">
-            <div class="project-title">StructSolve</div>
+            <div class="project-title">StructSolve <span class="live-badge">● Live</span></div>
             <p class="project-desc">Professional structural analysis & RC design web app. Continuous beam analysis using the Slope Deflection Method, general plane frame solving with auto sway detection, and BS 8110-1:1997 RC beam design — full step-by-step workings, SFD/BMD diagrams, PDF export.</p>
             <div class="project-tags"><span class="ptag">Python</span><span class="ptag">Streamlit</span><span class="ptag">NumPy</span><span class="ptag">Matplotlib</span><span class="ptag">ReportLab</span><span class="ptag">BS 8110</span></div>
+            <div class="project-links">
+              <a href="https://structsolve.streamlit.app" target="_blank" class="proj-link" onclick="event.stopPropagation()">↗ Live App</a>
+              <a href="https://github.com/hholaitan01/structsolve" target="_blank" class="proj-link" onclick="event.stopPropagation()">⌥ GitHub</a>
+            </div>
           </div>
           <span class="project-arrow">↗</span>
         </a>
 
-        <a href="https://github.com/hholaitan01/rainfall_forecasting" target="_blank" class="project-item">
+        <a href="https://rainforecastml.streamlit.app" target="_blank" class="project-item">
           <span class="project-num">02</span>
           <div class="project-body">
-            <div class="project-title">Rainfall–Runoff Forecasting System</div>
+            <div class="project-title">Rainfall–Runoff Forecasting System <span class="live-badge">● Live</span></div>
             <p class="project-desc">Decision-support system combining XGBoost ML forecasting with standards-based hydraulic channel design (Rational Method + Manning's Equation). ML strictly for flood risk & early warning — channel sizing always follows engineering standards calibrated for Ikeja, Nigeria.</p>
             <div class="project-tags"><span class="ptag orange">XGBoost</span><span class="ptag">Python</span><span class="ptag">Streamlit</span><span class="ptag orange">Manning's Eq.</span><span class="ptag">Flood Risk</span><span class="ptag">Hydrology</span></div>
+            <div class="project-links">
+              <a href="https://rainforecastml.streamlit.app" target="_blank" class="proj-link" onclick="event.stopPropagation()">↗ Live App</a>
+              <a href="https://github.com/hholaitan01/rainfall_forecasting" target="_blank" class="proj-link" onclick="event.stopPropagation()">⌥ GitHub</a>
+            </div>
           </div>
           <span class="project-arrow">↗</span>
         </a>
@@ -802,61 +815,9 @@ function copyEmail(e) {
   setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
 }
 
-// ══ CV DOWNLOAD (generates a simple text CV as fallback)
-document.getElementById('cv-download').addEventListener('click', function(e) {
-  e.preventDefault();
-  const cvContent = `OLAITAN HAMMED
-Fullstack Developer | n8n Automation Engineer | Python Developer
-Lagos, Nigeria
+// ══ CV DOWNLOAD — links directly to /Olaitan_Hammed_Resume.pdf
+// No JS needed; the anchor tag handles it natively.
 
-EMAIL: hammedolaitan5@gmail.com
-GITHUB: github.com/hholaitan01
-LINKEDIN: linkedin.com/in/olaitan-hammed-862990348
-
-────────────────────────────────────────
-PROFESSIONAL SUMMARY
-────────────────────────────────────────
-Versatile Fullstack Developer with hands-on experience designing and deploying
-170+ production-ready workflow automations across 24 industries. Specialises in
-connecting APIs, AI/ML services, communication platforms, and data tools.
-
-────────────────────────────────────────
-PROJECTS
-────────────────────────────────────────
-StructSolve
-Professional structural analysis & RC design web app (BS 8110-1:1997).
-Tech: Python, Streamlit, NumPy, Matplotlib, ReportLab
-
-Rainfall-Runoff Forecasting System
-XGBoost ML + Manning's Equation decision-support system for flood risk.
-Tech: Python, XGBoost, Streamlit, SciPy
-
-QuranShazam
-AI app identifying Qur'an recitations from audio with surah/ayah/reciter output.
-Tech: Python, AI/ML, Audio Recognition, Mobile
-
-n8n Workflow Compilation
-170+ categorised n8n JSON workflows across 24 industries.
-
-────────────────────────────────────────
-SKILLS
-────────────────────────────────────────
-Automation: n8n (Advanced), REST APIs, Webhooks, OpenAI/LLM, OAuth, OCR
-Engineering: Python, Structural Analysis, BS 8110, XGBoost/ML, Hydrology
-Tools: Streamlit, NumPy, SciPy, Pandas, Matplotlib, ReportLab
-Platforms: Slack, Notion, Airtable, Shopify, Stripe, HubSpot, GitHub, MQTT
-
-────────────────────────────────────────
-AUTOMATION STATS
-────────────────────────────────────────
-170+ Automations Built | 24 Industries | 30+ Platforms | 10+ AI/ML Workflows
-`;
-  const blob = new Blob([cvContent], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'Olaitan_Hammed_CV.txt';
-  a.click(); URL.revokeObjectURL(url);
-});
 </script>
 </body>
 </html>
