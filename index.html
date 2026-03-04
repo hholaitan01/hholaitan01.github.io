@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olaitan Hammed — Fullstack Developer</title>
+
+<!-- ══ SEO & Open Graph ══ -->
+<meta name="description" content="Olaitan Hammed — Fullstack Developer based in Lagos, Nigeria. Building end-to-end web apps, 170+ n8n automations across 24 industries, and engineering software grounded in classical theory.">
+<meta name="keywords" content="Olaitan Hammed, Fullstack Developer, n8n Automation, Python, Lagos Nigeria, Workflow Engineer">
+<meta name="author" content="Olaitan Hammed">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Olaitan Hammed — Fullstack Developer">
+<meta property="og:description" content="Fullstack Developer building intelligent automations, engineering tools, and AI-powered web apps. 170+ n8n workflows across 24 industries.">
+<meta property="og:url" content="https://hholaitan01.github.io">
+<meta property="og:image" content="https://og-image.vercel.app/Olaitan%20Hammed.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Olaitan Hammed — Fullstack Developer">
+<meta name="twitter:description" content="Fullstack Developer | n8n Automation | Lagos, Nigeria">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23080b10'/><text y='72' x='12' font-size='68' font-family='monospace' fill='%2364ffda'>O</text></svg>">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080b10;
+  --bg2: #0d1117;
+  --surface: #0f1419;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.1);
+  --green: #64ffda;
+  --green-dim: rgba(100,255,218,0.1);
+  --green-glow: rgba(100,255,218,0.15);
+  --text: #ccd6f6;
+  --text-dim: #8892b0;
+  --white: #e6f1ff;
+  --navy: #112240;
+  --orange: #ff9f43;
+  --blue: #57b7ff;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ══ PAGE LOADER ══ */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#loader.hidden { opacity: 0; visibility: hidden; }
+.loader-name {
+  font-family: 'Fira Code', monospace;
+  font-size: 1rem;
+  color: var(--green);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: loaderFade 0.5s 0.3s ease forwards;
+}
+.loader-bar-wrap {
+  width: 200px; height: 2px;
+  background: var(--border2);
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0;
+  animation: loaderFade 0.5s 0.4s ease forwards;
+}
+.loader-bar {
+  height: 100%;
+  background: var(--green);
+  border-radius: 2px;
+  animation: loaderProgress 1.4s 0.5s ease forwards;
+  width: 0;
+}
+@keyframes loaderFade { to { opacity: 1; } }
+@keyframes loaderProgress { to { width: 100%; } }
+
+/* ══ CUSTOM CURSOR ══ */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--green);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor-follower {
+  width: 40px; height: 40px;
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  opacity: 0.4;
+}
+.cursor.hovered { width: 24px; height: 24px; }
+.cursor-follower.hovered { width: 60px; height: 60px; opacity: 0.15; }
+
+.glow-blob {
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(100,255,218,0.04) 0%, transparent 70%);
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: all 0.35s ease;
+}
+
+/* ══ BACK TO TOP ══ */
+#back-top {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  width: 42px; height: 42px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--green);
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: none;
+  z-index: 500;
+  opacity: 0; visibility: hidden;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+#back-top.visible { opacity: 1; visibility: visible; }
+#back-top:hover { background: var(--green-dim); border-color: var(--green); transform: translateY(-3px); }
+
+/* ══ MOBILE NAV ══ */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 1rem 1.5rem;
+  background: rgba(8,11,16,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 200;
+  justify-content: space-between;
+  align-items: center;
+}
+.mobile-logo {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: var(--green);
+}
+.hamburger {
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; gap: 5px; padding: 4px;
+}
+.hamburger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--text); border-radius: 2px;
+  transition: all 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8,11,16,0.98);
+  z-index: 199;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+.mobile-menu.open { opacity: 1; visibility: visible; }
+.mobile-menu a {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--green); }
+
+/* ══ LAYOUT ══ */
+.layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  min-height: 100vh;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 80px 0;
+}
+
+.sidebar-top h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800; font-size: 2.6rem;
+  color: var(--white); letter-spacing: -0.03em;
+  line-height: 1.1; margin-bottom: 0.4rem;
+}
+.sidebar-top h2 {
+  font-family: 'Fira Code', monospace; font-weight: 400;
+  font-size: 0.95rem; color: var(--green);
+  margin-bottom: 1.2rem; min-height: 1.4rem;
+}
+.sidebar-top p {
+  font-size: 0.88rem; color: var(--text-dim);
+  line-height: 1.7; max-width: 280px;
+}
+
+/* Currently working on */
+.currently {
+  margin-top: 1.5rem;
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: var(--green-dim);
+  border: 1px solid rgba(100,255,218,0.15);
+  border-radius: 4px;
+  max-width: 280px;
+}
+.currently-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0; margin-top: 5px;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(100,255,218,0.4);} 50%{opacity:0.7;box-shadow:0 0 0 6px rgba(100,255,218,0);} }
+.currently-text { font-family: 'Fira Code', monospace; font-size: 0.68rem; color: var(--green); line-height: 1.5; }
+.currently-text span { color: var(--text-dim); display: block; font-size: 0.65rem; margin-top: 0.1rem; }
+
+/* Sidebar Nav */
+.sidebar-nav { display: flex; flex-direction: column; gap: 0.2rem; margin-top: 3rem; }
+.nav-item {
+  display: flex; align-items: center; gap: 1rem;
+  text-decoration: none; padding: 0.5rem 0;
+  transition: all 0.2s; cursor: none;
+}
+.nav-line { width: 32px; height: 1px; background: var(--text-dim); transition: width 0.3s ease, background 0.2s; }
+.nav-label { font-family: 'Fira Code', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); transition: color 0.2s; }
+.nav-item:hover .nav-line, .nav-item.active .nav-line { width: 64px; background: var(--green); }
+.nav-item:hover .nav-label, .nav-item.active .nav-label { color: var(--white); }
+
+/* Social + CV row */
+.sidebar-bottom { display: flex; flex-direction: column; gap: 1rem; }
+.sidebar-social { display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap; }
+.social-link {
+  color: var(--text-dim); text-decoration: none;
+  font-size: 0.78rem; font-family: 'Fira Code', monospace;
+  letter-spacing: 0.05em; transition: color 0.2s, transform 0.2s;
+  cursor: none; display: flex; align-items: center; gap: 0.4rem;
+}
+.social-link:hover { color: var(--green); transform: translateY(-2px); }
+
+/* CV download button */
+.cv-btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--green);
+  color: var(--green);
+  text-decoration: none;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem; letter-spacing: 0.06em;
+  transition: all 0.2s; cursor: none;
+  background: transparent; width: fit-content;
+}
+.cv-btn:hover { background: var(--green-dim); transform: translateY(-2px); box-shadow: 0 4px 16px var(--green-glow); }
+
+/* ══ MAIN ══ */
+.main { padding: 80px 0 80px 80px; }
+
+section { margin-bottom: 120px; scroll-margin-top: 80px; }
+
+.section-tag {
+  font-family: 'Fira Code', monospace; font-size: 0.7rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--green);
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem;
+}
+.section-tag::after { content:''; flex:1; max-width:200px; height:1px; background:var(--border2); }
+
+/* ══ ABOUT ══ */
+.about-text p { font-size: 0.93rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 1rem; }
+.about-text .highlight { color: var(--green); font-family: 'Fira Code', monospace; font-size: 0.9em; }
+.about-text .bright { color: var(--white); font-weight: 600; }
+
+.about-stats { display: grid; grid-template-columns: repeat(2,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-top:2.5rem; }
+.about-stat { background:var(--surface); padding:1.4rem 1.6rem; transition:background 0.2s; }
+.about-stat:hover { background:var(--navy); }
+.about-stat-num { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:2rem; color:var(--green); letter-spacing:-0.03em; line-height:1; margin-bottom:0.3rem; }
+.about-stat-label { font-family:'Fira Code',monospace; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); }
+
+/* ══ PROJECTS ══ */
+.projects-list { display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); }
+.project-item {
+  background:var(--surface); padding:2.2rem;
+  display:grid; grid-template-columns:auto 1fr auto;
+  gap:1.5rem; align-items:start;
+  text-decoration:none; color:inherit;
+  transition:background 0.25s; position:relative; overflow:hidden; cursor:none;
+}
+.project-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--green); transform:scaleY(0); transform-origin:bottom; transition:transform 0.3s ease; }
+.project-item:hover { background:#0f1a26; }
+.project-item:hover::before { transform:scaleY(1); }
+.project-num { font-family:'Fira Code',monospace; font-size:0.7rem; color:var(--green); opacity:0.5; padding-top:4px; min-width:32px; }
+.project-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1.15rem; color:var(--white); margin-bottom:0.6rem; letter-spacing:-0.01em; transition:color 0.2s; }
+.project-item:hover .project-title { color:var(--green); }
+.project-desc { font-size:0.85rem; color:var(--text-dim); line-height:1.7; margin-bottom:1.2rem; }
+.project-tags { display:flex; flex-wrap:wrap; gap:0.5rem; }
+.ptag { font-family:'Fira Code',monospace; font-size:0.68rem; color:var(--green); background:var(--green-dim); padding:0.2rem 0.6rem; border-radius:3px; letter-spacing:0.04em; }
+.ptag.blue { color:var(--blue); background:rgba(87,183,255,0.08); }
+.ptag.orange { color:var(--orange); background:rgba(255,159,67,0.08); }
+.project-arrow { font-size:1rem; color:var(--text-dim); margin-top:4px; transition:color 0.2s,transform 0.2s; }
+.project-item:hover .project-arrow { color:var(--green); transform:translate(3px,-3px); }
+
+/* ══ AUTOMATION ══ */
+.automation-intro { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:2.5rem; }
+.auto-stat { background:var(--surface); padding:1.6rem; transition:background 0.2s; }
+.auto-stat:hover { background:var(--navy); }
+.auto-stat-num { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:2.4rem; color:var(--blue); letter-spacing:-0.04em; line-height:1; margin-bottom:0.25rem; }
+.auto-stat-label { font-family:'Fira Code',monospace; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); }
+
+.industries-wrap { margin-bottom:2.5rem; }
+.industries-label { font-family:'Fira Code',monospace; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim); margin-bottom:1rem; }
+.industries-list { display:flex; flex-wrap:wrap; gap:0.45rem; }
+.ind-tag { font-family:'Fira Code',monospace; font-size:0.65rem; letter-spacing:0.05em; padding:0.25rem 0.7rem; background:rgba(87,183,255,0.05); border:1px solid rgba(87,183,255,0.15); color:rgba(87,183,255,0.7); border-radius:3px; transition:all 0.2s; }
+.ind-tag:hover { background:rgba(87,183,255,0.1); color:var(--blue); }
+
+.workflows-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); }
+.wf { background:var(--surface); padding:1.4rem 1.6rem; transition:background 0.2s; }
+.wf:hover { background:#0f1a26; }
+.wf-cat { font-family:'Fira Code',monospace; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem; }
+.wf-name { font-weight:600; font-size:0.88rem; color:var(--white); margin-bottom:0.4rem; line-height:1.3; }
+.wf-desc { font-size:0.76rem; color:var(--text-dim); line-height:1.6; }
+.wf-more { margin-top:2rem; text-align:center; }
+
+/* ══ SKILLS ══ */
+.skills-section { display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; }
+.skill-group-title { font-family:'Fira Code',monospace; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--green); margin-bottom:1.5rem; display:flex; align-items:center; gap:0.75rem; }
+.skill-group-title::after { content:''; flex:1; height:1px; background:var(--border2); }
+.skill-item { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0; border-bottom:1px solid var(--border); }
+.skill-item:last-child { border-bottom:none; }
+.skill-name-label { font-size:0.85rem; color:var(--text); }
+.skill-dots { display:flex; gap:4px; }
+.dot { width:7px; height:7px; border-radius:50%; background:var(--border2); }
+.dot.filled { background:var(--green); }
+.dot.filled.blue { background:var(--blue); }
+.dot.filled.orange { background:var(--orange); }
+
+.tools-row { margin-top:2.5rem; }
+.tools-row-title { font-family:'Fira Code',monospace; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim); margin-bottom:1rem; }
+.tools-chips { display:flex; flex-wrap:wrap; gap:0.5rem; }
+.chip { font-family:'Fira Code',monospace; font-size:0.68rem; padding:0.3rem 0.75rem; background:var(--surface); border:1px solid var(--border2); color:var(--text-dim); border-radius:3px; transition:all 0.2s; }
+.chip:hover { border-color:var(--green); color:var(--green); }
+
+/* ══ CONTACT ══ */
+.contact-layout { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+.contact-text h3 { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.8rem; color:var(--white); letter-spacing:-0.03em; margin-bottom:1rem; line-height:1.2; }
+.contact-text p { font-size:0.88rem; color:var(--text-dim); line-height:1.75; margin-bottom:2rem; }
+.contact-links { display:flex; flex-direction:column; gap:0.75rem; }
+.clink { display:flex; align-items:center; gap:1rem; text-decoration:none; padding:0.9rem 1.2rem; background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:0.82rem; transition:all 0.2s; cursor:none; position:relative; }
+.clink:hover { border-color:var(--green); color:var(--green); transform:translateX(6px); }
+.clink-icon { font-family:'Fira Code',monospace; font-size:0.72rem; color:var(--green); background:var(--green-dim); padding:0.3rem 0.5rem; border-radius:3px; min-width:32px; text-align:center; }
+
+/* Copy email */
+.copy-btn {
+  margin-left: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  background: var(--border);
+  border: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  cursor: none;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+.copy-btn:hover { color: var(--green); background: var(--green-dim); }
+.copy-btn.copied { color: var(--green); }
+
+.contact-terminal { background:var(--bg2); border:1px solid var(--border2); border-radius:8px; overflow:hidden; }
+.terminal-bar { background:var(--navy); padding:0.75rem 1rem; display:flex; align-items:center; gap:0.5rem; }
+.t-dot { width:10px; height:10px; border-radius:50%; }
+.t-dot.red { background:#ff5f57; } .t-dot.yellow { background:#febc2e; } .t-dot.green { background:#28c840; }
+.terminal-title { font-family:'Fira Code',monospace; font-size:0.68rem; color:var(--text-dim); margin-left:0.5rem; letter-spacing:0.05em; }
+.terminal-body { padding:1.5rem; font-family:'Fira Code',monospace; font-size:0.78rem; line-height:2; }
+.t-line { display:flex; gap:0.5rem; }
+.t-prompt { color:var(--green); } .t-cmd { color:var(--white); } .t-out { color:var(--text-dim); padding-left:1rem; }
+.t-val { color:var(--orange); } .t-key { color:var(--blue); }
+.t-cursor { display:inline-block; width:8px; height:14px; background:var(--green); animation:blink 1s step-end infinite; vertical-align:middle; margin-left:2px; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+/* ══ BUTTONS ══ */
+.btn-outline { display:inline-flex; align-items:center; gap:0.6rem; padding:0.8rem 1.6rem; border:1px solid var(--green); color:var(--green); text-decoration:none; font-family:'Fira Code',monospace; font-size:0.78rem; letter-spacing:0.05em; transition:all 0.2s; cursor:none; background:transparent; }
+.btn-outline:hover { background:var(--green-glow); transform:translateY(-2px); box-shadow:0 4px 20px var(--green-glow); }
+
+/* ══ SCROLL REVEAL ══ */
+.reveal { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease,transform 0.7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal.d1 { transition-delay:0.1s; } .reveal.d2 { transition-delay:0.2s; } .reveal.d3 { transition-delay:0.3s; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1024px) {
+  .layout { grid-template-columns:1fr; padding:0 1.5rem; }
+  .sidebar { position:relative; height:auto; padding:100px 0 40px; }
+  .sidebar-nav { display:none; }
+  .main { padding:40px 0 60px; }
+  .mobile-header { display:flex; }
+  .mobile-menu { display:flex; }
+  .automation-intro { grid-template-columns:1fr 1fr; }
+  .skills-section, .contact-layout { grid-template-columns:1fr; }
+  .workflows-grid { grid-template-columns:1fr; }
+}
+@media (max-width: 600px) {
+  body { cursor:auto; }
+  .cursor, .cursor-follower, .glow-blob { display:none; }
+  .project-item { grid-template-columns:1fr; }
+  .project-num, .project-arrow { display:none; }
+  .about-stats { grid-template-columns:1fr 1fr; }
+  .automation-intro { grid-template-columns:1fr 1fr; }
+  .contact-layout { grid-template-columns:1fr; }
+  .contact-terminal { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOADER ══ -->
+<div id="loader">
+  <div class="loader-name">Olaitan Hammed</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<!-- ══ CURSOR ══ -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+<div class="glow-blob" id="glow-blob"></div>
+
+<!-- ══ BACK TO TOP ══ -->
+<a href="#" id="back-top" title="Back to top">↑</a>
+
+<!-- ══ MOBILE HEADER ══ -->
+<div class="mobile-header">
+  <div class="mobile-logo">olaitan.dev</div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<!-- ══ MOBILE MENU ══ -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" class="mobile-nav-link">About</a>
+  <a href="#projects" class="mobile-nav-link">Projects</a>
+  <a href="#automation" class="mobile-nav-link">Automation</a>
+  <a href="#skills" class="mobile-nav-link">Skills</a>
+  <a href="#contact" class="mobile-nav-link">Contact</a>
+</div>
+
+<div class="layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <h1>Olaitan<br>Hammed</h1>
+      <h2 id="typed-role"></h2>
+      <p>I build things for the web — end-to-end applications, intelligent automations, and engineering tools that solve real problems.</p>
+
+      <div class="currently">
+        <div class="currently-dot"></div>
+        <div class="currently-text">
+          Currently working on
+          <span>StructSolve v2 · n8n workflow library</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#about"      class="nav-item active"><span class="nav-line"></span><span class="nav-label">About</span></a>
+        <a href="#projects"   class="nav-item"><span class="nav-line"></span><span class="nav-label">Projects</span></a>
+        <a href="#automation" class="nav-item"><span class="nav-line"></span><span class="nav-label">Automation</span></a>
+        <a href="#skills"     class="nav-item"><span class="nav-line"></span><span class="nav-label">Skills</span></a>
+        <a href="#contact"    class="nav-item"><span class="nav-line"></span><span class="nav-label">Contact</span></a>
+      </nav>
+    </div>
+
+    <div class="sidebar-bottom">
+      <a href="#" class="cv-btn" id="cv-download" download="Olaitan_Hammed_CV.pdf">
+        ↓ Download CV
+      </a>
+      <div class="sidebar-social">
+        <a href="https://github.com/hholaitan01" target="_blank" class="social-link">⌥ GitHub</a>
+        <a href="https://ng.linkedin.com/in/olaitan-hammed-862990348" target="_blank" class="social-link">in LinkedIn</a>
+        <a href="mailto:hammedolaitan5@gmail.com" class="social-link">✉ Email</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main">
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-tag">01. About me</div>
+      <div class="about-text reveal">
+        <p>Hi, I'm Olaitan — a <span class="bright">Fullstack Developer</span> based in <span class="highlight">Lagos, Nigeria</span>, building end-to-end products at the intersection of software engineering, automation, and data science.</p>
+        <p>My work spans web development, <span class="bright">n8n workflow automation</span> across 24 industries, and engineering software grounded in classical theory. I care deeply about writing clean code and building tools that are both powerful and transparent.</p>
+        <p>When I'm not shipping features, I'm designing structural analysis systems, training ML models for hydrology, or building AI-powered applications like <span class="highlight">QuranShazam</span> — a Shazam-style Qur'an verse identification app.</p>
+      </div>
+      <div class="about-stats reveal d1">
+        <div class="about-stat"><div class="about-stat-num">170+</div><div class="about-stat-label">n8n Automations</div></div>
+        <div class="about-stat"><div class="about-stat-num">24</div><div class="about-stat-label">Industries Covered</div></div>
+        <div class="about-stat"><div class="about-stat-num">30+</div><div class="about-stat-label">Platforms Integrated</div></div>
+        <div class="about-stat"><div class="about-stat-num">5+</div><div class="about-stat-label">Major Projects</div></div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-tag">02. Projects</div>
+      <div class="projects-list reveal">
+
+        <a href="https://github.com/hholaitan01/structsolve" target="_blank" class="project-item">
+          <span class="project-num">01</span>
+          <div class="project-body">
+            <div class="project-title">StructSolve</div>
+            <p class="project-desc">Professional structural analysis & RC design web app. Continuous beam analysis using the Slope Deflection Method, general plane frame solving with auto sway detection, and BS 8110-1:1997 RC beam design — full step-by-step workings, SFD/BMD diagrams, PDF export.</p>
+            <div class="project-tags"><span class="ptag">Python</span><span class="ptag">Streamlit</span><span class="ptag">NumPy</span><span class="ptag">Matplotlib</span><span class="ptag">ReportLab</span><span class="ptag">BS 8110</span></div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <a href="https://github.com/hholaitan01/rainfall_forecasting" target="_blank" class="project-item">
+          <span class="project-num">02</span>
+          <div class="project-body">
+            <div class="project-title">Rainfall–Runoff Forecasting System</div>
+            <p class="project-desc">Decision-support system combining XGBoost ML forecasting with standards-based hydraulic channel design (Rational Method + Manning's Equation). ML strictly for flood risk & early warning — channel sizing always follows engineering standards calibrated for Ikeja, Nigeria.</p>
+            <div class="project-tags"><span class="ptag orange">XGBoost</span><span class="ptag">Python</span><span class="ptag">Streamlit</span><span class="ptag orange">Manning's Eq.</span><span class="ptag">Flood Risk</span><span class="ptag">Hydrology</span></div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <a href="https://github.com/hholaitan01/quranshazam" target="_blank" class="project-item">
+          <span class="project-num">03</span>
+          <div class="project-body">
+            <div class="project-title">QuranShazam</div>
+            <p class="project-desc">AI-powered app that identifies any Qur'an recitation from a few seconds of audio — instantly returning the exact surah, ayah, reciter, and timestamp. Audio fingerprinting backend paired with a mobile interface.</p>
+            <div class="project-tags"><span class="ptag">Python</span><span class="ptag blue">AI / ML</span><span class="ptag blue">Audio Recognition</span><span class="ptag">Mobile App</span><span class="ptag">Backend API</span></div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <a href="https://github.com/hholaitan01/n8n_compilation" target="_blank" class="project-item">
+          <span class="project-num">04</span>
+          <div class="project-body">
+            <div class="project-title">n8n Workflow Compilation</div>
+            <p class="project-desc">A public library of 170+ categorised JSON workflow files ready for n8n import. Covers use cases from agricultural IoT sensors to legal document processing — demonstrating breadth across 24 industries and depth in automation design patterns.</p>
+            <div class="project-tags"><span class="ptag blue">n8n</span><span class="ptag blue">Automation</span><span class="ptag">AI Agents</span><span class="ptag">REST APIs</span><span class="ptag">IoT / MQTT</span></div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- AUTOMATION -->
+    <section id="automation">
+      <div class="section-tag">03. n8n Automation</div>
+      <div class="automation-intro reveal">
+        <div class="auto-stat"><div class="auto-stat-num">170+</div><div class="auto-stat-label">Workflows</div></div>
+        <div class="auto-stat"><div class="auto-stat-num">24</div><div class="auto-stat-label">Industries</div></div>
+        <div class="auto-stat"><div class="auto-stat-num">30+</div><div class="auto-stat-label">Platforms</div></div>
+        <div class="auto-stat"><div class="auto-stat-num">10+</div><div class="auto-stat-label">AI Workflows</div></div>
+      </div>
+      <div class="industries-wrap reveal d1">
+        <div class="industries-label">Industry Coverage</div>
+        <div class="industries-list">
+          <span class="ind-tag">Agriculture</span><span class="ind-tag">AI / ML</span><span class="ind-tag">Automotive</span><span class="ind-tag">Creative Content</span><span class="ind-tag">Data Analytics</span><span class="ind-tag">DevOps</span><span class="ind-tag">E-Commerce</span><span class="ind-tag">Education</span><span class="ind-tag">Email Automation</span><span class="ind-tag">Energy</span><span class="ind-tag">Finance & Accounting</span><span class="ind-tag">Gaming</span><span class="ind-tag">Government & NGO</span><span class="ind-tag">HR</span><span class="ind-tag">Healthcare</span><span class="ind-tag">IoT</span><span class="ind-tag">Legal Tech</span><span class="ind-tag">Manufacturing</span><span class="ind-tag">Media</span><span class="ind-tag">Productivity</span><span class="ind-tag">Real Estate</span><span class="ind-tag">Social Media</span><span class="ind-tag">Travel</span><span class="ind-tag">Miscellaneous</span>
+        </div>
+      </div>
+      <div class="workflows-grid reveal d2">
+        <div class="wf"><div class="wf-cat">AI & ML</div><div class="wf-name">Customer Sentiment Analysis</div><div class="wf-desc">Analyses support tickets via NLP; auto-routes negative sentiment to priority queues.</div></div>
+        <div class="wf"><div class="wf-cat">AI & ML</div><div class="wf-name">Resume Screening Bot</div><div class="wf-desc">Parses job applications, scores candidates, posts shortlists to Notion.</div></div>
+        <div class="wf"><div class="wf-cat">AI & ML</div><div class="wf-name">Voice Note Transcription</div><div class="wf-desc">Converts audio to text via speech-to-text APIs, saves transcripts to Drive.</div></div>
+        <div class="wf"><div class="wf-cat">AI & ML</div><div class="wf-name">Product Description Generator</div><div class="wf-desc">Uses LLMs to auto-generate SEO-optimised descriptions from raw product data.</div></div>
+        <div class="wf"><div class="wf-cat">Finance</div><div class="wf-name">Stripe → QuickBooks Sync</div><div class="wf-desc">Automatically records Stripe transactions in QuickBooks for real-time bookkeeping.</div></div>
+        <div class="wf"><div class="wf-cat">Finance</div><div class="wf-name">OCR Receipts to Notion</div><div class="wf-desc">Extracts receipt data using OCR, logs expense details into a Notion database.</div></div>
+        <div class="wf"><div class="wf-cat">IoT</div><div class="wf-name">Predictive Maintenance Alert</div><div class="wf-desc">Monitors IoT sensor streams; triggers maintenance tickets on anomaly detection.</div></div>
+        <div class="wf"><div class="wf-cat">IoT</div><div class="wf-name">MQTT Topic Monitor</div><div class="wf-desc">Subscribes to MQTT topics, parses payloads, routes events to dashboards.</div></div>
+        <div class="wf"><div class="wf-cat">Legal Tech</div><div class="wf-name">NDA Risk Detector</div><div class="wf-desc">Scans NDA documents for high-risk clauses and generates a risk summary report.</div></div>
+        <div class="wf"><div class="wf-cat">Legal Tech</div><div class="wf-name">Contract Clause Extractor</div><div class="wf-desc">Parses legal documents to identify and extract key clauses using NLP.</div></div>
+        <div class="wf"><div class="wf-cat">DevOps</div><div class="wf-name">GitHub Webhook Pipeline</div><div class="wf-desc">Triggers CI/CD workflows via GitHub webhooks, notifies teams on Slack.</div></div>
+        <div class="wf"><div class="wf-cat">Finance</div><div class="wf-name">Currency Rate Monitor</div><div class="wf-desc">Tracks live FX rates and triggers alerts when rates cross defined thresholds.</div></div>
+      </div>
+      <div class="wf-more reveal d3">
+        <a href="https://github.com/hholaitan01/n8n_compilation" target="_blank" class="btn-outline">View all 170+ workflows ↗</a>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-tag">04. Skills</div>
+      <div class="skills-section reveal">
+        <div class="skill-group">
+          <div class="skill-group-title">Automation & Integration</div>
+          <div class="skill-item"><span class="skill-name-label">n8n (Advanced)</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">REST API Design</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">Webhook Architecture</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">OpenAI / LLM Integration</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">OAuth & API Auth</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">OCR & Document Parsing</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Engineering & Data Science</div>
+          <div class="skill-item"><span class="skill-name-label">Python</span><div class="skill-dots"><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">Structural Analysis</span><div class="skill-dots"><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">BS 8110 RC Design</span><div class="skill-dots"><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">XGBoost / ML</span><div class="skill-dots"><div class="dot filled orange"></div><div class="dot filled orange"></div><div class="dot filled orange"></div><div class="dot filled orange"></div><div class="dot"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">Hydrology & Channel Design</span><div class="skill-dots"><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot"></div></div></div>
+          <div class="skill-item"><span class="skill-name-label">Data Visualisation</span><div class="skill-dots"><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot filled blue"></div><div class="dot"></div></div></div>
+        </div>
+      </div>
+      <div class="tools-row reveal d1">
+        <div class="tools-row-title">Tools & Platforms</div>
+        <div class="tools-chips">
+          <span class="chip">Streamlit</span><span class="chip">NumPy</span><span class="chip">SciPy</span><span class="chip">Pandas</span><span class="chip">Matplotlib</span><span class="chip">ReportLab</span><span class="chip">Slack</span><span class="chip">Telegram</span><span class="chip">Notion</span><span class="chip">Airtable</span><span class="chip">Google Sheets</span><span class="chip">Shopify</span><span class="chip">Stripe</span><span class="chip">HubSpot</span><span class="chip">SendGrid</span><span class="chip">MQTT</span><span class="chip">GitHub</span><span class="chip">Jenkins</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-tag">05. Contact</div>
+      <div class="contact-layout reveal">
+        <div class="contact-text">
+          <h3>Let's build something great.</h3>
+          <p>Open to fullstack projects, automation consulting, engineering software collaborations, or just a good conversation about interesting problems.</p>
+          <div class="contact-links">
+            <a href="mailto:hammedolaitan5@gmail.com" class="clink">
+              <span class="clink-icon">✉</span>
+              hammedolaitan5@gmail.com
+              <button class="copy-btn" id="copy-email" onclick="copyEmail(event)">copy</button>
+            </a>
+            <a href="https://github.com/hholaitan01" target="_blank" class="clink"><span class="clink-icon">gh</span>github.com/hholaitan01</a>
+            <a href="https://ng.linkedin.com/in/olaitan-hammed-862990348" target="_blank" class="clink"><span class="clink-icon">in</span>linkedin.com/in/olaitan-hammed</a>
+            <a href="https://github.com/hholaitan01/n8n_compilation" target="_blank" class="clink"><span class="clink-icon">⚙</span>n8n_compilation — 170+ workflows</a>
+          </div>
+        </div>
+        <div class="contact-terminal">
+          <div class="terminal-bar">
+            <div class="t-dot red"></div><div class="t-dot yellow"></div><div class="t-dot green"></div>
+            <span class="terminal-title">olaitan.config.json</span>
+          </div>
+          <div class="terminal-body">
+            <div class="t-line"><span class="t-prompt">~</span><span class="t-cmd"> cat profile.json</span></div>
+            <div class="t-line"><span class="t-out">{</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"name"</span>: <span class="t-val">"Olaitan Hammed"</span>,</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"role"</span>: <span class="t-val">"Fullstack Developer"</span>,</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"location"</span>: <span class="t-val">"Lagos, Nigeria"</span>,</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"email"</span>: <span class="t-val">"hammedolaitan5@gmail.com"</span>,</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"linkedin"</span>: <span class="t-val">"in/olaitan-hammed-862990348"</span>,</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"specialties"</span>: [</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">"n8n Automation"</span>,</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">"Engineering Software"</span>,</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">"AI / ML"</span></span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;],</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"available"</span>: <span class="t-val">true</span></span></div>
+            <div class="t-line"><span class="t-out">}</span></div>
+            <div class="t-line"><span class="t-prompt">~</span><span class="t-cmd"> </span><span class="t-cursor"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+// ══ PAGE LOADER
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 2000);
+});
+
+// ══ TYPING ANIMATION
+const roles = ['Fullstack Developer', 'n8n Automation Engineer', 'Python Developer', 'Engineering Software Dev'];
+let rIdx = 0, cIdx = 0, deleting = false;
+const typed = document.getElementById('typed-role');
+
+function type() {
+  const current = roles[rIdx];
+  if (!deleting) {
+    typed.textContent = '// ' + current.slice(0, ++cIdx);
+    if (cIdx === current.length) { deleting = true; setTimeout(type, 2200); return; }
+  } else {
+    typed.textContent = '// ' + current.slice(0, --cIdx);
+    if (cIdx === 0) { deleting = false; rIdx = (rIdx + 1) % roles.length; setTimeout(type, 400); return; }
+  }
+  setTimeout(type, deleting ? 40 : 75);
+}
+setTimeout(type, 2200);
+
+// ══ CUSTOM CURSOR
+const cursor = document.getElementById('cursor');
+const follower = document.getElementById('cursor-follower');
+const blob = document.getElementById('glow-blob');
+let mx = 0, my = 0, fx = 0, fy = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+  blob.style.left = mx + 'px';
+  blob.style.top  = my + 'px';
+});
+(function animateFollower() {
+  fx += (mx - fx) * 0.12;
+  fy += (my - fy) * 0.12;
+  follower.style.left = fx + 'px';
+  follower.style.top  = fy + 'px';
+  requestAnimationFrame(animateFollower);
+})();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.classList.add('hovered'); follower.classList.add('hovered'); });
+  el.addEventListener('mouseleave', () => { cursor.classList.remove('hovered'); follower.classList.remove('hovered'); });
+});
+
+// ══ SCROLL REVEAL
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ══ ACTIVE NAV (scroll spy)
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const a = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if(a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(s => navObs.observe(s));
+
+// ══ BACK TO TOP
+const backTop = document.getElementById('back-top');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+});
+backTop.addEventListener('click', e => { e.preventDefault(); window.scrollTo({ top:0, behavior:'smooth' }); });
+
+// ══ MOBILE MENU
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+// ══ COPY EMAIL
+function copyEmail(e) {
+  e.preventDefault(); e.stopPropagation();
+  navigator.clipboard.writeText('hammedolaitan5@gmail.com');
+  const btn = document.getElementById('copy-email');
+  btn.textContent = 'copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+}
+
+// ══ CV DOWNLOAD (generates a simple text CV as fallback)
+document.getElementById('cv-download').addEventListener('click', function(e) {
+  e.preventDefault();
+  const cvContent = `OLAITAN HAMMED
+Fullstack Developer | n8n Automation Engineer | Python Developer
+Lagos, Nigeria
+
+EMAIL: hammedolaitan5@gmail.com
+GITHUB: github.com/hholaitan01
+LINKEDIN: linkedin.com/in/olaitan-hammed-862990348
+
+────────────────────────────────────────
+PROFESSIONAL SUMMARY
+────────────────────────────────────────
+Versatile Fullstack Developer with hands-on experience designing and deploying
+170+ production-ready workflow automations across 24 industries. Specialises in
+connecting APIs, AI/ML services, communication platforms, and data tools.
+
+────────────────────────────────────────
+PROJECTS
+────────────────────────────────────────
+StructSolve
+Professional structural analysis & RC design web app (BS 8110-1:1997).
+Tech: Python, Streamlit, NumPy, Matplotlib, ReportLab
+
+Rainfall-Runoff Forecasting System
+XGBoost ML + Manning's Equation decision-support system for flood risk.
+Tech: Python, XGBoost, Streamlit, SciPy
+
+QuranShazam
+AI app identifying Qur'an recitations from audio with surah/ayah/reciter output.
+Tech: Python, AI/ML, Audio Recognition, Mobile
+
+n8n Workflow Compilation
+170+ categorised n8n JSON workflows across 24 industries.
+
+────────────────────────────────────────
+SKILLS
+────────────────────────────────────────
+Automation: n8n (Advanced), REST APIs, Webhooks, OpenAI/LLM, OAuth, OCR
+Engineering: Python, Structural Analysis, BS 8110, XGBoost/ML, Hydrology
+Tools: Streamlit, NumPy, SciPy, Pandas, Matplotlib, ReportLab
+Platforms: Slack, Notion, Airtable, Shopify, Stripe, HubSpot, GitHub, MQTT
+
+────────────────────────────────────────
+AUTOMATION STATS
+────────────────────────────────────────
+170+ Automations Built | 24 Industries | 30+ Platforms | 10+ AI/ML Workflows
+`;
+  const blob = new Blob([cvContent], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'Olaitan_Hammed_CV.txt';
+  a.click(); URL.revokeObjectURL(url);
+});
+</script>
+</body>
+</html>
