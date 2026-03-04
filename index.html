@@ -21,7 +21,10 @@
 <!-- Favicon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23080b10'/><text y='72' x='12' font-size='68' font-family='monospace' fill='%2364ffda'>O</text></svg>">
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
 <style>
 :root {
   --bg: #080b10;
@@ -85,7 +88,7 @@ body {
   height: 100%;
   background: var(--green);
   border-radius: 2px;
-  animation: loaderProgress 1.4s 0.5s ease forwards;
+  animation: loaderProgress 0.9s 0.2s ease forwards;
   width: 0;
 }
 @keyframes loaderFade { to { opacity: 1; } }
@@ -320,7 +323,7 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
 .projects-list { display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); }
 .project-item {
   background:var(--surface); padding:2.2rem;
-  display:grid; grid-template-columns:auto 1fr auto;
+  display:grid; grid-template-columns:36px 1fr 24px;
   gap:1.5rem; align-items:start;
   text-decoration:none; color:inherit;
   transition:background 0.25s; position:relative; overflow:hidden; cursor:none;
@@ -328,10 +331,11 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
 .project-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--green); transform:scaleY(0); transform-origin:bottom; transition:transform 0.3s ease; }
 .project-item:hover { background:#0f1a26; }
 .project-item:hover::before { transform:scaleY(1); }
-.project-num { font-family:'Fira Code',monospace; font-size:0.7rem; color:var(--green); opacity:0.5; padding-top:4px; min-width:32px; }
+.project-num { font-family:'Fira Code',monospace; font-size:0.7rem; color:var(--green); opacity:0.5; padding-top:4px; min-width:32px; flex-shrink:0; }
+.project-body { min-width: 0; overflow: hidden; }
 .project-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1.15rem; color:var(--white); margin-bottom:0.6rem; letter-spacing:-0.01em; transition:color 0.2s; }
 .project-item:hover .project-title { color:var(--green); }
-.project-desc { font-size:0.85rem; color:var(--text-dim); line-height:1.7; margin-bottom:1.2rem; }
+.project-desc { font-size:0.85rem; color:var(--text-dim); line-height:1.7; margin-bottom:1.2rem; word-wrap:break-word; }
 .project-tags { display:flex; flex-wrap:wrap; gap:0.5rem; }
 .ptag { font-family:'Fira Code',monospace; font-size:0.68rem; color:var(--green); background:var(--green-dim); padding:0.2rem 0.6rem; border-radius:3px; letter-spacing:0.04em; }
 .ptag.blue { color:var(--blue); background:rgba(87,183,255,0.08); }
@@ -501,7 +505,7 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
         <div class="currently-dot"></div>
         <div class="currently-text">
           Currently working on
-          <span>StructSolve v4</span>
+          <span>StructSolve v2 · n8n workflow library</span>
         </div>
       </div>
 
@@ -521,7 +525,7 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
       <div class="sidebar-social">
         <a href="https://github.com/hholaitan01" target="_blank" class="social-link">⌥ GitHub</a>
         <a href="https://ng.linkedin.com/in/olaitan-hammed-862990348" target="_blank" class="social-link">in LinkedIn</a>
-        <a href="mailto:hammedolaitan5@gmail.com" class="social-link">✉ Email</a>
+        <a href="/cdn-cgi/l/email-protection#abc3cac6c6cecfc4c7cac2dfcac59eebccc6cac2c785c8c4c6" class="social-link">✉ Email</a>
       </div>
     </div>
   </aside>
@@ -535,7 +539,7 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
       <div class="about-text reveal">
         <p>Hi, I'm Olaitan — a <span class="bright">Fullstack Developer</span> based in <span class="highlight">Lagos, Nigeria</span>, building end-to-end products at the intersection of software engineering, automation, and data science.</p>
         <p>My work spans web development, <span class="bright">n8n workflow automation</span> across 24 industries, and engineering software grounded in classical theory. I care deeply about writing clean code and building tools that are both powerful and transparent.</p>
-        <p>When I'm not shipping features, I'm a Civil and Environmental Engineering student, designing structural analysis systems, training ML models for hydrology, or building AI-powered applications like <span class="highlight">QuranShazam</span> — a Shazam-style Qur'an verse identification app.</p>
+        <p>When I'm not shipping features, I'm designing structural analysis systems, training ML models for hydrology, or building AI-powered applications like <span class="highlight">QuranShazam</span> — a Shazam-style Qur'an verse identification app.</p>
       </div>
       <div class="about-stats reveal d1">
         <div class="about-stat"><div class="about-stat-num">170+</div><div class="about-stat-label">n8n Automations</div></div>
@@ -567,11 +571,11 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
         <a href="https://rainforecastml.streamlit.app" target="_blank" class="project-item">
           <span class="project-num">02</span>
           <div class="project-body">
-            <div class="project-title">Rainfall–Runoff Forecasting System <span class="live-badge">●Live</span></div>
+            <div class="project-title">Rainfall–Runoff Forecasting System <span class="live-badge">● Live</span></div>
             <p class="project-desc">Decision-support system combining XGBoost ML forecasting with standards-based hydraulic channel design (Rational Method + Manning's Equation). ML strictly for flood risk & early warning — channel sizing always follows engineering standards calibrated for Ikeja, Nigeria.</p>
             <div class="project-tags"><span class="ptag orange">XGBoost</span><span class="ptag">Python</span><span class="ptag">Streamlit</span><span class="ptag orange">Manning's Eq.</span><span class="ptag">Flood Risk</span><span class="ptag">Hydrology</span></div>
             <div class="project-links">
-              <a href="https://rainforecastml.streamlit.app" target="_blank" class="proj-link" onclick="event.stopPropagation()">↗Live App</a>
+              <a href="https://rainforecastml.streamlit.app" target="_blank" class="proj-link" onclick="event.stopPropagation()">↗ Live App</a>
               <a href="https://github.com/hholaitan01/rainfall_forecasting" target="_blank" class="proj-link" onclick="event.stopPropagation()">⌥ GitHub</a>
             </div>
           </div>
@@ -674,9 +678,9 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
           <h3>Let's build something great.</h3>
           <p>Open to fullstack projects, automation consulting, engineering software collaborations, or just a good conversation about interesting problems.</p>
           <div class="contact-links">
-            <a href="mailto:hammedolaitan5@gmail.com" class="clink">
+            <a href="/cdn-cgi/l/email-protection#1078717d7d75747f7c717964717e2550777d71797c3e737f7d" class="clink">
               <span class="clink-icon">✉</span>
-              hammedolaitan5@gmail.com
+              <span class="__cf_email__" data-cfemail="6d050c0000080902010c04190c03582d0a000c0401430e0200">[email&#160;protected]</span>
               <button class="copy-btn" id="copy-email" onclick="copyEmail(event)">copy</button>
             </a>
             <a href="https://github.com/hholaitan01" target="_blank" class="clink"><span class="clink-icon">gh</span>github.com/hholaitan01</a>
@@ -695,7 +699,7 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
             <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"name"</span>: <span class="t-val">"Olaitan Hammed"</span>,</span></div>
             <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"role"</span>: <span class="t-val">"Fullstack Developer"</span>,</span></div>
             <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"location"</span>: <span class="t-val">"Lagos, Nigeria"</span>,</span></div>
-            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"email"</span>: <span class="t-val">"hammedolaitan5@gmail.com"</span>,</span></div>
+            <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"email"</span>: <span class="t-val">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ef878e82828a8b80838e869b8e81daaf88828e8683c18c8082">[email&#160;protected]</a>"</span>,</span></div>
             <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"linkedin"</span>: <span class="t-val">"in/olaitan-hammed-862990348"</span>,</span></div>
             <div class="t-line"><span class="t-out">&nbsp;&nbsp;<span class="t-key">"specialties"</span>: [</span></div>
             <div class="t-line"><span class="t-out">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">"n8n Automation"</span>,</span></div>
@@ -713,13 +717,11 @@ section { margin-bottom: 120px; scroll-margin-top: 80px; }
   </main>
 </div>
 
-<script>
-// ══ PAGE LOADER
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-  }, 2000);
-});
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ══ PAGE LOADER — fixed timer, no network dependency
+setTimeout(() => {
+  document.getElementById('loader').classList.add('hidden');
+}, 1200);
 
 // ══ TYPING ANIMATION
 const roles = ['Fullstack Developer', 'n8n Automation Engineer', 'Python Developer', 'Engineering Software Dev'];
@@ -807,17 +809,4 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
 
 // ══ COPY EMAIL
 function copyEmail(e) {
-  e.preventDefault(); e.stopPropagation();
-  navigator.clipboard.writeText('hammedolaitan5@gmail.com');
-  const btn = document.getElementById('copy-email');
-  btn.textContent = 'copied!';
-  btn.classList.add('copied');
-  setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
-}
-
-// ══ CV DOWNLOAD — links directly to /Olaitan_Hammed_Resume.pdf
-// No JS needed; the anchor tag handles it natively.
-
-</script>
-</body>
-</html>
+  e.preventDefault(); e.stopPropag
