@@ -29,11 +29,11 @@
     body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
 
     /* Loader */
-    #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+    #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:opacity .5s,visibility .5s}
     #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-    .loader-name{font-family:var(--font-mono);font-size:1.3rem;letter-spacing:.45em;color:var(--text-bright);text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:loaderFade .4s .1s ease forwards}
+    .loader-name{font-family:var(--font-mono);font-size:1.3rem;letter-spacing:.45em;color:var(--text-bright);text-transform:uppercase;margin-bottom:1.5rem;width:100%;text-align:center;padding-left:.45em;opacity:0;animation:loaderFade .4s .1s ease forwards}
     .loader-track{width:180px;height:3px;background:var(--bg-card);border-radius:2px;overflow:hidden}
-    .loader-bar{height:100%;background:var(--green);border-radius:2px;width:0;animation:loaderProgress .9s .2s ease forwards}
+    .loader-bar{height:100%;background:var(--green);border-radius:2px;width:0;animation:loaderProgress 2.2s .3s ease forwards}
     @keyframes loaderFade{to{opacity:1}}
     @keyframes loaderProgress{to{width:100%}}
 
@@ -216,7 +216,7 @@
       <p>I'm a Civil &amp; Environmental Engineering student at the University of Lagos and a self-taught developer with a passion for building tools that bridge traditional engineering and modern technology.</p>
       <p>My work spans three disciplines: fullstack development (building web apps and engineering software), n8n automation (designing intelligent workflows that eliminate manual work), and email design (crafting high-converting, production-grade HTML emails).</p>
       <p>I'm driven by a first-principles approach — deconstructing problems, engineering solutions, and shipping with precision. I'm currently exploring opportunities in Generative AI alongside my engineering and development work.</p>
-      <a href="#" class="cv-btn" id="cvDownload">Download CV ↓</a>
+      <a href="resume_olaitan_hammed.pdf" download class="cv-btn">Download Resume ↓</a>
     </div>
   </section>
 
@@ -235,7 +235,7 @@
   <footer>&copy; 2026 Olaitan Hammed. Built with purpose.</footer>
 
   <script>
-    setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1200);
+    setTimeout(()=>document.getElementById('loader').classList.add('hidden'),3000);
     const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}})},{threshold:.1});
     document.querySelectorAll('section:not(.hero),.stats-strip').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(30px)';s.style.transition='opacity .7s ease, transform .7s ease';obs.observe(s)});
   </script>
