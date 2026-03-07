@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mendora - Here For A Reason</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#faf8f4;font-family:'Georgia',serif;-webkit-font-smoothing:antialiased}
+.w{max-width:560px;margin:0 auto;background:#faf8f4}
+.logo{text-align:center;padding:28px 20px 20px;font-family:Arial,sans-serif;font-size:18px;font-weight:300;color:#1a1a1a;letter-spacing:6px;text-transform:uppercase}
+.hero{padding:0 32px 20px}
+.hero h1{font-size:34px;font-weight:400;font-style:italic;color:#1a1a1a;margin-bottom:10px;line-height:1.2}
+.hero .dr{font-size:15px;color:#333;font-style:normal;margin-bottom:16px}
+.hero .dr strong{font-weight:700}
+.founder-row{display:flex;gap:16px;align-items:flex-start;margin-bottom:16px}
+.founder-avatar{width:50px;height:50px;border-radius:50%;overflow:hidden;flex-shrink:0}
+.founder-avatar img{width:100%;height:100%;object-fit:cover}
+.founder-text{font-size:14px;color:#444;line-height:1.7;flex:1}
+.product-side{display:flex;gap:16px;margin:16px 0}
+.product-side .copy{flex:1;font-size:14px;color:#444;line-height:1.7}
+.product-side .prod{width:140px;flex-shrink:0;border-radius:10px;overflow:hidden}
+.product-side .prod img{width:100%;display:block;border-radius:10px}
+.tagline{font-size:16px;color:#1a1a1a;margin:16px 0 4px;line-height:1.5}
+.tagline strong{font-weight:700}
+.cta{display:inline-block;background:#1a5c4b;color:#fff;padding:14px 36px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;font-family:Arial,sans-serif;letter-spacing:1px;text-transform:uppercase}
+.cta-w{text-align:center;margin:20px 0 28px;padding:0 32px}
+.journey{padding:10px 32px 24px}
+.journey h2{font-size:26px;font-weight:400;font-style:italic;color:#1a1a1a;text-align:center;margin-bottom:6px}
+.journey .sub{font-size:13px;color:#666;text-align:center;margin-bottom:20px}
+.step{background:#1a5c4b;border-radius:12px;padding:14px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px}
+.step-icon{width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0}
+.step-icon img{width:100%;height:100%;object-fit:cover}
+.step p{font-size:13px;color:#fff;font-family:Arial,sans-serif;line-height:1.5}
+.step p strong{font-weight:700}
+.cta-w2{text-align:center;padding:8px 32px 20px}
+.cta2{display:inline-block;background:transparent;color:#1a5c4b;padding:12px 30px;border:2px solid #1a5c4b;border-radius:6px;text-decoration:none;font-size:13px;font-weight:700;font-family:Arial,sans-serif;letter-spacing:1px;text-transform:uppercase}
+.benefits-section{padding:10px 32px 24px}
+.benefits-section h2{font-size:22px;font-weight:400;font-style:italic;color:#1a1a1a;text-align:center;margin-bottom:4px}
+.benefits-section .sub{font-size:12px;color:#888;text-align:center;margin-bottom:16px;font-family:Arial,sans-serif}
+.ben-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.ben-item{flex:1;min-width:45%;display:flex;align-items:flex-start;gap:8px}
+.ben-item .dot{color:#1a5c4b;font-size:14px;margin-top:2px}
+.ben-item p{font-size:12px;color:#555;font-family:Arial,sans-serif;line-height:1.5}
+.trust{display:flex;justify-content:center;gap:20px;padding:16px 32px;margin-bottom:12px}
+.trust-item{text-align:center;flex:1}
+.trust-item .icon{width:40px;height:40px;border-radius:50%;overflow:hidden;margin:0 auto 4px}
+.trust-item .icon img{width:100%;height:100%;object-fit:cover}
+.trust-item .label{font-size:10px;color:#888;font-family:Arial,sans-serif}
+.cta-w3{text-align:center;padding:8px 32px 20px}
+.offer{background:#1a5c4b;border-radius:12px;margin:0 32px 24px;padding:24px;text-align:center}
+.offer h3{font-size:20px;color:#fff;font-weight:700;margin-bottom:4px;font-family:Arial,sans-serif}
+.offer p{font-size:13px;color:rgba(255,255,255,.8);margin-bottom:14px}
+.offer .cta-offer{display:inline-block;background:#fff;color:#1a5c4b;padding:12px 30px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:700;font-family:Arial,sans-serif;letter-spacing:1px;text-transform:uppercase}
+.ftr{text-align:center;padding:24px 20px 32px;font-size:11px;color:#999;font-family:Arial,sans-serif;line-height:1.8}
+.ftr a{color:#1a5c4b;text-decoration:none}
+.ftr-brand{font-size:16px;font-weight:300;color:#333;letter-spacing:6px;margin-bottom:8px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="logo">MENDORA</div>
+  <div class="hero">
+    <h1>Here For A Reason</h1>
+    <p class="dr">I'm <strong>Dr. Kami Parsa.</strong></p>
+    <div class="founder-row">
+      <div class="founder-avatar"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=100&h=100&fit=crop&crop=face" alt="Doctor"></div>
+      <p class="founder-text">For years, my work has focused on helping skin heal, recover, and age well. But something was missing. My patients invested heavily in advanced aesthetic treatments. Yet their results often depended on what was happening beneath the surface.</p>
+    </div>
+    <div class="product-side">
+      <div class="copy"><p class="tagline">Skin repair isn't just topical.<br><strong>It's biological.</strong></p></div>
+      <div class="prod"><img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=280&h=360&fit=crop" alt="Skin repair formula"></div>
+    </div>
+  </div>
+  <div class="cta-w"><a href="#" class="cta">SHOP MENDORA</a></div>
+  <div class="journey">
+    <h2>A Turning Point</h2>
+    <p class="sub">After a serious hand injury, I decided more needed to be done.</p>
+    <div class="step"><div class="step-icon"><img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=76&h=76&fit=crop" alt="Book"></div><p>I Began Studying Healing Nutrition In Depth</p></div>
+    <div class="step"><div class="step-icon"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=76&h=76&fit=crop" alt="Research"></div><p>Research Led Me To Write <strong>HEAL</strong> And Uncover ICU-Level Nutrition Protocols In Recovery And Trauma Care</p></div>
+    <div class="step"><div class="step-icon"><img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=76&h=76&fit=crop" alt="Discovery"></div><p>I Discovered Nutrition Plays A Critical Role In Repair</p></div>
+  </div>
+  <div class="cta-w2"><a href="#" class="cta2">LEARN MORE</a></div>
+  <div class="benefits-section">
+    <h2>From Research To Formula</h2>
+    <p class="sub">Something clean, safe, and effective for my patients, my family, and myself.</p>
+    <div class="ben-grid">
+      <div class="ben-item"><span class="dot">●</span><p>Supports deep hydration</p></div>
+      <div class="ben-item"><span class="dot">●</span><p>Helps maintain collagen integrity</p></div>
+      <div class="ben-item"><span class="dot">●</span><p>Strengthens the skin barrier</p></div>
+      <div class="ben-item"><span class="dot">●</span><p>Aids daily and post-treatment recovery</p></div>
+    </div>
+  </div>
+  <div class="trust">
+    <div class="trust-item"><div class="icon"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=80&h=80&fit=crop" alt="Lab"></div><div class="label">Physician-Led</div></div>
+    <div class="trust-item"><div class="icon"><img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=80&h=80&fit=crop" alt="Evidence"></div><div class="label">Evidence-Based</div></div>
+    <div class="trust-item"><div class="icon"><img src="https://images.unsplash.com/photo-1551076805-e1869033e561?w=80&h=80&fit=crop" alt="Clinical"></div><div class="label">Clinically Informed</div></div>
+  </div>
+  <div class="cta-w3"><a href="#" class="cta">SHOP THE SKIN REPAIR FORMULA</a></div>
+  <div class="offer"><h3>10% Off Your First Try</h3><p>Clinical-grade skin support beyond the treatment room.</p><a href="#" class="cta-offer">GET 10% OFF NOW</a></div>
+  <div class="ftr"><div class="ftr-brand">MENDORA</div>No longer want to receive these emails?<br><a href="#">Unsubscribe</a><br>© 2026 Mendora All rights reserved.</div>
+</div>
+</body>
+</html>
