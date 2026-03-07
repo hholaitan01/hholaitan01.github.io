@@ -1,1 +1,126 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superlist - Introducing Make</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .w{max-width:600px;margin:0 auto}
+  .logo-bar{padding:28px 24px 20px}
+  .logo-wrap{display:flex;align-items:center;gap:6px}
+  .logo-text{font-size:21px;font-weight:800;color:#e8432d;letter-spacing:-0.3px}
+  .logo-underline{width:86px;height:5px;margin-top:1px}
+  .hero{margin:0 24px;border-radius:14px;overflow:hidden;position:relative;height:290px;background:#0f0e1a}
+  .hero svg.bg{position:absolute;inset:0;width:100%;height:100%}
+  .hero-title{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:72px;font-weight:800;color:#fff;z-index:2;text-shadow:0 4px 24px rgba(0,0,0,0.3)}
+  .c{padding:0 24px}
+  .greeting{font-size:16px;color:#1a1a1a;margin-top:28px;margin-bottom:18px}
+  .bt{font-size:15px;color:#444;line-height:1.65;margin-bottom:8px}
+  .bt .a{color:#e8432d;font-weight:500}
+  .cta-c{text-align:center;margin:24px 0 32px}
+  .cta{display:inline-block;background:#e8432d;color:#fff;padding:13px 30px;border-radius:26px;text-decoration:none;font-size:15px;font-weight:600}
+  .prompts{margin:0 0 28px;border-radius:14px;background:#0f0e1a;padding:32px 28px;position:relative;overflow:hidden}
+  .pg{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative;z-index:2}
+  .chip{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:22px;padding:10px 18px;font-size:12.5px;color:rgba(255,255,255,0.9);max-width:200px;text-align:center;line-height:1.3}
+  .scr{position:absolute;z-index:1}
+  .sh{font-size:21px;font-weight:700;color:#1a1a1a;margin-bottom:12px;line-height:1.35}
+  .sb{font-size:15px;color:#444;line-height:1.65;margin-bottom:10px}
+  .sb a{color:#e8432d;text-decoration:none;font-weight:500}
+  .pv{margin:24px 0 28px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#e8432d,#ff5e45)}
+  .pv-top{padding:32px 28px 20px;text-align:center}
+  .pv-top h3{color:#fff;font-size:26px;font-weight:700;margin-bottom:2px}
+  .pv-top .sp{color:#fff;font-size:22px;font-weight:700}
+  .pv-top .sp .d{color:#ffdd57}
+  .pv-top .desc{color:rgba(255,255,255,.82);font-size:13px;line-height:1.6;margin:14px auto 18px;max-width:340px}
+  .pv-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .pb{padding:9px 20px;border-radius:20px;font-size:13px;font-weight:600;text-decoration:none;display:inline-block}
+  .pb1{background:#ffdd57;color:#1a1a1a}
+  .pb2{background:rgba(255,255,255,.18);color:#fff}
+  .pv-bot{display:flex;gap:10px;padding:12px 20px 24px}
+  .pc{background:rgba(0,0,0,.25);border-radius:10px;flex:1;padding:16px 14px}
+  .pc-i{font-size:22px;margin-bottom:6px}
+  .pc-t{color:#fff;font-size:12px;font-weight:700}
+  .pc-d{color:rgba(255,255,255,.6);font-size:10px;margin-top:3px;line-height:1.4}
+  .closing{color:#e8432d;font-size:15px;font-style:italic;margin:20px 0 8px}
+  .signoff{font-size:15px;color:#333;margin-bottom:28px}
+  hr.sep{border:none;border-top:1px solid #eee;margin:8px 0 20px}
+  .footer{text-align:center;padding:0 0 40px;font-size:12px;color:#999;line-height:1.9}
+  .footer a{color:#e8432d;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="logo-bar">
+    <div class="logo-wrap">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 1l2.5 6.5L22 5l-4 7 6 2-6 2 4 7-6.5-2.5L13 25l-2.5-6.5L4 21l4-7-6-2 6-2-4-7 6.5 2.5z" fill="#e8432d"/></svg>
+      <span class="logo-text">Superlist</span>
+    </div>
+    <div class="logo-underline"><svg width="86" height="5" viewBox="0 0 86 5"><path d="M1 3.5c8-3 16 3 24 0s16-3 24 0 16 3 24 0 8-2 12 0" stroke="#e8432d" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+  </div>
+  <div class="hero">
+    <svg class="bg" viewBox="0 0 600 290" preserveAspectRatio="xMidYMid slice">
+      <rect width="600" height="290" fill="#0f0e1a"/>
+      <circle cx="220" cy="100" r="120" fill="#7b68ae" opacity=".85"/>
+      <circle cx="180" cy="180" r="55" fill="#ff69b4" opacity=".9"/>
+      <circle cx="260" cy="160" r="35" fill="#ff69b4" opacity=".75"/>
+      <circle cx="480" cy="60" r="75" fill="#e8432d" opacity=".9"/>
+      <circle cx="100" cy="250" r="65" fill="#e8432d" opacity=".85"/>
+      <circle cx="520" cy="220" r="50" fill="#ff69b4" opacity=".8"/>
+      <circle cx="380" cy="240" r="90" fill="#7b68ae" opacity=".6"/>
+      <circle cx="150" cy="60" r="40" fill="#e8432d" opacity=".7"/>
+      <circle cx="330" cy="50" r="25" fill="#ff69b4" opacity=".6"/>
+    </svg>
+    <div class="hero-title">Make</div>
+  </div>
+  <div class="c">
+    <p class="greeting">Hi Ryan,</p>
+    <p class="bt">Sometimes getting started is the hardest part. Not anymore. 🌟</p>
+    <p class="bt"><span class="a">Introducing Make by Superlist</span>, our first AI-powered feature designed to help you make anything happen.</p>
+    <div class="cta-c"><a href="#" class="cta">Discover Make ✨</a></div>
+    <div class="prompts">
+      <svg class="scr" style="top:8px;left:12px" width="60" height="60" viewBox="0 0 60 60" fill="none"><path d="M10 50C20 10 50 10 50 50" stroke="#e8432d" stroke-width="2" fill="none" opacity=".5"/><path d="M8 48L15 35 5 38Z" stroke="#e8432d" stroke-width="1.5" fill="none" opacity=".4"/></svg>
+      <svg class="scr" style="bottom:12px;right:16px" width="50" height="50" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="25" r="10" stroke="#ff69b4" stroke-width="2" fill="none" opacity=".5"/></svg>
+      <svg class="scr" style="top:40px;right:60px" width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M5 5L25 25M25 5L5 25" stroke="#7b68ae" stroke-width="2" opacity=".5"/></svg>
+      <svg class="scr" style="bottom:50px;left:50px" width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M5 20Q20 5 35 20Q20 35 5 20" stroke="#e8432d" stroke-width="1.5" fill="none" opacity=".4"/></svg>
+      <div class="pg">
+        <div class="chip">Make a meeting agenda for my 1:1</div>
+        <div class="chip">Make a template for this week with days as headings</div>
+        <div class="chip">Make a project plan for product launch</div>
+        <div class="chip">Make a packing list for a week long trip to Italy</div>
+        <div class="chip">Make a checklist for a new website</div>
+        <div class="chip">Make a list for a weekly sales team check in</div>
+      </div>
+    </div>
+    <h2 class="sh">Elevating your lists to super status 😎</h2>
+    <p class="sb">Whether kickstarting a project plan or laying out the week ahead, a simple prompt is all Make needs to get going. Say goodbye to empty lists! 👋</p>
+    <p class="sb">With <a href="#">Make</a>, nothing is out of your reach. Build trip itineraries, create templates, and so much more. Simply click on the Make button on any list to get started.</p>
+    <div class="pv">
+      <div class="pv-top">
+        <h3>Lists with</h3>
+        <div class="sp">Super <span class="d">●</span> Powers</div>
+        <p class="desc">Take notes, organize your work, and get more done with AI.<br>Simple. Beautiful. And designed to be powerful.</p>
+        <div class="pv-btns"><a href="#" class="pb pb1">Start today — it's free</a><a href="#" class="pb pb2">Learn more →</a></div>
+      </div>
+      <div class="pv-bot">
+        <div class="pc"><div class="pc-i">🔬</div><div class="pc-t">Research</div><div class="pc-d">AI-powered insights at your fingertips</div></div>
+        <div class="pc"><div class="pc-i">📋</div><div class="pc-t">Organize</div><div class="pc-d">Structure your projects effortlessly</div></div>
+        <div class="pc"><div class="pc-i">🚀</div><div class="pc-t">Launch</div><div class="pc-d">Ship faster with smart templates</div></div>
+      </div>
+    </div>
+    <h2 class="sh">Superlist + AI = Superpowers 🐱</h2>
+    <p class="sb">Make is the first Superpower we're releasing, and it's currently available exclusively to Pro users. <span style="color:#e8432d;font-weight:500">Superpowers</span> are our growing suite of AI features powered by our own fine-tuned models. We've built a robust technical foundation and are thrilled to roll out new AI features in the coming months. Stay tuned as we redefine what's possible with productivity tools. 🚀</p>
+    <p class="closing">In the meantime, we can't wait to see what you make!</p>
+    <p class="signoff">Your friends at Superlist ❤️</p>
+    <hr class="sep">
+    <div class="footer">
+      Copyright &copy; 2024 Superlist Software GmbH Joachimstr. 7, 10119 Berlin, Germany Local Court of Charlottenburg HRB 193605 B Managing Director: Niklas Jansen<br><br>
+      Our <a href="#">Privacy Policy</a><br><br>
+      <a href="#">Manage your email preferences</a><br>
+      You can object to receiving further mailings from us by sending an email to<br><a href="mailto:privacy@superlist.com">privacy@superlist.com</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
