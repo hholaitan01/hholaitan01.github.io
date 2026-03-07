@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N8N Automation Specialist — Olaitan Hammed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#09090b;--bg-card:#111113;--border:rgba(255,255,255,.06);--accent:#ff6b4a;--accent-dim:#8a3928;--accent-glow:rgba(255,107,74,.08);--green:#3dffc0;--text:#a1a1aa;--text-bright:#fafafa;--text-dim:#52525b;--font-mono:'JetBrains Mono',monospace;--font-sans:'Outfit',sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(9,9,11,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .nav-logo{font-family:var(--font-mono);font-weight:700;font-size:1.1rem;color:var(--green);text-decoration:none;letter-spacing:.08em}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .3s}
+    .nav-links a:hover{color:var(--green)}.nav-links a.active{color:var(--accent)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text)}
+
+    .page-hero{padding:10rem 8vw 4rem;position:relative}
+    .page-hero::before{content:'';position:absolute;top:0;right:0;width:500px;height:500px;background:radial-gradient(circle,rgba(255,107,74,.04),transparent 70%);pointer-events:none}
+    .breadcrumb{font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);margin-bottom:1.5rem;letter-spacing:.1em}
+    .breadcrumb a{color:var(--text-dim);text-decoration:none;transition:color .3s}
+    .breadcrumb a:hover{color:var(--accent)}
+    .breadcrumb .sep{margin:0 .5rem}
+    .page-hero h1{font-size:clamp(2.4rem,5vw,3.8rem);font-weight:800;color:var(--text-bright);line-height:1.1;margin-bottom:1rem;letter-spacing:-.02em}
+    .page-hero h1 .accent{color:var(--accent)}
+    .page-hero>p{font-size:1.1rem;color:var(--text);max-width:600px}
+
+    section{padding:4rem 8vw}
+    .section-label{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.5rem}
+    .section-title{font-size:2rem;font-weight:700;color:var(--text-bright);margin-bottom:1rem;letter-spacing:-.02em}
+    .section-desc{font-size:1rem;color:var(--text);max-width:600px;margin-bottom:2.5rem}
+
+    /* Stats */
+    .stats{display:flex;gap:2rem;margin:3rem 0 0;flex-wrap:wrap}
+    .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.5rem 2rem;text-align:center;flex:1;min-width:130px;transition:border-color .3s,transform .3s}
+    .stat-card:hover{border-color:rgba(255,107,74,.2);transform:translateY(-3px)}
+    .stat-num{font-family:var(--font-mono);font-size:2rem;font-weight:700;color:var(--accent);display:block}
+    .stat-label{font-size:.82rem;color:var(--text-dim);margin-top:.2rem}
+
+    /* Categories Grid */
+    .cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem}
+    .cat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;transition:all .3s;position:relative;overflow:hidden}
+    .cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+    .cat-card:hover{border-color:rgba(255,107,74,.15);transform:translateY(-3px)}
+    .cat-card:hover::before{transform:scaleX(1)}
+    .cat-icon{font-size:1.6rem;margin-bottom:.8rem}
+    .cat-card h3{font-size:1.05rem;color:var(--text-bright);margin-bottom:.4rem}
+    .cat-card p{font-size:.85rem;color:var(--text);line-height:1.6}
+    .cat-count{font-family:var(--font-mono);font-size:.68rem;color:var(--accent);margin-top:.6rem}
+
+    /* Platforms */
+    .platforms{display:flex;flex-wrap:wrap;gap:.5rem}
+    .platform{font-family:var(--font-mono);font-size:.72rem;padding:.45rem 1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:50px;color:var(--text);transition:all .3s}
+    .platform:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+
+    /* Process */
+    .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+    .process-step{text-align:center;padding:2rem 1rem}
+    .step-num{font-family:var(--font-mono);font-size:2rem;font-weight:700;color:var(--accent);margin-bottom:.6rem}
+    .process-step h3{font-size:1rem;color:var(--text-bright);margin-bottom:.4rem}
+    .process-step p{font-size:.82rem;color:var(--text-dim);line-height:1.5}
+    .step-arrow{color:var(--text-dim);font-size:1.2rem;display:flex;align-items:center;justify-content:center}
+
+    footer{text-align:center;padding:2rem 8vw;font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim);border-top:1px solid var(--border)}
+
+    @media(max-width:768px){
+      nav{padding:1rem 1.5rem}
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(9,9,11,.96);padding:1.5rem 2rem;gap:1.2rem;border-bottom:1px solid var(--border)}
+      .nav-links.open{display:flex}
+      .hamburger{display:flex}
+      section{padding:3rem 6vw}
+      .page-hero{padding:8rem 6vw 3rem}
+      .process-grid{grid-template-columns:1fr 1fr}
+      .stats{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">OH.</a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fullstack.html">Fullstack</a></li>
+      <li><a href="automation.html" class="active">Automation</a></li>
+      <li><a href="email-design.html">Email Design</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span>N8N Automation</div>
+    <h1><span class="accent">N8N</span> Automation<br>Specialist</h1>
+    <p>170+ workflows across 24 industries and 30+ platforms. I architect intelligent automations that eliminate repetitive work and scale business operations.</p>
+    <div class="stats">
+      <div class="stat-card"><span class="stat-num">170+</span><div class="stat-label">Workflows Built</div></div>
+      <div class="stat-card"><span class="stat-num">24</span><div class="stat-label">Industries Served</div></div>
+      <div class="stat-card"><span class="stat-num">30+</span><div class="stat-label">Platforms Integrated</div></div>
+      <div class="stat-card"><span class="stat-num">1000s</span><div class="stat-label">Hours Saved</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-label">// workflow categories</div>
+    <h2 class="section-title">Industries & Use Cases</h2>
+    <p class="section-desc">From lead generation to data pipelines, each workflow is tailored to the specific needs of the industry and business process.</p>
+    <div class="cat-grid">
+      <div class="cat-card"><div class="cat-icon">🏢</div><h3>SaaS & Tech</h3><p>User onboarding flows, trial-to-paid conversion, usage analytics, churn prevention alerts.</p><div class="cat-count">20+ workflows</div></div>
+      <div class="cat-card"><div class="cat-icon">🛒</div><h3>E-Commerce</h3><p>Order processing, inventory sync, abandoned cart recovery, customer segmentation, review requests.</p><div class="cat-count">18+ workflows</div></div>
+      <div class="cat-card"><div class="cat-icon">📈</div><h3>Marketing & Sales</h3><p>Lead scoring, CRM syncing, email sequences, social media scheduling, campaign tracking.</p><div class="cat-count">25+ workflows</div></div>
+      <div class="cat-card"><div class="cat-icon">🏥</div><h3>Healthcare</h3><p>Appointment reminders, patient intake forms, insurance verification, follow-up sequences.</p><div class="cat-count">10+ workflows</div></div>
+      <div class="cat-card"><div class="cat-icon">🎓</div><h3>Education</h3><p>Student enrollment, course notifications, assignment tracking, certificate generation.</p><div class="cat-count">12+ workflows</div></div>
+      <div class="cat-card"><div class="cat-icon">🏗️</div><h3>Construction & Engineering</h3><p>Project updates, inspection reports, subcontractor coordination, document management.</p><div class="cat-count">8+ workflows</div></div>
+      <div class="cat-card"><div class="cat-icon">💰</div><h3>Finance & Accounting</h3><p>Invoice generation, expense tracking, payment reminders, financial reporting automation.</p><div class="cat-count">14+ workflows</div></div>
+      <div class="cat-card"><div class="cat-icon">🤖</div><h3>AI & Data Pipelines</h3><p>Data extraction, transformation, API orchestration, AI model integration, reporting dashboards.</p><div class="cat-count">15+ workflows</div></div>
+      <div class="cat-card"><div class="cat-icon">📱</div><h3>Social Media</h3><p>Cross-posting, content calendars, engagement monitoring, influencer outreach automation.</p><div class="cat-count">10+ workflows</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">// platforms</div>
+    <h2 class="section-title">Integrations I Work With</h2>
+    <div class="platforms">
+      <span class="platform">Google Sheets</span><span class="platform">Slack</span><span class="platform">Notion</span>
+      <span class="platform">Airtable</span><span class="platform">HubSpot</span><span class="platform">Stripe</span>
+      <span class="platform">Shopify</span><span class="platform">Gmail</span><span class="platform">Telegram</span>
+      <span class="platform">WhatsApp</span><span class="platform">Twilio</span><span class="platform">OpenAI</span>
+      <span class="platform">PostgreSQL</span><span class="platform">MySQL</span><span class="platform">MongoDB</span>
+      <span class="platform">Calendly</span><span class="platform">Typeform</span><span class="platform">Zapier</span>
+      <span class="platform">Mailchimp</span><span class="platform">SendGrid</span><span class="platform">Trello</span>
+      <span class="platform">Jira</span><span class="platform">Discord</span><span class="platform">WordPress</span>
+      <span class="platform">WooCommerce</span><span class="platform">Supabase</span><span class="platform">Firebase</span>
+      <span class="platform">GitHub</span><span class="platform">Linear</span><span class="platform">Salesforce</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">// my process</div>
+    <h2 class="section-title">How I Work</h2>
+    <div class="process-grid">
+      <div class="process-step"><div class="step-num">01</div><h3>Audit</h3><p>Map your current processes and identify automation opportunities with highest ROI.</p></div>
+      <div class="process-step"><div class="step-num">02</div><h3>Architect</h3><p>Design the workflow logic, error handling, and integration points before building.</p></div>
+      <div class="process-step"><div class="step-num">03</div><h3>Build & Test</h3><p>Implement in n8n with thorough testing, edge case handling, and monitoring.</p></div>
+      <div class="process-step"><div class="step-num">04</div><h3>Deploy & Iterate</h3><p>Launch to production, monitor performance, and optimize based on real data.</p></div>
+    </div>
+  </section>
+
+  <footer>&copy; 2026 Olaitan Hammed. Built with purpose.</footer>
+
+  <script>
+    const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.style.opacity='1';en.target.style.transform='translateY(0)'}})},{threshold:.1});
+    document.querySelectorAll('section,.page-hero').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(30px)';s.style.transition='opacity .7s,transform .7s';obs.observe(s)});
+  </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Design Gallery — Olaitan Hammed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#09090b;--bg-card:#111113;--border:rgba(255,255,255,.06);--accent:#a78bfa;--accent-dim:#6d5aab;--accent-glow:rgba(167,139,250,.08);--green:#3dffc0;--text:#a1a1aa;--text-bright:#fafafa;--text-dim:#52525b;--font-mono:'JetBrains Mono',monospace;--font-sans:'Outfit',sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(9,9,11,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .nav-logo{font-family:var(--font-mono);font-weight:700;font-size:1.1rem;color:var(--green);text-decoration:none;letter-spacing:.08em}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .3s}
+    .nav-links a:hover{color:var(--green)}.nav-links a.active{color:var(--accent)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text)}
+
+    .page-hero{padding:10rem 8vw 4rem;position:relative}
+    .page-hero::before{content:'';position:absolute;top:0;right:0;width:500px;height:500px;background:radial-gradient(circle,rgba(167,139,250,.04),transparent 70%);pointer-events:none}
+    .breadcrumb{font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);margin-bottom:1.5rem;letter-spacing:.1em}
+    .breadcrumb a{color:var(--text-dim);text-decoration:none;transition:color .3s}
+    .breadcrumb a:hover{color:var(--accent)}
+    .breadcrumb .sep{margin:0 .5rem}
+    .page-hero h1{font-size:clamp(2.4rem,5vw,3.8rem);font-weight:800;color:var(--text-bright);line-height:1.1;margin-bottom:1rem;letter-spacing:-.02em}
+    .page-hero h1 .accent{color:var(--accent)}
+    .page-hero>p{font-size:1.1rem;color:var(--text);max-width:600px;margin-bottom:.5rem}
+
+    section{padding:4rem 8vw}
+    .section-label{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.5rem}
+    .section-title{font-size:2rem;font-weight:700;color:var(--text-bright);margin-bottom:1rem;letter-spacing:-.02em}
+    .section-desc{font-size:1rem;color:var(--text);max-width:600px;margin-bottom:2.5rem}
+
+    /* Skills tags */
+    .email-skills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+    .email-skills span{font-family:var(--font-mono);font-size:.7rem;padding:.4rem .9rem;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.12);border-radius:50px;color:var(--accent-dim);transition:all .3s}
+    .email-skills span:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+
+    /* Gallery Grid */
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .gallery-item{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .4s;text-decoration:none;display:block}
+    .gallery-item::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s;z-index:2}
+    .gallery-item:hover{border-color:rgba(167,139,250,.2);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+    .gallery-item:hover::before{transform:scaleX(1)}
+    .gallery-item:hover .thumb-overlay{opacity:1}
+
+    /* Thumbnail */
+    .thumb-wrap{position:relative;height:320px;overflow:hidden;background:#fff}
+    .thumb-wrap iframe{width:200%;height:200%;transform:scale(.5);transform-origin:top left;border:none;pointer-events:none}
+    .thumb-overlay{position:absolute;inset:0;background:rgba(9,9,11,.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+    .thumb-overlay span{font-family:var(--font-mono);font-size:.82rem;color:#fff;background:var(--accent);padding:.6rem 1.4rem;border-radius:6px;font-weight:600}
+
+    /* Card Info */
+    .gallery-info{padding:1.2rem 1.4rem}
+    .gallery-num{font-family:var(--font-mono);font-size:.65rem;color:var(--accent-dim);margin-bottom:.3rem}
+    .gallery-info h3{font-size:1.05rem;color:var(--text-bright);margin-bottom:.3rem;font-weight:600}
+    .gallery-info p{font-size:.8rem;color:var(--text-dim);line-height:1.5}
+    .gallery-type{font-family:var(--font-mono);font-size:.62rem;color:var(--accent);background:rgba(167,139,250,.08);padding:.2rem .5rem;border-radius:3px;display:inline-block;margin-top:.5rem}
+
+    /* Process */
+    .process{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2.5rem}
+    .proc{text-align:center;padding:1.5rem 1rem}
+    .proc-num{font-family:var(--font-mono);font-size:1.8rem;font-weight:700;color:var(--accent);margin-bottom:.5rem}
+    .proc h3{font-size:.95rem;color:var(--text-bright);margin-bottom:.3rem}
+    .proc p{font-size:.8rem;color:var(--text-dim);line-height:1.5}
+
+    footer{text-align:center;padding:2rem 8vw;font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim);border-top:1px solid var(--border)}
+
+    @media(max-width:900px){
+      .gallery-grid{grid-template-columns:1fr 1fr}
+      .process{grid-template-columns:1fr 1fr}
+      nav{padding:1rem 1.5rem}
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(9,9,11,.96);padding:1.5rem 2rem;gap:1.2rem;border-bottom:1px solid var(--border)}
+      .nav-links.open{display:flex}
+      .hamburger{display:flex}
+    }
+    @media(max-width:600px){
+      .gallery-grid{grid-template-columns:1fr}
+      .process{grid-template-columns:1fr}
+      section{padding:3rem 6vw}
+      .page-hero{padding:8rem 6vw 3rem}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">OH.</a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fullstack.html">Fullstack</a></li>
+      <li><a href="automation.html">Automation</a></li>
+      <li><a href="email-design.html" class="active">Email Design</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span>Email Design</div>
+    <h1><span class="accent">Email</span> Designer</h1>
+    <p>Pixel-perfect HTML email templates for product launches, e-commerce, onboarding, and marketing campaigns. Responsive, dark-mode ready, and built for maximum engagement.</p>
+    <div class="email-skills">
+      <span>HTML Email</span><span>Inline CSS</span><span>Responsive Design</span><span>Dark Mode</span>
+      <span>Product Launch</span><span>E-Commerce</span><span>Onboarding</span><span>Newsletter</span>
+      <span>Welcome Emails</span><span>Promotional</span>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-label">// portfolio</div>
+    <h2 class="section-title">Email Design Gallery</h2>
+    <p class="section-desc">A collection of email designs I've built — each one hand-coded, responsive, and production-ready. Click any card to view the full design.</p>
+
+    <div class="gallery-grid">
+      <a href="emails/email-01-superlist.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-01-superlist.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">01</div>
+          <h3>Superlist — Make</h3>
+          <p>AI feature launch announcement with vibrant abstract hero and product showcase.</p>
+          <span class="gallery-type">Product Launch</span>
+        </div>
+      </a>
+
+      <a href="emails/email-02-funfit.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-02-funfit.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">02</div>
+          <h3>FunFit — Welcome</h3>
+          <p>Elegant welcome email with envelope illustration, discount code, and rewards system.</p>
+          <span class="gallery-type">Welcome / Onboarding</span>
+        </div>
+      </a>
+
+      <a href="emails/email-03-1000-email-ideas.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-03-1000-email-ideas.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">03</div>
+          <h3>1000 Email Ideas</h3>
+          <p>Newsletter welcome with content cards, green accents, and handwritten signature.</p>
+          <span class="gallery-type">Newsletter</span>
+        </div>
+      </a>
+
+      <a href="emails/email-04-hangin.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-04-hangin.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">04</div>
+          <h3>Hangin — Holiday Sale</h3>
+          <p>Fashion brand promo with countdown timer, hero photography, and coupon code.</p>
+          <span class="gallery-type">Promotional / Sale</span>
+        </div>
+      </a>
+
+      <a href="emails/email-05-pitch.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-05-pitch.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">05</div>
+          <h3>Pitch — Team Setup</h3>
+          <p>SaaS onboarding email with purple gradient hero, 3-step feature walkthrough.</p>
+          <span class="gallery-type">SaaS Onboarding</span>
+        </div>
+      </a>
+
+      <a href="emails/email-06-1000-email-ideas.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-06-1000-email-ideas.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">06</div>
+          <h3>1000 Email Ideas (Alt)</h3>
+          <p>Alternative layout of the newsletter welcome with content archive cards.</p>
+          <span class="gallery-type">Newsletter</span>
+        </div>
+      </a>
+
+      <a href="emails/email-07-zieme.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-07-zieme.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">07</div>
+          <h3>Zieme — 40% Off</h3>
+          <p>Bold fashion promo with oversized typography, coupon code, and collection grid.</p>
+          <span class="gallery-type">E-Commerce Promo</span>
+        </div>
+      </a>
+
+      <a href="emails/email-08-calla.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-08-calla.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">08</div>
+          <h3>Calla — New Arrivals</h3>
+          <p>Elegant shoe brand email with serif typography, product shots, and testimonial.</p>
+          <span class="gallery-type">New Product Launch</span>
+        </div>
+      </a>
+
+      <a href="emails/email-09-vivo.html" target="_blank" class="gallery-item">
+        <div class="thumb-wrap">
+          <iframe src="emails/email-09-vivo.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-overlay"><span>View Design →</span></div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-num">09</div>
+          <h3>Vivo — Free Shipping</h3>
+          <p>Warm announcement email with orange hero, benefit icons, and two-column footer.</p>
+          <span class="gallery-type">Announcement</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">// my approach</div>
+    <h2 class="section-title">How I Design Emails</h2>
+    <div class="process">
+      <div class="proc"><div class="proc-num">01</div><h3>Study</h3><p>Analyze the brand, audience, and campaign goals to inform design direction.</p></div>
+      <div class="proc"><div class="proc-num">02</div><h3>Design</h3><p>Layout composition, typography, color, and visual hierarchy — mobile-first.</p></div>
+      <div class="proc"><div class="proc-num">03</div><h3>Code</h3><p>Hand-coded HTML with inline CSS, tested across email clients and dark mode.</p></div>
+      <div class="proc"><div class="proc-num">04</div><h3>Deliver</h3><p>Production-ready templates optimized for deliverability and engagement.</p></div>
+    </div>
+  </section>
+
+  <footer>&copy; 2026 Olaitan Hammed. Built with purpose.</footer>
+
+  <script>
+    const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.style.opacity='1';en.target.style.transform='translateY(0)'}})},{threshold:.1});
+    document.querySelectorAll('section,.page-hero').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(30px)';s.style.transition='opacity .7s,transform .7s';obs.observe(s)});
+  </script>
+</body>
+</html>
