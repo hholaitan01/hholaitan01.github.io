@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automating a 6-Hour Manual Process with n8n — Olaitan Hammed</title>
+    <meta name="description"
+        content="A client spent 6 hours/week on manual CRM work. I built one n8n workflow that replaced it all. Here's the full case study.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b;
+            --bg-card: #111113;
+            --border: rgba(255, 255, 255, .06);
+            --green: #3dffc0;
+            --orange: #ff6b4a;
+            --purple: #a78bfa;
+            --text: #a1a1aa;
+            --text-bright: #fafafa;
+            --text-dim: #52525b;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Outfit', sans-serif
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(9, 9, 11, .88);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav-logo {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--green);
+            text-decoration: none;
+            letter-spacing: .08em
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center
+        }
+
+        .nav-links a {
+            font-family: var(--font-mono);
+            font-size: .75rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: color .3s
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--green)
+        }
+
+        .nav-cta {
+            font-family: var(--font-mono);
+            font-size: .72rem;
+            color: var(--bg) !important;
+            background: var(--green);
+            padding: .5rem 1.2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            transition: all .3s
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text)
+        }
+
+        .article-hero {
+            padding: 10rem 8vw 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 107, 74, .03), transparent 70%);
+            pointer-events: none
+        }
+
+        .breadcrumb {
+            font-family: var(--font-mono);
+            font-size: .72rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            letter-spacing: .1em
+        }
+
+        .breadcrumb a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color .3s
+        }
+
+        .breadcrumb a:hover {
+            color: var(--orange)
+        }
+
+        .breadcrumb .sep {
+            margin: 0 .5rem
+        }
+
+        .article-category {
+            font-family: var(--font-mono);
+            font-size: .65rem;
+            color: var(--bg);
+            background: var(--orange);
+            padding: .25rem .7rem;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 1rem
+        }
+
+        .article-hero h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: var(--text-bright);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -.02em
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            font-family: var(--font-mono);
+            font-size: .72rem;
+            color: var(--text-dim)
+        }
+
+        .article-meta .dot {
+            width: 3px;
+            height: 3px;
+            background: var(--text-dim);
+            border-radius: 50%
+        }
+
+        .article-content {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 2rem 8vw 4rem
+        }
+
+        .article-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin: 2.5rem 0 1rem
+        }
+
+        .article-content h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin: 2rem 0 .8rem
+        }
+
+        .article-content p {
+            font-size: 1.02rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.8
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 0 0 1.2rem 1.5rem
+        }
+
+        .article-content li {
+            margin-bottom: .5rem;
+            line-height: 1.7
+        }
+
+        .article-content strong {
+            color: var(--text-bright)
+        }
+
+        .article-content code {
+            font-family: var(--font-mono);
+            font-size: .88rem;
+            background: rgba(255, 107, 74, .06);
+            color: var(--orange);
+            padding: .15rem .4rem;
+            border-radius: 4px
+        }
+
+        .article-content blockquote {
+            border-left: 3px solid var(--orange);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            background: rgba(255, 107, 74, .03);
+            border-radius: 0 8px 8px 0
+        }
+
+        .article-content blockquote p {
+            margin-bottom: 0;
+            color: var(--text-bright);
+            font-style: italic
+        }
+
+        .article-content a {
+            color: var(--orange);
+            text-decoration: none
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0
+        }
+
+        .ba-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem
+        }
+
+        .ba-card h4 {
+            font-family: var(--font-mono);
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            margin-bottom: .8rem
+        }
+
+        .ba-card.before h4 {
+            color: #ff5f57
+        }
+
+        .ba-card.after h4 {
+            color: var(--green)
+        }
+
+        .ba-card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+
+        .ba-card li {
+            font-size: .88rem;
+            margin-bottom: .5rem;
+            padding-left: 1.2rem;
+            position: relative
+        }
+
+        .ba-card.before li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #ff5f57;
+            font-weight: 700
+        }
+
+        .ba-card.after li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-weight: 700
+        }
+
+        .article-cta {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem
+        }
+
+        .article-cta p {
+            font-size: 1rem;
+            margin-bottom: 1rem
+        }
+
+        .article-cta a {
+            font-family: var(--font-mono);
+            font-size: .82rem;
+            color: var(--bg);
+            background: var(--orange);
+            padding: .75rem 1.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all .3s
+        }
+
+        .article-cta a:hover {
+            background: #ff8a70;
+            box-shadow: 0 0 30px rgba(255, 107, 74, .25)
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-family: var(--font-mono);
+            font-size: .78rem;
+            color: var(--orange);
+            text-decoration: none;
+            transition: gap .3s;
+            margin-top: 2rem
+        }
+
+        .back-link:hover {
+            gap: .8rem
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 8vw;
+            font-family: var(--font-mono);
+            font-size: .7rem;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border)
+        }
+
+        @media(max-width:768px) {
+            nav {
+                padding: 1rem 1.5rem
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(9, 9, 11, .96);
+                padding: 1.5rem 2rem;
+                gap: 1.2rem;
+                border-bottom: 1px solid var(--border)
+            }
+
+            .nav-links.open {
+                display: flex
+            }
+
+            .hamburger {
+                display: flex
+            }
+
+            .nav-cta {
+                display: none
+            }
+
+            .article-hero {
+                padding: 8rem 6vw 2rem
+            }
+
+            .article-content {
+                padding: 2rem 6vw 3rem
+            }
+
+            .before-after {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">OH.</a>
+        <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')"
+            aria-label="Menu"><span></span><span></span><span></span></button>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="fullstack.html">Fullstack</a></li>
+            <li><a href="automation.html">Automation</a></li>
+            <li><a href="email-design.html">Email Design</a></li>
+            <li><a href="blog.html" class="active">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="mailto:hammedolaitan5@gmail.com" class="nav-cta">Hire Me</a></li>
+        </ul>
+    </nav>
+
+    <div class="article-hero">
+        <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><a href="blog.html">Blog</a><span
+                class="sep">/</span>n8n Case Study</div>
+        <span class="article-category">Automation</span>
+        <h1>Automating a 6-Hour Manual Process with n8n</h1>
+        <div class="article-meta">
+            <span>February 2026</span><span class="dot"></span><span>6 min read</span><span
+                class="dot"></span><span>Olaitan Hammed</span>
+        </div>
+    </div>
+
+    <div class="article-content">
+        <p>A client came to me with a problem that's more common than most businesses realize: their sales team was
+            spending <strong>6 hours every week</strong> on manual work that should have been automated years ago. CRM
+            updates, lead scoring, follow-up emails — all done by hand, copy-pasting between tabs, hoping nothing fell
+            through the cracks.</p>
+        <p>I built a single n8n workflow that replaced the entire process. Here's how.</p>
+
+        <h2>The Problem</h2>
+        <p>The client's CRM (HubSpot) was the system of record, but it wasn't connected to anything else. New leads came
+            in from Typeform, LinkedIn messages, email inquiries, and Calendly. Each required manual entry into HubSpot,
+            along with tagging, scoring, and triggering the right follow-up.</p>
+
+        <div class="before-after">
+            <div class="ba-card before">
+                <h4>Before — Manual Process</h4>
+                <ul>
+                    <li>Check Typeform for new submissions</li>
+                    <li>Copy lead data into HubSpot manually</li>
+                    <li>Check Calendly for new bookings</li>
+                    <li>Cross-reference with existing contacts</li>
+                    <li>Score each lead (1–10) based on criteria</li>
+                    <li>Send follow-up email from a template</li>
+                    <li>Update Slack with daily summary</li>
+                    <li>Log everything in Google Sheets</li>
+                </ul>
+            </div>
+            <div class="ba-card after">
+                <h4>After — Automated Pipeline</h4>
+                <ul>
+                    <li>Webhook captures all sources instantly</li>
+                    <li>Auto-creates/updates HubSpot contact</li>
+                    <li>Deduplicates against existing database</li>
+                    <li>AI scores lead based on 8 criteria</li>
+                    <li>Triggers personalized email sequence</li>
+                    <li>Posts real-time alerts to Slack</li>
+                    <li>Backs up everything to Sheets</li>
+                    <li>Daily digest summary at 9 AM</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>The Architecture</h2>
+        <p>Rather than building four separate workflows for four lead sources, I designed a <strong>unified
+                pipeline</strong> with a normalizer at the front. Every lead gets transformed into a standard format
+            before hitting the core processing logic.</p>
+        <ol>
+            <li><strong>Ingest</strong> — Webhooks capture data from Typeform, Calendly, LinkedIn, and email</li>
+            <li><strong>Normalize</strong> — Transform all sources into a unified lead schema</li>
+            <li><strong>Deduplicate</strong> — Check HubSpot for existing contacts by email</li>
+            <li><strong>Enrich</strong> — Pull company info and social profiles via Clearbit</li>
+            <li><strong>Score</strong> — AI-powered lead scoring based on 8 weighted criteria</li>
+            <li><strong>Route</strong> — High-score leads get immediate Slack alert; others enter email sequence</li>
+            <li><strong>Act</strong> — Create/update HubSpot contact, trigger email, log to Sheets</li>
+        </ol>
+
+        <h2>Key Engineering Decisions</h2>
+        <p>The final workflow had <strong>23 nodes</strong> plus an error-handling sub-workflow with 8 nodes:</p>
+        <ul>
+            <li><strong>Error handling</strong> — If HubSpot's API is down, leads queue in a temp Sheet until retry</li>
+            <li><strong>Rate limiting</strong> — Built-in delays to respect API limits on HubSpot and Clearbit</li>
+            <li><strong>Idempotency</strong> — Running the same lead twice doesn't create duplicate contacts</li>
+            <li><strong>Monitoring</strong> — Failed executions trigger a Slack alert to #ops</li>
+        </ul>
+
+        <h2>The Results</h2>
+        <blockquote>
+            <p>"We went from 6 hours per week of manual work to zero. Leads hit HubSpot faster than we can refresh the
+                page."</p>
+        </blockquote>
+        <ul>
+            <li><strong>6 hours/week → 0</strong> of manual CRM work</li>
+            <li><strong>12 seconds</strong> average lead processing time</li>
+            <li><strong>Zero duplicates</strong> in the first 30 days</li>
+            <li><strong>94% faster</strong> lead response time (4 hours → 15 minutes)</li>
+        </ul>
+
+        <h2>Takeaway</h2>
+        <p>The most impactful automations eliminate <strong>boring, repetitive, error-prone work</strong> that happens
+            every day. If you find yourself saying "we've always done it this way," that's where automation delivers the
+            highest ROI.</p>
+        <p>Browse my open-source collection of <strong>47+ templates</strong> on <a
+                href="https://github.com/hholaitan01/n8n_compilation" target="_blank">GitHub</a>.</p>
+
+        <a href="blog.html" class="back-link">← Back to Blog</a>
+    </div>
+
+    <div class="article-cta">
+        <p>Need a workflow built for your business?</p>
+        <a href="contact.html">Start Automating →</a>
+    </div>
+
+    <footer>
+        <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
+            <a href="https://github.com/hholaitan01" target="_blank"
+                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+                onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">GitHub</a>
+            <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank"
+                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+                onmouseover="this.style.color='var(--green)'"
+                onmouseout="this.style.color='var(--text-dim)'">LinkedIn</a>
+            <a href="https://wa.me/2349039616768" target="_blank"
+                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+                onmouseover="this.style.color='var(--green)'"
+                onmouseout="this.style.color='var(--text-dim)'">WhatsApp</a>
+            <a href="mailto:hammedolaitan5@gmail.com"
+                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+                onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">Email</a>
+        </div>
+        &copy; 2026 Olaitan Hammed. Built with purpose.
+    </footer>
+    <script>
+        const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'translateY(0)' } }) }, { threshold: .1 });
+        document.querySelectorAll('.article-content,.article-cta').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(30px)'; s.style.transition = 'opacity .7s,transform .7s'; obs.observe(s) });
+    </script>
+</body>
+
+</html>

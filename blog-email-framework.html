@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Framework Behind 20+ High-Converting Email Templates — Olaitan Hammed</title>
+    <meta name="description"
+        content="Every email I build follows the same framework: hero-first, visual-first, CTA-repeat. Here's the system behind 20+ production templates.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b;
+            --bg-card: #111113;
+            --border: rgba(255, 255, 255, .06);
+            --green: #3dffc0;
+            --orange: #ff6b4a;
+            --purple: #a78bfa;
+            --text: #a1a1aa;
+            --text-bright: #fafafa;
+            --text-dim: #52525b;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Outfit', sans-serif
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(9, 9, 11, .88);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav-logo {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--green);
+            text-decoration: none;
+            letter-spacing: .08em
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center
+        }
+
+        .nav-links a {
+            font-family: var(--font-mono);
+            font-size: .75rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: color .3s
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--green)
+        }
+
+        .nav-cta {
+            font-family: var(--font-mono);
+            font-size: .72rem;
+            color: var(--bg) !important;
+            background: var(--green);
+            padding: .5rem 1.2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            transition: all .3s
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text)
+        }
+
+        .article-hero {
+            padding: 10rem 8vw 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(167, 139, 250, .03), transparent 70%);
+            pointer-events: none
+        }
+
+        .breadcrumb {
+            font-family: var(--font-mono);
+            font-size: .72rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            letter-spacing: .1em
+        }
+
+        .breadcrumb a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color .3s
+        }
+
+        .breadcrumb a:hover {
+            color: var(--purple)
+        }
+
+        .breadcrumb .sep {
+            margin: 0 .5rem
+        }
+
+        .article-category {
+            font-family: var(--font-mono);
+            font-size: .65rem;
+            color: var(--bg);
+            background: var(--purple);
+            padding: .25rem .7rem;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 1rem
+        }
+
+        .article-hero h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: var(--text-bright);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -.02em
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            font-family: var(--font-mono);
+            font-size: .72rem;
+            color: var(--text-dim)
+        }
+
+        .article-meta .dot {
+            width: 3px;
+            height: 3px;
+            background: var(--text-dim);
+            border-radius: 50%
+        }
+
+        .article-content {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 2rem 8vw 4rem
+        }
+
+        .article-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin: 2.5rem 0 1rem
+        }
+
+        .article-content h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin: 2rem 0 .8rem
+        }
+
+        .article-content p {
+            font-size: 1.02rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.8
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 0 0 1.2rem 1.5rem
+        }
+
+        .article-content li {
+            margin-bottom: .5rem;
+            line-height: 1.7
+        }
+
+        .article-content strong {
+            color: var(--text-bright)
+        }
+
+        .article-content code {
+            font-family: var(--font-mono);
+            font-size: .88rem;
+            background: rgba(167, 139, 250, .06);
+            color: var(--purple);
+            padding: .15rem .4rem;
+            border-radius: 4px
+        }
+
+        .article-content blockquote {
+            border-left: 3px solid var(--purple);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            background: rgba(167, 139, 250, .03);
+            border-radius: 0 8px 8px 0
+        }
+
+        .article-content blockquote p {
+            margin-bottom: 0;
+            color: var(--text-bright);
+            font-style: italic
+        }
+
+        .article-content a {
+            color: var(--purple);
+            text-decoration: none
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0
+        }
+
+        .fw-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all .3s
+        }
+
+        .fw-card:hover {
+            border-color: rgba(167, 139, 250, .15);
+            transform: translateY(-3px)
+        }
+
+        .fw-num {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--purple);
+            margin-bottom: .4rem
+        }
+
+        .fw-card h4 {
+            font-size: .95rem;
+            color: var(--text-bright);
+            margin-bottom: .3rem
+        }
+
+        .fw-card p {
+            font-size: .78rem;
+            color: var(--text-dim);
+            line-height: 1.4
+        }
+
+        .article-cta {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem
+        }
+
+        .article-cta p {
+            font-size: 1rem;
+            margin-bottom: 1rem
+        }
+
+        .article-cta a {
+            font-family: var(--font-mono);
+            font-size: .82rem;
+            color: var(--bg);
+            background: var(--purple);
+            padding: .75rem 1.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all .3s
+        }
+
+        .article-cta a:hover {
+            background: #bfa4ff;
+            box-shadow: 0 0 30px rgba(167, 139, 250, .25)
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-family: var(--font-mono);
+            font-size: .78rem;
+            color: var(--purple);
+            text-decoration: none;
+            transition: gap .3s;
+            margin-top: 2rem
+        }
+
+        .back-link:hover {
+            gap: .8rem
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 8vw;
+            font-family: var(--font-mono);
+            font-size: .7rem;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border)
+        }
+
+        @media(max-width:768px) {
+            nav {
+                padding: 1rem 1.5rem
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(9, 9, 11, .96);
+                padding: 1.5rem 2rem;
+                gap: 1.2rem;
+                border-bottom: 1px solid var(--border)
+            }
+
+            .nav-links.open {
+                display: flex
+            }
+
+            .hamburger {
+                display: flex
+            }
+
+            .nav-cta {
+                display: none
+            }
+
+            .article-hero {
+                padding: 8rem 6vw 2rem
+            }
+
+            .article-content {
+                padding: 2rem 6vw 3rem
+            }
+
+            .framework-grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">OH.</a>
+        <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')"
+            aria-label="Menu"><span></span><span></span><span></span></button>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="fullstack.html">Fullstack</a></li>
+            <li><a href="automation.html">Automation</a></li>
+            <li><a href="email-design.html">Email Design</a></li>
+            <li><a href="blog.html" class="active">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="mailto:hammedolaitan5@gmail.com" class="nav-cta">Hire Me</a></li>
+        </ul>
+    </nav>
+
+    <div class="article-hero">
+        <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><a href="blog.html">Blog</a><span
+                class="sep">/</span>Email Framework</div>
+        <span class="article-category">Email Design</span>
+        <h1>The Framework Behind 20+ High-Converting Email Templates</h1>
+        <div class="article-meta">
+            <span>February 2026</span><span class="dot"></span><span>5 min read</span><span
+                class="dot"></span><span>Olaitan Hammed</span>
+        </div>
+    </div>
+
+    <div class="article-content">
+        <p>After designing and coding 20+ production email templates for e-commerce and SaaS brands, I've settled on a
+            framework that consistently drives clicks and revenue. It's not a template — it's a <strong>structural
+                system</strong> that works across industries, audiences, and campaign types.</p>
+        <p>Here's the system, open-sourced from my design process.</p>
+
+        <h2>The Three Pillars</h2>
+
+        <div class="framework-grid">
+            <div class="fw-card">
+                <div class="fw-num">01</div>
+                <h4>Hero-First</h4>
+                <p>Lead with the strongest visual and message. The first scroll is everything.</p>
+            </div>
+            <div class="fw-card">
+                <div class="fw-num">02</div>
+                <h4>Visual-First</h4>
+                <p>Images sell. Typography supports. White space breathes. Ratio: 60/40 visual to text.</p>
+            </div>
+            <div class="fw-card">
+                <div class="fw-num">03</div>
+                <h4>CTA-Repeat</h4>
+                <p>Place the primary CTA at least 3 times. Top, middle, bottom. Every scroll depth gets an exit.</p>
+            </div>
+        </div>
+
+        <h2>Pillar 1: Hero-First</h2>
+        <p>The hero section is the most critical piece of any email. <strong>80% of recipients decide whether to keep
+                scrolling based on the first 300 pixels.</strong> My hero sections always include:</p>
+        <ul>
+            <li><strong>A full-width visual</strong> — product photography, lifestyle shot, or branded illustration</li>
+            <li><strong>One headline</strong> — 6 words or fewer, benefit-driven, not feature-driven</li>
+            <li><strong>One CTA button</strong> — high contrast, action-oriented ("Shop Now", "Get Started", "Claim Your
+                Spot")</li>
+        </ul>
+        <p>No navigation bars, no social icons, no secondary links. The hero has one job: get the click or get the
+            scroll.</p>
+
+        <h2>Pillar 2: Visual-First</h2>
+        <p>Email isn't a blog post. The moment an email feels like "reading," you've lost half your audience. My
+            templates maintain a <strong>60/40 ratio of visual content to text</strong>.</p>
+        <p>This means:</p>
+        <ul>
+            <li><strong>Product grids</strong> instead of product descriptions</li>
+            <li><strong>Infographic-style benefit blocks</strong> instead of bullet lists</li>
+            <li><strong>Icon + short label</strong> instead of paragraphs</li>
+            <li><strong>Lifestyle imagery</strong> that shows the product in context</li>
+        </ul>
+        <p>Every visual element earns its space. If an image doesn't move the reader toward clicking, it's removed.</p>
+
+        <h2>Pillar 3: CTA-Repeat</h2>
+        <p>One CTA button is a mistake. People scroll at different speeds and stop at different points. My rule:
+            <strong>place the primary CTA at minimum 3 times</strong> throughout the email.</p>
+        <ol>
+            <li><strong>Hero CTA</strong> — Catches the instant-action readers (top 20%)</li>
+            <li><strong>Mid-content CTA</strong> — After the main value proposition or product showcase</li>
+            <li><strong>Footer CTA</strong> — For readers who scrolled the entire email and are now convinced</li>
+        </ol>
+
+        <blockquote>
+            <p>The CTA button text changes at each position. Hero says "Shop Now." Middle says "See the Collection."
+                Footer says "Don't Miss Out." Same destination, different micro-motivation.</p>
+        </blockquote>
+
+        <h2>The Technical Layer</h2>
+        <p>A beautiful design that breaks in Outlook is worthless. Every template I build follows these technical rules:
+        </p>
+        <ul>
+            <li><strong>Table-based layout</strong> — Because email clients aren't browsers. Flexbox and grid don't
+                work.</li>
+            <li><strong>Inline CSS only</strong> — Most email clients strip <code>&lt;style&gt;</code> blocks. Every
+                style is inline.</li>
+            <li><strong>600px max width</strong> — The universal safe width across all email clients</li>
+            <li><strong>Responsive breakpoints</strong> — Media queries for clients that support them (Apple Mail, iOS,
+                Android)</li>
+            <li><strong>Dark mode support</strong> — Color swaps and image alternatives for dark mode rendering</li>
+            <li><strong>Alt text on every image</strong> — For clients that block images by default (Outlook, corporate)
+            </li>
+            <li><strong>Fallback fonts</strong> — Web fonts with system font fallbacks (Arial, Helvetica, sans-serif)
+            </li>
+        </ul>
+
+        <h2>Email Types & How the Framework Adapts</h2>
+        <h3>Product Launch</h3>
+        <p>Hero dominates (50% of email height). Single product focus. Urgency language ("Just Dropped", "Limited Run").
+            4+ CTAs.</p>
+
+        <h3>Promotional / Sale</h3>
+        <p>Discount value front and center. Countdown timer if possible. Product grid with prices. Coupon code in a
+            styled box that's easy to copy.</p>
+
+        <h3>Welcome / Onboarding</h3>
+        <p>Warm tone. Brand story + values. Discount incentive for first purchase. 3-step "what to do next" section.
+            Social proof (reviews, user count).</p>
+
+        <h3>Retention / Re-engagement</h3>
+        <p>"We miss you" angle. Personalized product recommendations. Exclusive offer. Simple, clean — no information
+            overload.</p>
+
+        <h2>View the Portfolio</h2>
+        <p>All 20+ templates are viewable in my <a href="email-design.html">Email Design Gallery</a> — live HTML
+            previews you can open and inspect. Each one follows this exact framework, adapted to the brand and campaign
+            type.</p>
+
+        <a href="blog.html" class="back-link">← Back to Blog</a>
+    </div>
+
+    <div class="article-cta">
+        <p>Need email templates designed for your brand?</p>
+        <a href="contact.html">Get a Template Designed →</a>
+    </div>
+
+    <footer>
+        <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
+            <a href="https://github.com/hholaitan01" target="_blank"
+                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+                onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">GitHub</a>
+            <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank"
+                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+                onmouseover="this.style.color='var(--green)'"
+                onmouseout="this.style.color='var(--text-dim)'">LinkedIn</a>
+            <a href="https://wa.me/2349039616768" target="_blank"
+                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+                onmouseover="this.style.color='var(--green)'"
+                onmouseout="this.style.color='var(--text-dim)'">WhatsApp</a>
+            <a href="mailto:hammedolaitan5@gmail.com"
+                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+                onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">Email</a>
+        </div>
+        &copy; 2026 Olaitan Hammed. Built with purpose.
+    </footer>
+    <script>
+        const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'translateY(0)' } }) }, { threshold: .1 });
+        document.querySelectorAll('.article-content,.article-cta').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(30px)'; s.style.transition = 'opacity .7s,transform .7s'; obs.observe(s) });
+    </script>
+</body>
+
+</html>

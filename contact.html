@@ -1,76 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — Olaitan Hammed</title>
+  <meta name="description"
+    content="Hire Olaitan Hammed for fullstack web development, n8n automation workflows, or HTML email design. Available for freelance projects worldwide. Respond within 24 hours.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <style>
-    :root{--bg:#09090b;--bg-card:#111113;--border:rgba(255,255,255,.06);--green:#3dffc0;--green-dim:#1a7a56;--green-glow:rgba(61,255,192,.08);--text:#a1a1aa;--text-bright:#fafafa;--text-dim:#52525b;--font-mono:'JetBrains Mono',monospace;--font-sans:'Outfit',sans-serif}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(9,9,11,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-    .nav-logo{font-family:var(--font-mono);font-weight:700;font-size:1.1rem;color:var(--green);text-decoration:none;letter-spacing:.08em}
-    .nav-links{display:flex;gap:2rem;list-style:none}
-    .nav-links a{font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .3s}
-    .nav-links a:hover{color:var(--green)}.nav-links a.active{color:var(--green)}
-    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-    .hamburger span{display:block;width:22px;height:2px;background:var(--text)}
-    .contact-page{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8rem 2rem 4rem;text-align:center;position:relative}
-    .contact-page::before{content:'';position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(61,255,192,.03),transparent 70%);pointer-events:none}
-    .breadcrumb{font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);margin-bottom:2rem;letter-spacing:.1em}
-    .breadcrumb a{color:var(--text-dim);text-decoration:none;transition:color .3s}
-    .breadcrumb a:hover{color:var(--green)}
-    .breadcrumb .sep{margin:0 .5rem}
-    .contact-page h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;color:var(--text-bright);line-height:1.1;margin-bottom:.8rem;letter-spacing:-.02em}
-    .contact-page h1 .accent{color:var(--green)}
-    .contact-page>p{font-size:1.05rem;color:var(--text);max-width:480px;margin-bottom:3rem}
-    .contact-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;max-width:700px}
-    .contact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:2rem 2.5rem;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:.8rem;min-width:200px;flex:1;transition:all .4s;position:relative;overflow:hidden}
-    .contact-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .4s}
-    .contact-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
-    .contact-card:hover::before{transform:scaleX(1)}
-    .contact-card--email::before{background:#ea4335}
-    .contact-card--email:hover{border-color:rgba(234,67,53,.2)}
-    .contact-card--linkedin::before{background:#0a66c2}
-    .contact-card--linkedin:hover{border-color:rgba(10,102,194,.2)}
-    .contact-card--whatsapp::before{background:#25d366}
-    .contact-card--whatsapp:hover{border-color:rgba(37,211,102,.2)}
-    .contact-card--github::before{background:#fff}
-    .contact-card--github:hover{border-color:rgba(255,255,255,.15)}
-    .card-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center}
-    .card-icon svg{width:32px;height:32px}
-    .contact-card h3{font-size:1rem;color:var(--text-bright);font-weight:600}
-    .contact-card p{font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);text-align:center;line-height:1.5}
-    .card-arrow{font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);transition:color .3s,transform .3s}
-    .contact-card:hover .card-arrow{transform:translateX(4px)}
-    .contact-card--email:hover .card-arrow{color:#ea4335}
-    .contact-card--linkedin:hover .card-arrow{color:#0a66c2}
-    .contact-card--whatsapp:hover .card-arrow{color:#25d366}
-    .contact-card--github:hover .card-arrow{color:#fff}
-    .response-note{margin-top:3rem;font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);letter-spacing:.05em}
-    footer{text-align:center;padding:2rem 8vw;font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim);border-top:1px solid var(--border)}
-    @media(max-width:768px){
-      nav{padding:1rem 1.5rem}
-      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(9,9,11,.96);padding:1.5rem 2rem;gap:1.2rem;border-bottom:1px solid var(--border)}
-      .nav-links.open{display:flex}
-      .hamburger{display:flex}
-      .contact-grid{flex-direction:column;padding:0 1rem}
+    :root {
+      --bg: #09090b;
+      --bg-card: #111113;
+      --border: rgba(255, 255, 255, .06);
+      --green: #3dffc0;
+      --green-dim: #1a7a56;
+      --green-glow: rgba(61, 255, 192, .08);
+      --text: #a1a1aa;
+      --text-bright: #fafafa;
+      --text-dim: #52525b;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Outfit', sans-serif
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(9, 9, 11, .88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border)
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: .08em
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: color .3s
+    }
+
+    .nav-links a:hover {
+      color: var(--green)
+    }
+
+    .nav-links a.active {
+      color: var(--green)
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text)
+    }
+
+    .contact-page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+      position: relative
+    }
+
+    .contact-page::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(61, 255, 192, .03), transparent 70%);
+      pointer-events: none
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      letter-spacing: .1em
+    }
+
+    .breadcrumb a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color .3s
+    }
+
+    .breadcrumb a:hover {
+      color: var(--green)
+    }
+
+    .breadcrumb .sep {
+      margin: 0 .5rem
+    }
+
+    .contact-page h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.1;
+      margin-bottom: .8rem;
+      letter-spacing: -.02em
+    }
+
+    .contact-page h1 .accent {
+      color: var(--green)
+    }
+
+    .contact-page>p {
+      font-size: 1.05rem;
+      color: var(--text);
+      max-width: 480px;
+      margin-bottom: 3rem
+    }
+
+    .contact-grid {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 700px
+    }
+
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem 2.5rem;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .8rem;
+      min-width: 200px;
+      flex: 1;
+      transition: all .4s;
+      position: relative;
+      overflow: hidden
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s
+    }
+
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, .4)
+    }
+
+    .contact-card:hover::before {
+      transform: scaleX(1)
+    }
+
+    .contact-card--email::before {
+      background: #ea4335
+    }
+
+    .contact-card--email:hover {
+      border-color: rgba(234, 67, 53, .2)
+    }
+
+    .contact-card--linkedin::before {
+      background: #0a66c2
+    }
+
+    .contact-card--linkedin:hover {
+      border-color: rgba(10, 102, 194, .2)
+    }
+
+    .contact-card--whatsapp::before {
+      background: #25d366
+    }
+
+    .contact-card--whatsapp:hover {
+      border-color: rgba(37, 211, 102, .2)
+    }
+
+    .contact-card--github::before {
+      background: #fff
+    }
+
+    .contact-card--github:hover {
+      border-color: rgba(255, 255, 255, .15)
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .card-icon svg {
+      width: 32px;
+      height: 32px
+    }
+
+    .contact-card h3 {
+      font-size: 1rem;
+      color: var(--text-bright);
+      font-weight: 600
+    }
+
+    .contact-card p {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-dim);
+      text-align: center;
+      line-height: 1.5
+    }
+
+    .card-arrow {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--text-dim);
+      transition: color .3s, transform .3s
+    }
+
+    .contact-card:hover .card-arrow {
+      transform: translateX(4px)
+    }
+
+    .contact-card--email:hover .card-arrow {
+      color: #ea4335
+    }
+
+    .contact-card--linkedin:hover .card-arrow {
+      color: #0a66c2
+    }
+
+    .contact-card--whatsapp:hover .card-arrow {
+      color: #25d366
+    }
+
+    .contact-card--github:hover .card-arrow {
+      color: #fff
+    }
+
+    .response-note {
+      margin-top: 3rem;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-dim);
+      letter-spacing: .05em
+    }
+
+    /* Contact Form */
+    .contact-form-wrap {
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 3rem;
+      text-align: left
+    }
+
+    .contact-form-wrap h2 {
+      font-size: 1.3rem;
+      color: var(--text-bright);
+      margin-bottom: .3rem;
+      font-weight: 700
+    }
+
+    .contact-form-wrap>p {
+      font-size: .85rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem
+    }
+
+    .form-group label {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      color: var(--text-dim);
+      letter-spacing: .08em;
+      text-transform: uppercase
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: var(--font-sans);
+      font-size: .88rem;
+      padding: .75rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-bright);
+      outline: none;
+      transition: border-color .3s, box-shadow .3s;
+      -webkit-appearance: none;
+      appearance: none
+    }
+
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%2552525b' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(61, 255, 192, .08)
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-dim)
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+      line-height: 1.6
+    }
+
+    .form-submit {
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      color: var(--bg);
+      background: var(--green);
+      padding: .85rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .3s;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-top: .5rem
+    }
+
+    .form-submit:hover {
+      background: #5cffcf;
+      box-shadow: 0 0 30px rgba(61, 255, 192, .25);
+      transform: translateY(-2px)
+    }
+
+    .form-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: .5rem 0
+    }
+
+    .form-divider::before,
+    .form-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border)
+    }
+
+    .form-divider span {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      color: var(--text-dim);
+      letter-spacing: .1em;
+      text-transform: uppercase
+    }
+
+    @media(max-width:768px) {
+      .form-row {
+        grid-template-columns: 1fr
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 8vw;
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border)
+    }
+
+    @media(max-width:768px) {
+      nav {
+        padding: 1rem 1.5rem
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(9, 9, 11, .96);
+        padding: 1.5rem 2rem;
+        gap: 1.2rem;
+        border-bottom: 1px solid var(--border)
+      }
+
+      .nav-links.open {
+        display: flex
+      }
+
+      .hamburger {
+        display: flex
+      }
+
+      .contact-grid {
+        flex-direction: column;
+        padding: 0 1rem
+      }
     }
   </style>
 </head>
+
 <body>
   <nav>
     <a href="index.html" class="nav-logo">OH.</a>
-    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')"
+      aria-label="Menu"><span></span><span></span><span></span></button>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="fullstack.html">Fullstack</a></li>
       <li><a href="automation.html">Automation</a></li>
       <li><a href="email-design.html">Email Design</a></li>
+      <li><a href="blog.html">Blog</a></li>
       <li><a href="contact.html" class="active">Contact</a></li>
     </ul>
   </nav>
@@ -78,12 +520,66 @@
   <div class="contact-page">
     <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span>Contact</div>
     <h1>Let's <span class="accent">work</span> together.</h1>
-    <p>I'm open to freelance projects, collaborations, and interesting opportunities. Pick your preferred channel and let's talk.</p>
+    <p>I'm open to freelance projects, collaborations, and interesting opportunities. Pick your preferred channel and
+      let's talk.</p>
 
-    <div class="contact-grid">
+    <div class="contact-form-wrap">
+      <h2>Send a Message</h2>
+      <p>Fill out the form and I'll get back to you within 24 hours.</p>
+      <form class="contact-form" action="https://formspree.io/f/xqaqpqkz" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="service">Service Needed</label>
+            <select id="service" name="service" required>
+              <option value="" disabled selected>Select a service</option>
+              <option value="fullstack">Fullstack Development</option>
+              <option value="automation">n8n Automation</option>
+              <option value="email-design">Email Design</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="budget">Budget Range</label>
+            <select id="budget" name="budget">
+              <option value="" disabled selected>Select budget</option>
+              <option value="under-100">Under $100</option>
+              <option value="100-500">$100 – $500</option>
+              <option value="500-2000">$500 – $2,000</option>
+              <option value="2000-plus">$2,000+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message"
+            placeholder="Tell me about your project — what do you need built, automated, or designed?"
+            required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message →</button>
+      </form>
+    </div>
+
+    <div class="form-divider"><span>or reach me directly</span></div>
+
+    <div class="contact-grid" style="margin-top:1.5rem">
       <!-- Gmail -->
       <a href="mailto:hammedolaitan5@gmail.com" class="contact-card contact-card--email">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" fill="#fff" fill-opacity=".1"/><path d="M22 6l-10 7L2 6" stroke="#ea4335" stroke-width="2" stroke-linecap="round"/><rect x="2" y="4" width="20" height="16" rx="2" stroke="#ea4335" stroke-width="1.5" fill="none"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" fill="#fff"
+              fill-opacity=".1" />
+            <path d="M22 6l-10 7L2 6" stroke="#ea4335" stroke-width="2" stroke-linecap="round" />
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="#ea4335" stroke-width="1.5" fill="none" />
+          </svg></div>
         <h3>Email</h3>
         <p>hammedolaitan5@gmail.com</p>
         <span class="card-arrow">→</span>
@@ -91,7 +587,11 @@
 
       <!-- LinkedIn -->
       <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" class="contact-card contact-card--linkedin">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" fill="#0a66c2"/><path d="M7 10v7M7 7.01V7M11 17v-4c0-1.5 1-2.5 2.5-2.5S16 11.5 16 13v4M11 10v7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="4" fill="#0a66c2" />
+            <path d="M7 10v7M7 7.01V7M11 17v-4c0-1.5 1-2.5 2.5-2.5S16 11.5 16 13v4M11 10v7" stroke="#fff"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg></div>
         <h3>LinkedIn</h3>
         <p>Professional network</p>
         <span class="card-arrow">→</span>
@@ -99,7 +599,14 @@
 
       <!-- WhatsApp -->
       <a href="https://wa.me/2349039616768" target="_blank" class="contact-card contact-card--whatsapp">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.77.46 3.43 1.27 4.88L2 22l5.23-1.23A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z" fill="#25d366"/><path d="M8.5 7.5c.3 0 .6.02.7.4.15.4.5 1.5.55 1.6.05.12.08.25 0 .4-.08.15-.12.24-.24.37-.12.13-.25.3-.36.4-.12.12-.24.25-.1.5.14.24.6 1 1.3 1.6.9.8 1.6 1.05 1.85 1.17.24.12.38.1.52-.06.14-.16.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.4.66 1.64.78.24.12.4.18.46.28.06.1.06.58-.14 1.14-.2.56-1.16 1.08-1.6 1.12-.44.04-1.14.2-3.64-1.24-2-1.15-3.3-3.26-3.4-3.42-.1-.16-.01-.24.07-.32.08-.08.18-.2.27-.3.09-.1.12-.18.18-.3.06-.12.03-.22-.02-.3-.05-.1-.46-1.12-.64-1.54-.16-.4-.34-.35-.46-.36z" fill="#fff"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12c0 1.77.46 3.43 1.27 4.88L2 22l5.23-1.23A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"
+              fill="#25d366" />
+            <path
+              d="M8.5 7.5c.3 0 .6.02.7.4.15.4.5 1.5.55 1.6.05.12.08.25 0 .4-.08.15-.12.24-.24.37-.12.13-.25.3-.36.4-.12.12-.24.25-.1.5.14.24.6 1 1.3 1.6.9.8 1.6 1.05 1.85 1.17.24.12.38.1.52-.06.14-.16.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.4.66 1.64.78.24.12.4.18.46.28.06.1.06.58-.14 1.14-.2.56-1.16 1.08-1.6 1.12-.44.04-1.14.2-3.64-1.24-2-1.15-3.3-3.26-3.4-3.42-.1-.16-.01-.24.07-.32.08-.08.18-.2.27-.3.09-.1.12-.18.18-.3.06-.12.03-.22-.02-.3-.05-.1-.46-1.12-.64-1.54-.16-.4-.34-.35-.46-.36z"
+              fill="#fff" />
+          </svg></div>
         <h3>WhatsApp</h3>
         <p>Quick chat</p>
         <span class="card-arrow">→</span>
@@ -107,7 +614,11 @@
 
       <!-- GitHub -->
       <a href="https://github.com/hholaitan01" target="_blank" class="contact-card contact-card--github">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" fill="#fff"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"
+              fill="#fff" />
+          </svg></div>
         <h3>GitHub</h3>
         <p>View projects</p>
         <span class="card-arrow">→</span>
@@ -117,6 +628,22 @@
     <p class="response-note">I typically respond within 24 hours.</p>
   </div>
 
-  <footer>&copy; 2026 Olaitan Hammed. Built with purpose.</footer>
+  <footer>
+    <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
+      <a href="https://github.com/hholaitan01" target="_blank"
+        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">GitHub</a>
+      <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank"
+        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">LinkedIn</a>
+      <a href="https://wa.me/2349039616768" target="_blank"
+        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">WhatsApp</a>
+      <a href="mailto:hammedolaitan5@gmail.com" style="color:var(--text-dim);text-decoration:none;transition:color .3s"
+        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">Email</a>
+    </div>
+    &copy; 2026 Olaitan Hammed. Built with purpose.
+  </footer>
 </body>
+
 </html>
