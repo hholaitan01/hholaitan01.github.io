@@ -86,7 +86,7 @@
       text-decoration: none;
       letter-spacing: .12em;
       text-transform: uppercase;
-      transition: color .3s
+      transition: color .25s cubic-bezier(0.4,0,0.2,1)
     }
 
     .nav-links a:hover {
@@ -103,17 +103,16 @@
       color: var(--bg) !important;
       background: var(--green);
       padding: .5rem 1.2rem;
-      border-radius: 5px;
+      border-radius: 6px;
       text-decoration: none;
       font-weight: 600;
       letter-spacing: .08em;
       text-transform: uppercase;
-      transition: all .3s
+      transition: all .25s cubic-bezier(0.4,0,0.2,1)
     }
 
     .nav-cta:hover {
-      background: #5cffcf;
-      box-shadow: 0 0 20px rgba(61, 255, 192, .25)
+      background: #5cffcf
     }
 
     .hamburger {
@@ -202,13 +201,12 @@
       border-radius: 6px;
       text-decoration: none;
       font-weight: 600;
-      transition: all .3s;
+      transition: all .25s cubic-bezier(0.4,0,0.2,1);
       margin-top: 1rem
     }
 
     .hero-cta:hover {
-      background: #bfa4ff;
-      box-shadow: 0 0 30px rgba(167, 139, 250, .25)
+      background: #bfa4ff
     }
 
     .stats-bar {
@@ -255,7 +253,7 @@
       border: 1px solid rgba(167, 139, 250, .12);
       border-radius: 50px;
       color: var(--accent-dim);
-      transition: all .3s
+      transition: all .25s cubic-bezier(0.4,0,0.2,1)
     }
 
     .email-skills span:hover {
@@ -331,9 +329,9 @@
       position: relative;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
-      transition: all .4s;
+      transition: all .35s cubic-bezier(0.4,0,0.2,1);
       text-decoration: none;
       display: block
     }
@@ -354,8 +352,8 @@
 
     .gallery-item:hover {
       border-color: rgba(167, 139, 250, .2);
-      transform: translateY(-5px);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, .4)
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .35)
     }
 
     .gallery-item:hover::before {
@@ -390,7 +388,7 @@
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transition: opacity .3s
+      transition: opacity .25s cubic-bezier(0.4,0,0.2,1)
     }
 
     .thumb-overlay span {
@@ -502,12 +500,11 @@
       border-radius: 6px;
       text-decoration: none;
       font-weight: 600;
-      transition: all .3s
+      transition: all .25s cubic-bezier(0.4,0,0.2,1)
     }
 
     .hire-cta:hover {
-      background: #bfa4ff;
-      box-shadow: 0 0 30px rgba(167, 139, 250, .25)
+      background: #bfa4ff
     }
 
     .pricing-hint {
@@ -520,6 +517,13 @@
     .pricing-hint span {
       color: var(--accent)
     }
+
+    .footer-link {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color .25s cubic-bezier(0.4,0,0.2,1)
+    }
+    .footer-link:hover { color: var(--green) }
 
     footer {
       text-align: center;
@@ -1008,24 +1012,17 @@
 
   <footer>
     <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
-      <a href="https://github.com/hholaitan01" target="_blank"
-        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">GitHub</a>
-      <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank"
-        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">LinkedIn</a>
-      <a href="https://wa.me/2349039616768" target="_blank"
-        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">WhatsApp</a>
-      <a href="mailto:hammedolaitan5@gmail.com" style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">Email</a>
+      <a href="https://github.com/hholaitan01" target="_blank" class="footer-link">GitHub</a>
+      <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" class="footer-link">LinkedIn</a>
+      <a href="https://wa.me/2349039616768" target="_blank" class="footer-link">WhatsApp</a>
+      <a href="mailto:hammedolaitan5@gmail.com" class="footer-link">Email</a>
     </div>
     &copy; 2026 Olaitan Hammed. Built with purpose.
   </footer>
 
   <script>
     const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'translateY(0)' } }) }, { threshold: .08 });
-    document.querySelectorAll('section,.page-hero,.category,.hire-section').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(25px)'; s.style.transition = 'opacity .6s,transform .6s'; obs.observe(s) });
+    document.querySelectorAll('section,.page-hero,.category,.hire-section').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(25px)'; s.style.transition = 'opacity .6s cubic-bezier(0.4,0,0.2,1),transform .6s cubic-bezier(0.4,0,0.2,1)'; obs.observe(s) });
   </script>
 </body>
 

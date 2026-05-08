@@ -191,7 +191,7 @@
     .contact-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 2rem 2.5rem;
       text-decoration: none;
       display: flex;
@@ -218,8 +218,8 @@
     }
 
     .contact-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, .4)
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .35)
     }
 
     .contact-card:hover::before {
@@ -289,7 +289,7 @@
       font-family: var(--font-mono);
       font-size: .75rem;
       color: var(--text-dim);
-      transition: color .3s, transform .3s
+      transition: color .25s cubic-bezier(0.4,0,0.2,1), transform .25s cubic-bezier(0.4,0,0.2,1)
     }
 
     .contact-card:hover .card-arrow {
@@ -378,7 +378,7 @@
       border-radius: 8px;
       color: var(--text-bright);
       outline: none;
-      transition: border-color .3s, box-shadow .3s;
+      transition: border-color .25s cubic-bezier(0.4,0,0.2,1), box-shadow .25s cubic-bezier(0.4,0,0.2,1);
       -webkit-appearance: none;
       appearance: none
     }
@@ -418,7 +418,7 @@
       border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
-      transition: all .3s;
+      transition: all .25s cubic-bezier(0.4,0,0.2,1);
       letter-spacing: .05em;
       text-transform: uppercase;
       margin-top: .5rem
@@ -426,7 +426,6 @@
 
     .form-submit:hover {
       background: #5cffcf;
-      box-shadow: 0 0 30px rgba(61, 255, 192, .25);
       transform: translateY(-2px)
     }
 
@@ -458,6 +457,13 @@
         grid-template-columns: 1fr
       }
     }
+
+    .footer-link {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color .25s cubic-bezier(0.4,0,0.2,1)
+    }
+    .footer-link:hover { color: var(--green) }
 
     footer {
       text-align: center;
@@ -630,20 +636,20 @@
 
   <footer>
     <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
-      <a href="https://github.com/hholaitan01" target="_blank"
-        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">GitHub</a>
-      <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank"
-        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">LinkedIn</a>
-      <a href="https://wa.me/2349039616768" target="_blank"
-        style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">WhatsApp</a>
-      <a href="mailto:hammedolaitan5@gmail.com" style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-        onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">Email</a>
+      <a href="https://github.com/hholaitan01" target="_blank" class="footer-link">GitHub</a>
+      <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" class="footer-link">LinkedIn</a>
+      <a href="https://wa.me/2349039616768" target="_blank" class="footer-link">WhatsApp</a>
+      <a href="mailto:hammedolaitan5@gmail.com" class="footer-link">Email</a>
     </div>
     &copy; 2026 Olaitan Hammed. Built with purpose.
   </footer>
+<script>
+  document.querySelector('.contact-form').addEventListener('submit', function() {
+    const btn = this.querySelector('.form-submit');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+  });
+</script>
 </body>
 
 </html>

@@ -103,17 +103,16 @@
             color: var(--bg) !important;
             background: var(--green);
             padding: .5rem 1.2rem;
-            border-radius: 5px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
             letter-spacing: .08em;
             text-transform: uppercase;
-            transition: all .3s
+            transition: all .25s cubic-bezier(0.4,0,0.2,1)
         }
 
         .nav-cta:hover {
-            background: #5cffcf;
-            box-shadow: 0 0 20px rgba(61, 255, 192, .25)
+            background: #5cffcf
         }
 
         .hamburger {
@@ -222,16 +221,16 @@
             margin-bottom: 3rem;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
-            transition: all .4s;
+            transition: all .35s cubic-bezier(0.4,0,0.2,1);
             text-decoration: none
         }
 
         .featured-article:hover {
             border-color: rgba(61, 255, 192, .15);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .4)
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .35)
         }
 
         .featured-img {
@@ -320,7 +319,7 @@
             align-items: center;
             gap: .4rem;
             margin-top: 1rem;
-            transition: gap .3s
+            transition: gap .25s cubic-bezier(0.4,0,0.2,1)
         }
 
         .read-link:hover {
@@ -337,9 +336,9 @@
         .blog-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
-            transition: all .4s;
+            transition: all .35s cubic-bezier(0.4,0,0.2,1);
             text-decoration: none;
             display: flex;
             flex-direction: column;
@@ -360,8 +359,8 @@
 
         .blog-card:hover {
             border-color: rgba(255, 255, 255, .1);
-            transform: translateY(-5px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, .4)
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .35)
         }
 
         .blog-card:hover::before {
@@ -494,7 +493,7 @@
             display: inline-flex;
             align-items: center;
             gap: .3rem;
-            transition: gap .3s
+            transition: gap .25s cubic-bezier(0.4,0,0.2,1)
         }
 
         .card-read-link:hover {
@@ -539,7 +538,7 @@
             border-radius: 6px;
             color: var(--text-bright);
             outline: none;
-            transition: border-color .3s
+            transition: border-color .25s cubic-bezier(0.4,0,0.2,1)
         }
 
         .newsletter-form input:focus {
@@ -560,16 +559,22 @@
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
-            transition: all .3s;
+            transition: all .25s cubic-bezier(0.4,0,0.2,1);
             white-space: nowrap
         }
 
         .newsletter-form button:hover {
-            background: #5cffcf;
-            box-shadow: 0 0 20px rgba(61, 255, 192, .25)
+            background: #5cffcf
         }
 
         /* Footer */
+        .footer-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color .25s cubic-bezier(0.4,0,0.2,1)
+        }
+        .footer-link:hover { color: var(--green) }
+
         footer {
             text-align: center;
             padding: 2rem 8vw;
@@ -751,37 +756,27 @@
     <div class="newsletter">
         <h2>Stay in the Loop</h2>
         <p>Get notified when I publish new articles on automation, fullstack development, and design.</p>
-        <div class="newsletter-form">
-            <input type="email" placeholder="your@email.com" aria-label="Email address">
-            <button type="button">Subscribe</button>
-        </div>
+        <form class="newsletter-form" action="https://formspree.io/f/xeergojr" method="POST">
+            <input type="email" name="email" placeholder="your@email.com" aria-label="Email address" required>
+            <button type="submit">Subscribe</button>
+        </form>
         <p style="font-family:var(--font-mono);font-size:.68rem;color:var(--text-dim);margin-top:.8rem">No spam.
             Unsubscribe anytime.</p>
     </div>
 
     <footer>
         <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
-            <a href="https://github.com/hholaitan01" target="_blank"
-                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-                onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">GitHub</a>
-            <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank"
-                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-                onmouseover="this.style.color='var(--green)'"
-                onmouseout="this.style.color='var(--text-dim)'">LinkedIn</a>
-            <a href="https://wa.me/2349039616768" target="_blank"
-                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-                onmouseover="this.style.color='var(--green)'"
-                onmouseout="this.style.color='var(--text-dim)'">WhatsApp</a>
-            <a href="mailto:hammedolaitan5@gmail.com"
-                style="color:var(--text-dim);text-decoration:none;transition:color .3s"
-                onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">Email</a>
+            <a href="https://github.com/hholaitan01" target="_blank" class="footer-link">GitHub</a>
+            <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" class="footer-link">LinkedIn</a>
+            <a href="https://wa.me/2349039616768" target="_blank" class="footer-link">WhatsApp</a>
+            <a href="mailto:hammedolaitan5@gmail.com" class="footer-link">Email</a>
         </div>
         &copy; 2026 Olaitan Hammed. Built with purpose.
     </footer>
 
     <script>
         const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'translateY(0)' } }) }, { threshold: .1 });
-        document.querySelectorAll('section,.page-hero,.newsletter').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(30px)'; s.style.transition = 'opacity .7s,transform .7s'; obs.observe(s) });
+        document.querySelectorAll('section,.page-hero,.newsletter').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(30px)'; s.style.transition = 'opacity .6s cubic-bezier(0.4,0,0.2,1),transform .6s cubic-bezier(0.4,0,0.2,1)'; obs.observe(s) });
     </script>
 </body>
 
