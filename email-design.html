@@ -530,6 +530,76 @@
       border-top: 1px solid var(--border)
     }
 
+    .craft-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      flex-wrap: wrap;
+      margin-top: 1.6rem;
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--green);
+      background: rgba(61, 255, 192, .05);
+      border: 1px solid rgba(61, 255, 192, .18);
+      border-radius: 8px;
+      padding: .65rem 1.1rem;
+      letter-spacing: .04em
+    }
+
+    .craft-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      min-width: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: craft-pulse 2.2s ease-in-out infinite
+    }
+
+    @keyframes craft-pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(61,255,192,.4) }
+      50% { opacity: .5; box-shadow: 0 0 0 5px rgba(61,255,192,0) }
+    }
+
+    .craft-sep {
+      color: rgba(61, 255, 192, .28)
+    }
+
+    .cat-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+      margin-bottom: 2.8rem
+    }
+
+    .cat-chip {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      padding: .45rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--text);
+      text-decoration: none;
+      transition: all .25s;
+      cursor: pointer
+    }
+
+    .cat-chip:hover {
+      background: rgba(167, 139, 250, .08);
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: 1.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border)
+    }
+
     @media(max-width:900px) {
       .gallery-grid {
         grid-template-columns: 1fr 1fr
@@ -617,6 +687,17 @@
       <div class="stat-pill"><span class="num">5</span><span class="label">Categories</span></div>
       <div class="stat-pill"><span class="num">100%</span><span class="label">Hand-coded</span></div>
     </div>
+    <div class="craft-bar">
+      <span class="craft-dot"></span>
+      Hand-coded HTML
+      <span class="craft-sep">·</span>
+      Outlook 2016+ tested
+      <span class="craft-sep">·</span>
+      Dark mode ready
+      <span class="craft-sep">·</span>
+      Mobile-first
+    </div>
+
     <div class="email-skills">
       <span>HTML Email</span><span>Inline CSS</span><span>Responsive</span><span>Dark
         Mode</span><span>E-Commerce</span><span>Onboarding</span><span>Subscription</span><span>Newsletter</span><span>Fashion</span><span>SaaS</span><span>DTC
@@ -630,12 +711,20 @@
     <p class="section-desc">20 production-ready email designs grouped by type. Each hand-coded, responsive, and built on
       a performance-first framework that maximizes conversions.</p>
 
-    <div class="category">
+    <div class="cat-filters">
+      <a href="#cat-launch" class="cat-chip">🚀 Product Launch</a>
+      <a href="#cat-welcome" class="cat-chip">👋 Welcome &amp; Onboarding</a>
+      <a href="#cat-promo" class="cat-chip">🔥 Promotional &amp; Sales</a>
+      <a href="#cat-sub" class="cat-chip">🔄 Subscription &amp; Retention</a>
+      <a href="#cat-newsletter" class="cat-chip">📰 Newsletter</a>
+    </div>
+
+    <div class="category" id="cat-launch">
       <div class="cat-header"><span class="cat-icon">🚀</span><span class="cat-name">Product Launch &
           Announcements</span><span class="cat-count">5</span></div>
       <div class="gallery-grid">
         <a href="emails/email-01-superlist.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-01-superlist.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-01-superlist.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -646,7 +735,7 @@
           </div>
         </a>
         <a href="emails/email-08-calla.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-08-calla.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-08-calla.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -656,7 +745,7 @@
           </div>
         </a>
         <a href="emails/email-09-vivo.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-09-vivo.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-09-vivo.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -667,7 +756,7 @@
           </div>
         </a>
         <a href="emails/email-13-pins-aces.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-13-pins-aces.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-13-pins-aces.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -678,7 +767,7 @@
           </div>
         </a>
         <a href="emails/email-14-mendora.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-14-mendora.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-14-mendora.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -691,12 +780,12 @@
       </div>
     </div>
 
-    <div class="category">
+    <div class="category" id="cat-welcome">
       <div class="cat-header"><span class="cat-icon">👋</span><span class="cat-name">Welcome & Onboarding</span><span
           class="cat-count">3</span></div>
       <div class="gallery-grid">
         <a href="emails/email-02-funfit.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-02-funfit.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-02-funfit.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -706,7 +795,7 @@
           </div>
         </a>
         <a href="emails/email-05-pitch.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-05-pitch.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-05-pitch.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -717,7 +806,7 @@
           </div>
         </a>
         <a href="emails/email-10-magic-mind.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-10-magic-mind.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-10-magic-mind.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -730,12 +819,12 @@
       </div>
     </div>
 
-    <div class="category">
+    <div class="category" id="cat-promo">
       <div class="cat-header"><span class="cat-icon">🔥</span><span class="cat-name">Promotional & Sales</span><span
           class="cat-count">5</span></div>
       <div class="gallery-grid">
         <a href="emails/email-04-hangin.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-04-hangin.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-04-hangin.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -745,7 +834,7 @@
           </div>
         </a>
         <a href="emails/email-07-zieme.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-07-zieme.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-07-zieme.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -755,7 +844,7 @@
           </div>
         </a>
         <a href="emails/email-15-conscious-bar.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-15-conscious-bar.html" loading="lazy"
+          <div class="thumb-wrap"><iframe src="emails/email-15-conscious-bar.html" loading="eager"
               tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
@@ -767,7 +856,7 @@
           </div>
         </a>
         <a href="emails/email-18-forest-ink.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-18-forest-ink.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-18-forest-ink.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -777,7 +866,7 @@
           </div>
         </a>
         <a href="emails/email-20-ilus.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-20-ilus.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-20-ilus.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -790,12 +879,12 @@
       </div>
     </div>
 
-    <div class="category">
+    <div class="category" id="cat-sub">
       <div class="cat-header"><span class="cat-icon">🔄</span><span class="cat-name">Subscription &
           Retention</span><span class="cat-count">5</span></div>
       <div class="gallery-grid">
         <a href="emails/email-11-doingwell.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-11-doingwell.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-11-doingwell.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -805,7 +894,7 @@
           </div>
         </a>
         <a href="emails/email-12-neutonic-keep-going.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-12-neutonic-keep-going.html" loading="lazy"
+          <div class="thumb-wrap"><iframe src="emails/email-12-neutonic-keep-going.html" loading="eager"
               tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
@@ -816,7 +905,7 @@
           </div>
         </a>
         <a href="emails/email-16-neutonic-subscription.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-16-neutonic-subscription.html" loading="lazy"
+          <div class="thumb-wrap"><iframe src="emails/email-16-neutonic-subscription.html" loading="eager"
               tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
@@ -827,7 +916,7 @@
           </div>
         </a>
         <a href="emails/email-17-gains-bulk.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-17-gains-bulk.html" loading="lazy" tabindex="-1"></iframe>
+          <div class="thumb-wrap"><iframe src="emails/email-17-gains-bulk.html" loading="eager" tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
           <div class="gallery-info">
@@ -838,7 +927,7 @@
           </div>
         </a>
         <a href="emails/email-19-neutonic-billing.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-19-neutonic-billing.html" loading="lazy"
+          <div class="thumb-wrap"><iframe src="emails/email-19-neutonic-billing.html" loading="eager"
               tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
@@ -851,12 +940,12 @@
       </div>
     </div>
 
-    <div class="category">
+    <div class="category" id="cat-newsletter">
       <div class="cat-header"><span class="cat-icon">📰</span><span class="cat-name">Newsletter</span><span
           class="cat-count">2</span></div>
       <div class="gallery-grid">
         <a href="emails/email-03-1000-email-ideas.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-03-1000-email-ideas.html" loading="lazy"
+          <div class="thumb-wrap"><iframe src="emails/email-03-1000-email-ideas.html" loading="eager"
               tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
@@ -867,7 +956,7 @@
           </div>
         </a>
         <a href="emails/email-06-1000-email-ideas.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-06-1000-email-ideas.html" loading="lazy"
+          <div class="thumb-wrap"><iframe src="emails/email-06-1000-email-ideas.html" loading="eager"
               tabindex="-1"></iframe>
             <div class="thumb-overlay"><span>View &rarr;</span></div>
           </div>
