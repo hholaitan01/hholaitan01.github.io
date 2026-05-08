@@ -103,7 +103,7 @@
       color: var(--bg) !important;
       background: var(--green);
       padding: .5rem 1.2rem;
-      border-radius: 6px;
+      border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
       letter-spacing: .08em;
@@ -144,7 +144,6 @@
       right: 0;
       width: 500px;
       height: 500px;
-      background: radial-gradient(circle, rgba(167, 139, 250, .04), transparent 70%);
       pointer-events: none
     }
 
@@ -198,7 +197,7 @@
       color: var(--bg);
       background: var(--accent);
       padding: .7rem 1.6rem;
-      border-radius: 6px;
+      border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
       transition: all .25s cubic-bezier(0.4,0,0.2,1);
@@ -316,7 +315,7 @@
       color: var(--accent);
       background: rgba(167, 139, 250, .1);
       padding: .2rem .6rem;
-      border-radius: 10px
+      border-radius: 8px
     }
 
     .gallery-grid {
@@ -329,7 +328,7 @@
       position: relative;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
       transition: all .35s cubic-bezier(0.4,0,0.2,1);
       text-decoration: none;
@@ -346,7 +345,7 @@
       background: var(--accent);
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform .4s;
+      transition: transform .4s cubic-bezier(0.4,0,0.2,1);
       z-index: 2
     }
 
@@ -372,8 +371,11 @@
     }
 
     .thumb-wrap iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 200%;
-      height: 200%;
+      height: 560px;
       transform: scale(.5);
       transform-origin: top left;
       border: none;
@@ -397,7 +399,7 @@
       color: #fff;
       background: var(--accent);
       padding: .55rem 1.2rem;
-      border-radius: 6px;
+      border-radius: 4px;
       font-weight: 600
     }
 
@@ -431,7 +433,7 @@
       color: var(--accent);
       background: rgba(167, 139, 250, .08);
       padding: .18rem .45rem;
-      border-radius: 3px;
+      border-radius: 4px;
       display: inline-block;
       margin-top: .4rem
     }
@@ -497,7 +499,7 @@
       color: var(--bg);
       background: var(--accent);
       padding: .85rem 2rem;
-      border-radius: 6px;
+      border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
       transition: all .25s cubic-bezier(0.4,0,0.2,1)
@@ -556,13 +558,7 @@
       height: 7px;
       min-width: 7px;
       background: var(--green);
-      border-radius: 50%;
-      animation: craft-pulse 2.2s ease-in-out infinite
-    }
-
-    @keyframes craft-pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(61,255,192,.4) }
-      50% { opacity: .5; box-shadow: 0 0 0 5px rgba(61,255,192,0) }
+      border-radius: 50%
     }
 
     .craft-sep {
@@ -1022,7 +1018,7 @@
 
   <script>
     const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'translateY(0)' } }) }, { threshold: .08 });
-    document.querySelectorAll('section,.page-hero,.category,.hire-section').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(25px)'; s.style.transition = 'opacity .6s cubic-bezier(0.4,0,0.2,1),transform .6s cubic-bezier(0.4,0,0.2,1)'; obs.observe(s) });
+    document.querySelectorAll('section,.page-hero,.hire-section').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(25px)'; s.style.transition = 'opacity .6s cubic-bezier(0.4,0,0.2,1),transform .6s cubic-bezier(0.4,0,0.2,1)'; obs.observe(s) });
   </script>
 </body>
 
