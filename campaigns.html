@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Campaigns — Olaitan Hammed</title>
+  <meta name="description"
+    content="Real client email campaigns and lifecycle flows designed for 7 DTC brands — from BROTMEISTER's multi-month seasonal calendar to automated 2026 flow programs. Case-study portfolio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg-card: #111113;
+      --border: rgba(255, 255, 255, .06);
+      --accent: #a78bfa;
+      --accent-dim: #6d5aab;
+      --accent-glow: rgba(167, 139, 250, .08);
+      --green: #3dffc0;
+      --text: #a1a1aa;
+      --text-bright: #fafafa;
+      --text-dim: #52525b;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Outfit', sans-serif
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(9, 9, 11, .88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border)
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: .08em
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: color .25s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+
+    .nav-links a:hover {
+      color: var(--green)
+    }
+
+    .nav-links a.active {
+      color: var(--accent)
+    }
+
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--bg) !important;
+      background: var(--green);
+      padding: .5rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: all .25s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+
+    .nav-cta:hover {
+      background: #5cffcf
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text)
+    }
+
+    .page-hero {
+      padding: 10rem 8vw 4rem;
+      position: relative
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+      letter-spacing: .1em
+    }
+
+    .breadcrumb a {
+      color: var(--text-dim);
+      text-decoration: none
+    }
+
+    .breadcrumb a:hover {
+      color: var(--accent)
+    }
+
+    .breadcrumb .sep {
+      margin: 0 .5rem
+    }
+
+    .page-hero h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -.02em
+    }
+
+    .page-hero h1 .accent {
+      color: var(--accent)
+    }
+
+    .page-hero>p {
+      font-size: 1.1rem;
+      color: var(--text);
+      max-width: 640px;
+      margin-bottom: .5rem
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      color: var(--bg);
+      background: var(--accent);
+      padding: .7rem 1.6rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 1rem
+    }
+
+    .hero-cta:hover {
+      background: #bfa4ff
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: .5rem 1.2rem
+    }
+
+    .stat-pill .num {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent)
+    }
+
+    .stat-pill .label {
+      font-size: .78rem;
+      color: var(--text-dim)
+    }
+
+    .craft-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      flex-wrap: wrap;
+      margin-top: 1.6rem;
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--green);
+      background: rgba(61, 255, 192, .05);
+      border: 1px solid rgba(61, 255, 192, .18);
+      border-radius: 8px;
+      padding: .65rem 1.1rem;
+      letter-spacing: .04em
+    }
+
+    .craft-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      min-width: 7px;
+      background: var(--green);
+      border-radius: 50%
+    }
+
+    .craft-sep {
+      color: rgba(61, 255, 192, .28)
+    }
+
+    section {
+      padding: 4rem 8vw
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      margin-bottom: .5rem
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 1rem
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: var(--text);
+      max-width: 640px;
+      margin-bottom: 2.5rem
+    }
+
+    /* Brand grid */
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem
+    }
+
+    .brand-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column
+    }
+
+    .brand-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .4)
+    }
+
+    /* Monogram tile — screenshot slot */
+    .brand-tile {
+      position: relative;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--tile, #222)
+    }
+
+    .brand-tile::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, .18) 0, transparent 42%),
+        radial-gradient(circle at 82% 88%, rgba(0, 0, 0, .35) 0, transparent 50%);
+      pointer-events: none
+    }
+
+    .brand-mono {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 2.6rem;
+      letter-spacing: .12em;
+      color: #fff;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, .3)
+    }
+
+    /* faux stacked-email preview behind the monogram */
+    .brand-stack {
+      position: absolute;
+      right: -26px;
+      bottom: -34px;
+      width: 120px;
+      height: 150px;
+      z-index: 0;
+      opacity: .5
+    }
+
+    .brand-stack i {
+      position: absolute;
+      inset: 0;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid rgba(255, 255, 255, .35);
+      background: rgba(255, 255, 255, .07)
+    }
+
+    .brand-stack i:nth-child(1) {
+      transform: translate(-18px, -18px) rotate(-6deg)
+    }
+
+    .brand-stack i:nth-child(2) {
+      transform: translate(-9px, -9px) rotate(-3deg)
+    }
+
+    .brand-tile img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      z-index: 2
+    }
+
+    .brand-body {
+      padding: 1.4rem 1.4rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1
+    }
+
+    .brand-eyebrow {
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--brand, var(--accent));
+      margin-bottom: .5rem
+    }
+
+    .brand-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      letter-spacing: .01em;
+      margin-bottom: .5rem
+    }
+
+    .brand-desc {
+      font-size: .82rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      flex: 1
+    }
+
+    .brand-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem;
+      margin-bottom: 1rem
+    }
+
+    .brand-tags span {
+      font-family: var(--font-mono);
+      font-size: .58rem;
+      padding: .25rem .55rem;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, .04);
+      color: var(--text-dim)
+    }
+
+    .brand-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+      border-top: 1px solid var(--border);
+      padding-top: .9rem
+    }
+
+    .brand-scope {
+      font-family: var(--font-mono);
+      font-size: .64rem;
+      color: var(--brand, var(--accent))
+    }
+
+    .brand-visit {
+      font-family: var(--font-mono);
+      font-size: .64rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color .2s
+    }
+
+    .brand-visit:hover {
+      color: var(--brand, var(--accent))
+    }
+
+    /* Featured case study */
+    .feature {
+      margin-top: 1.4rem;
+      background: linear-gradient(140deg, rgba(200, 149, 42, .07), rgba(17, 17, 19, .4) 60%);
+      border: 1px solid rgba(200, 149, 42, .18);
+      border-radius: 16px;
+      padding: 2.2rem;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2.2rem;
+      align-items: center
+    }
+
+    .feature-tag {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #d4a24c;
+      margin-bottom: .8rem
+    }
+
+    .feature h3 {
+      font-size: 1.7rem;
+      color: var(--text-bright);
+      margin-bottom: .8rem;
+      font-weight: 800;
+      letter-spacing: .01em
+    }
+
+    .feature p {
+      font-size: .95rem;
+      color: var(--text);
+      margin-bottom: 1rem
+    }
+
+    .feature-metrics {
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem
+    }
+
+    .feature-metrics .m .n {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #d4a24c;
+      display: block
+    }
+
+    .feature-metrics .m .l {
+      font-size: .74rem;
+      color: var(--text-dim)
+    }
+
+    /* Campaign calendar strip */
+    .calendar {
+      display: flex;
+      flex-direction: column;
+      gap: .7rem
+    }
+
+    .cal-month {
+      display: flex;
+      align-items: center;
+      gap: .9rem
+    }
+
+    .cal-name {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      color: var(--text-bright);
+      width: 62px;
+      text-transform: uppercase
+    }
+
+    .cal-track {
+      flex: 1;
+      height: 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .05);
+      overflow: hidden
+    }
+
+    .cal-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #c8952a, #e0b968)
+    }
+
+    .cal-count {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      color: #d4a24c;
+      width: 74px;
+      text-align: right
+    }
+
+    /* Process */
+    .process {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      margin-top: 2.5rem
+    }
+
+    .proc {
+      padding: 1.5rem 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px
+    }
+
+    .proc-num {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: .5rem
+    }
+
+    .proc h3 {
+      font-size: .95rem;
+      color: var(--text-bright);
+      margin-bottom: .3rem
+    }
+
+    .proc p {
+      font-size: .8rem;
+      color: var(--text-dim);
+      line-height: 1.55
+    }
+
+    .note {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-dim);
+      margin-top: 2.5rem;
+      padding: .9rem 1.2rem;
+      border-left: 2px solid var(--accent-dim);
+      background: var(--accent-glow);
+      border-radius: 0 8px 8px 0;
+      max-width: 720px
+    }
+
+    .hire-section {
+      text-align: center;
+      padding: 5rem 8vw;
+      border-top: 1px solid var(--border)
+    }
+
+    .hire-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: .8rem
+    }
+
+    .hire-section p {
+      font-size: 1rem;
+      color: var(--text);
+      max-width: 520px;
+      margin: 0 auto 1.5rem
+    }
+
+    .hire-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: var(--font-mono);
+      font-size: .85rem;
+      color: var(--bg);
+      background: var(--accent);
+      padding: .85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all .25s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+
+    .hire-cta:hover {
+      background: #bfa4ff
+    }
+
+    .footer-link {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color .25s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+
+    .footer-link:hover {
+      color: var(--green)
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 8vw;
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border)
+    }
+
+    @media(max-width:900px) {
+      .brand-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .process {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .feature {
+        grid-template-columns: 1fr
+      }
+
+      nav {
+        padding: 1rem 1.5rem
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(9, 9, 11, .96);
+        padding: 1.5rem 2rem;
+        gap: 1.2rem;
+        border-bottom: 1px solid var(--border)
+      }
+
+      .nav-links.open {
+        display: flex
+      }
+
+      .hamburger {
+        display: flex
+      }
+
+      .nav-cta {
+        display: none
+      }
+    }
+
+    @media(max-width:600px) {
+      .brand-grid {
+        grid-template-columns: 1fr
+      }
+
+      .process {
+        grid-template-columns: 1fr
+      }
+
+      section {
+        padding: 3rem 6vw
+      }
+
+      .page-hero {
+        padding: 8rem 6vw 3rem
+      }
+
+      .feature {
+        padding: 1.6rem
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">OH.</a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')"
+      aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fullstack.html">Fullstack</a></li>
+      <li><a href="automation.html">Automation</a></li>
+      <li><a href="email-design.html">Email Design</a></li>
+      <li><a href="campaigns.html" class="active">Campaigns</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="mailto:hammedolaitan5@gmail.com" class="nav-cta">Hire Me</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span>Client Campaigns</div>
+    <h1><span class="accent">Client</span> Campaigns &amp; Flows</h1>
+    <p>Real email work for real brands. Seasonal campaign calendars, product launches, and automated lifecycle
+      flows — designed end to end for seven direct-to-consumer brands.</p>
+    <a href="mailto:hammedolaitan5@gmail.com" class="hero-cta">Start a Campaign Program &rarr;</a>
+    <div class="stats-bar">
+      <div class="stat-pill"><span class="num">7</span><span class="label">Brands</span></div>
+      <div class="stat-pill"><span class="num">30+</span><span class="label">Campaign Sends</span></div>
+      <div class="stat-pill"><span class="num">2026</span><span class="label">Program Year</span></div>
+    </div>
+    <div class="craft-bar">
+      <span class="craft-dot"></span>
+      Designed in Figma
+      <span class="craft-sep">·</span>
+      Campaign calendars
+      <span class="craft-sep">·</span>
+      Lifecycle flows
+      <span class="craft-sep">·</span>
+      Conversion-first
+    </div>
+  </div>
+
+  <section>
+    <div class="section-label">// client work</div>
+    <h2 class="section-title">Brands I've Designed For</h2>
+    <p class="section-desc">Each engagement is a full email program — not a one-off template. From first-touch welcome
+      flows to multi-month seasonal campaign calendars, here are the brands behind the work.</p>
+
+    <div class="brand-grid">
+
+      <!-- BROTMEISTER -->
+      <div class="brand-card" style="--brand:#d4a24c">
+        <div class="brand-tile" style="--tile:linear-gradient(135deg,#8a5a1e,#c8952a)">
+          <div class="brand-stack"><i></i><i></i></div>
+          <div class="brand-mono">BM</div>
+        </div>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Home &amp; Kitchen</div>
+          <div class="brand-name">BROTMEISTER</div>
+          <p class="brand-desc">Premium bread bags in 100% cotton and beeswax. I designed a full seasonal campaign
+            calendar — 30+ dated sends from March through July 2026 — spanning launch announcements, product
+            education, social proof, and conversion pushes.</p>
+          <div class="brand-tags"><span>Campaign Calendar</span><span>Product Education</span><span>Social
+              Proof</span><span>Seasonal</span></div>
+          <div class="brand-foot">
+            <span class="brand-scope">30+ sends · Mar–Jul</span>
+            <a href="https://brot-meister.com" target="_blank" rel="noopener" class="brand-visit">brot-meister.com ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHRAUBENWERK -->
+      <div class="brand-card" style="--brand:#8fa3bd">
+        <div class="brand-tile" style="--tile:linear-gradient(135deg,#3d4859,#6b7c93)">
+          <div class="brand-stack"><i></i><i></i></div>
+          <div class="brand-mono">SW</div>
+        </div>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Lifecycle Flows</div>
+          <div class="brand-name">SCHRAUBENWERK</div>
+          <p class="brand-desc">A 2026 lifecycle email program built around automated flows — sequences designed to
+            welcome new subscribers, nurture interest, and drive repeat purchases on autopilot.</p>
+          <div class="brand-tags"><span>Lifecycle Flows</span><span>Automation</span><span>Onboarding</span><span>Retention</span></div>
+          <div class="brand-foot">
+            <span class="brand-scope">2026 email flows</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KOLAROSE -->
+      <div class="brand-card" style="--brand:#e88aa6">
+        <div class="brand-tile" style="--tile:linear-gradient(135deg,#a83e60,#e0698a)">
+          <div class="brand-stack"><i></i><i></i></div>
+          <div class="brand-mono">KR</div>
+        </div>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Lifecycle Flows</div>
+          <div class="brand-name">KOLAROSE</div>
+          <p class="brand-desc">A 2026 flow-based email program — welcome, nurture, and win-back sequences built to run
+            continuously across the customer lifecycle and keep the brand top of mind.</p>
+          <div class="brand-tags"><span>Lifecycle Flows</span><span>Welcome Series</span><span>Win-back</span><span>Automation</span></div>
+          <div class="brand-foot">
+            <span class="brand-scope">2026 email flows</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEICHTKRAUT -->
+      <div class="brand-card" style="--brand:#83c283">
+        <div class="brand-tile" style="--tile:linear-gradient(135deg,#3f7a44,#6fae6f)">
+          <div class="brand-stack"><i></i><i></i></div>
+          <div class="brand-mono">LK</div>
+        </div>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Email Flows</div>
+          <div class="brand-name">LEICHTKRAUT</div>
+          <p class="brand-desc">Automated email flows designed to guide new subscribers from first touch to first
+            purchase — and to keep them engaged with well-timed, on-brand follow-ups.</p>
+          <div class="brand-tags"><span>Email Flows</span><span>Onboarding</span><span>Nurture</span></div>
+          <div class="brand-foot">
+            <span class="brand-scope">Email flows</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALUVEA -->
+      <div class="brand-card" style="--brand:#5ec8bc">
+        <div class="brand-tile" style="--tile:linear-gradient(135deg,#2f7f77,#4bb3a8)">
+          <div class="brand-stack"><i></i><i></i></div>
+          <div class="brand-mono">AV</div>
+        </div>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Email Flows</div>
+          <div class="brand-name">ALUVEA</div>
+          <p class="brand-desc">Lifecycle email flows crafted to introduce the brand, build trust, and move subscribers
+            toward conversion with a clean, consistent visual language across every send.</p>
+          <div class="brand-tags"><span>Email Flows</span><span>Brand Introduction</span><span>Conversion</span></div>
+          <div class="brand-foot">
+            <span class="brand-scope">Email flows</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SILKYNIGHT -->
+      <div class="brand-card" style="--brand:#9a8ee6">
+        <div class="brand-tile" style="--tile:linear-gradient(135deg,#4a3f8a,#7b6fd4)">
+          <div class="brand-stack"><i></i><i></i></div>
+          <div class="brand-mono">SN</div>
+        </div>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Campaigns &amp; Flows</div>
+          <div class="brand-name">SILKYNIGHT</div>
+          <p class="brand-desc">Email design across campaigns and automated flows — a cohesive, elegant send system
+            built to match the brand's premium, evening-toned identity.</p>
+          <div class="brand-tags"><span>Campaigns</span><span>Flows</span><span>Premium</span></div>
+          <div class="brand-foot">
+            <span class="brand-scope">Campaigns &amp; flows</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLOFREI -->
+      <div class="brand-card" style="--brand:#6fb6ec">
+        <div class="brand-tile" style="--tile:linear-gradient(135deg,#2c6fa8,#4a9fe0)">
+          <div class="brand-stack"><i></i><i></i></div>
+          <div class="brand-mono">FF</div>
+        </div>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Campaigns &amp; Flows</div>
+          <div class="brand-name">FLOFREI</div>
+          <p class="brand-desc">Email design across campaigns and lifecycle flows — a fresh, clean send system designed
+            to keep subscribers engaged and moving through the funnel.</p>
+          <div class="brand-tags"><span>Campaigns</span><span>Flows</span><span>Funnel</span></div>
+          <div class="brand-foot">
+            <span class="brand-scope">Campaigns &amp; flows</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Featured case study: BROTMEISTER -->
+    <div class="feature">
+      <div>
+        <div class="feature-tag">// featured case study</div>
+        <h3>BROTMEISTER — a five-month campaign calendar</h3>
+        <p>BROTMEISTER's hero product is a premium bread bag made from 100% cotton and beeswax. The brief: keep a
+          single hero product fresh and desirable across an entire season without fatiguing the list.</p>
+        <p>The answer was a rotating campaign calendar — each send taking a different angle on the same product:
+          the problem it solves, how it's made, customer proof, seasonal timing, and clear conversion pushes.</p>
+        <div class="feature-metrics">
+          <div class="m"><span class="n">30+</span><span class="l">Dated campaigns</span></div>
+          <div class="m"><span class="n">4</span><span class="l">Months (Mar–Jul)</span></div>
+          <div class="m"><span class="n">1</span><span class="l">Hero product</span></div>
+        </div>
+      </div>
+      <div class="calendar">
+        <div class="cal-month">
+          <span class="cal-name">March</span>
+          <div class="cal-track">
+            <div class="cal-fill" style="width:28%"></div>
+          </div>
+          <span class="cal-count">3 sends</span>
+        </div>
+        <div class="cal-month">
+          <span class="cal-name">April</span>
+          <div class="cal-track">
+            <div class="cal-fill" style="width:100%"></div>
+          </div>
+          <span class="cal-count">13 sends</span>
+        </div>
+        <div class="cal-month">
+          <span class="cal-name">May</span>
+          <div class="cal-track">
+            <div class="cal-fill" style="width:52%"></div>
+          </div>
+          <span class="cal-count">7 sends</span>
+        </div>
+        <div class="cal-month">
+          <span class="cal-name">July</span>
+          <div class="cal-track">
+            <div class="cal-fill" style="width:56%"></div>
+          </div>
+          <span class="cal-count">7 sends</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">Note: Full campaign screenshots and per-brand breakdowns are being added to this page. The Figma
+      source files are private client work — reach out if you'd like a walkthrough of any program in detail.</p>
+  </section>
+
+  <section>
+    <div class="section-label">// my approach</div>
+    <h2 class="section-title">How I Design a Campaign Program</h2>
+    <p class="section-desc">Whether it's a one-off launch or a multi-month calendar, every send is built to earn its
+      place in the inbox.</p>
+    <div class="process">
+      <div class="proc">
+        <div class="proc-num">01</div>
+        <h3>Map</h3>
+        <p>Plan the calendar or flow — what each send says, who it's for, and where it sits in the customer journey.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-num">02</div>
+        <h3>Angle</h3>
+        <p>Give every email a distinct angle so a single product or offer stays fresh across the whole program.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-num">03</div>
+        <h3>Design</h3>
+        <p>Compose in Figma — hero-first layout, brand-true type and color, mobile-first hierarchy, repeated CTAs.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-num">04</div>
+        <h3>Ship</h3>
+        <p>Deliver production-ready designs, ready to build and send on schedule or trigger as automated flows.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="hire-section">
+    <h2>Want a Campaign Program Like These?</h2>
+    <p>Tell me your brand, your product, and your calendar. I'll design a send system that keeps your list engaged and
+      converting.</p>
+    <a href="mailto:hammedolaitan5@gmail.com" class="hire-cta">Start a Campaign Program &rarr;</a>
+  </div>
+
+  <footer>
+    <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
+      <a href="https://github.com/hholaitan01" target="_blank" class="footer-link">GitHub</a>
+      <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" class="footer-link">LinkedIn</a>
+      <a href="https://wa.me/2349039616768" target="_blank" class="footer-link">WhatsApp</a>
+      <a href="mailto:hammedolaitan5@gmail.com" class="footer-link">Email</a>
+    </div>
+    &copy; 2026 Olaitan Hammed. Built with purpose.
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'translateY(0)' } }) }, { threshold: .08 });
+    document.querySelectorAll('section,.page-hero,.hire-section').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(25px)'; s.style.transition = 'opacity .6s cubic-bezier(0.4,0,0.2,1),transform .6s cubic-bezier(0.4,0,0.2,1)'; obs.observe(s) });
+  </script>
+</body>
+
+</html>
