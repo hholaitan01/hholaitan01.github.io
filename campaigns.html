@@ -550,6 +550,58 @@
       text-align: right
     }
 
+    /* LEICHTKRAUT feature (green theme) + flow map */
+    .feature--lk {
+      background: linear-gradient(140deg, rgba(46, 110, 70, .1), rgba(17, 17, 19, .4) 60%);
+      border-color: rgba(90, 138, 85, .22)
+    }
+
+    .feature--lk .feature-tag {
+      color: #83c283
+    }
+
+    .feature--lk .feature-metrics .m .n {
+      color: #83c283
+    }
+
+    .flowmap {
+      display: flex;
+      flex-direction: column;
+      gap: .55rem
+    }
+
+    .flow-step {
+      display: flex;
+      gap: .8rem;
+      align-items: flex-start;
+      padding: .6rem .85rem;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid var(--border);
+      border-left: 2px solid #5a8a55;
+      border-radius: 10px
+    }
+
+    .flow-n {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      color: #83c283;
+      min-width: 16px;
+      padding-top: .15rem
+    }
+
+    .flow-c h4 {
+      font-size: .82rem;
+      color: var(--text-bright);
+      font-weight: 600;
+      margin-bottom: .12rem
+    }
+
+    .flow-c p {
+      font-size: .72rem;
+      color: var(--text-dim);
+      line-height: 1.45
+    }
+
     /* Process */
     .process {
       display: grid;
@@ -841,9 +893,9 @@
             a German-language campaign set in a calm, editorial voice — a "letter from Dr. Bauer" brand story,
             ingredient education, problem-and-approach explainers, and multi-bottle <em>Kur</em> (regimen) offers.</p>
           <div class="brand-tags"><span>Campaigns</span><span>Storytelling</span><span>Product
-              Education</span><span>Subscription Kur</span><span>German</span></div>
+              Education</span><span>Cart Recovery</span><span>Subscription Kur</span><span>German</span></div>
           <div class="brand-foot">
-            <span class="brand-scope">5+ campaigns</span>
+            <span class="brand-scope">10+ campaigns &amp; flows</span>
           </div>
         </div>
       </div>
@@ -947,6 +999,68 @@
             <div class="cal-fill" style="width:56%"></div>
           </div>
           <span class="cal-count">7 sends</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured case study: LEICHTKRAUT -->
+    <div class="feature feature--lk">
+      <div>
+        <div class="feature-tag">// featured case study</div>
+        <h3>LEICHTKRAUT — a full lifecycle email program</h3>
+        <p>LEICHTKRAUT sells plant-based lymphatic-drainage drops in a category crowded with loud, over-promising
+          supplements. The brief: earn trust first, then convert — without ever sounding like a hard sell.</p>
+        <p>I designed the whole lifecycle as calm, editorial German emails — personal letters from founders Dr. Bauer
+          and Ava — carrying subscribers from first hello all the way through to reorder.</p>
+        <div class="feature-metrics">
+          <div class="m"><span class="n">10+</span><span class="l">Campaigns &amp; flows</span></div>
+          <div class="m"><span class="n">6</span><span class="l">Lifecycle stages</span></div>
+          <div class="m"><span class="n">DE</span><span class="l">Language</span></div>
+        </div>
+      </div>
+      <div class="flowmap">
+        <div class="flow-step">
+          <span class="flow-n">01</span>
+          <div class="flow-c">
+            <h4>Story &amp; Trust</h4>
+            <p>Editorial brand-story letters rooting the product in centuries of herbal tradition.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-n">02</span>
+          <div class="flow-c">
+            <h4>Ingredient Education</h4>
+            <p>"A look at the plants" + clean-standards: Stillingia root, red clover, cleavers &amp; clematis, lab-tested, made in Germany.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-n">03</span>
+          <div class="flow-c">
+            <h4>The Kur Offer</h4>
+            <p>1 / 3-for-2 / 5-for-3 regimen bundles framed around consistency — "give your body time".</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-n">04</span>
+          <div class="flow-c">
+            <h4>Cart Recovery</h4>
+            <p>Personal "just one step away" nudges with a testimonial, the 30-day guarantee, and a saved-cart reminder.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-n">05</span>
+          <div class="flow-c">
+            <h4>Discount Escalation</h4>
+            <p>Timed <span style="font-family:var(--font-mono);color:#83c283">CHECKOUT15</span> → final-night
+              <span style="font-family:var(--font-mono);color:#83c283">NATUR10</span> reminders for fence-sitters.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <span class="flow-n">06</span>
+          <div class="flow-c">
+            <h4>Post-Purchase &amp; Reorder</h4>
+            <p>A day-25 "how does it feel?" self-assessment that segments by result and drives replenishment before the bottle runs out.</p>
+          </div>
         </div>
       </div>
     </div>
