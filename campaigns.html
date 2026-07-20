@@ -764,6 +764,27 @@
       background: #bfa4ff
     }
 
+    .ghost-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: var(--text);
+      padding: .8rem 1.6rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 1.1rem
+    }
+
+    .ghost-cta:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow)
+    }
+
     .footer-link {
       color: var(--text-dim);
       text-decoration: none;
@@ -1184,12 +1205,17 @@
     <p>Tell me your brand, your product, and your calendar. I'll design a send system that keeps your list engaged and
       converting.</p>
     <a href="mailto:hammedolaitan5@gmail.com" class="hire-cta">Start a Campaign Program &rarr;</a>
+    <div>
+      <a href="https://www.behance.net/gallery/233411173/eMail-Marketing-and-Newsletter-designs"
+        target="_blank" rel="noopener" class="ghost-cta">View the full gallery on Behance ↗</a>
+    </div>
   </div>
 
   <footer>
-    <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
+    <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap">
       <a href="https://github.com/hholaitan01" target="_blank" class="footer-link">GitHub</a>
       <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" class="footer-link">LinkedIn</a>
+      <a href="https://www.behance.net/gallery/233411173/eMail-Marketing-and-Newsletter-designs" target="_blank" class="footer-link">Behance</a>
       <a href="https://wa.me/2349039616768" target="_blank" class="footer-link">WhatsApp</a>
       <a href="mailto:hammedolaitan5@gmail.com" class="footer-link">Email</a>
     </div>
