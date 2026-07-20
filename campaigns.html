@@ -678,6 +678,135 @@
       line-height: 1.45
     }
 
+    /* real-design image tile */
+    .brand-tile--img {
+      display: block;
+      padding: 0;
+      background: #fff
+    }
+
+    .brand-tile--img::after {
+      display: none
+    }
+
+    .brand-tile--img img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      z-index: 1
+    }
+
+    /* real campaign screens gallery */
+    .screens-brand {
+      margin-bottom: 2.6rem;
+      scroll-margin-top: 90px
+    }
+
+    .screens-head {
+      display: flex;
+      align-items: baseline;
+      gap: .8rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.1rem;
+      padding-top: 1.3rem;
+      border-top: 1px solid var(--border)
+    }
+
+    .screens-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-bright)
+    }
+
+    .screens-meta {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      color: var(--text-dim)
+    }
+
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem
+    }
+
+    .shot {
+      position: relative;
+      display: block;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      text-decoration: none;
+      transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .3s
+    }
+
+    .shot:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .4)
+    }
+
+    .shot img {
+      width: 100%;
+      display: block
+    }
+
+    .shot::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 90px;
+      background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, .92));
+      pointer-events: none
+    }
+
+    .shot-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      z-index: 2;
+      font-family: var(--font-mono);
+      font-size: .55rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: rgba(9, 9, 11, .72);
+      color: #fff;
+      padding: .25rem .5rem;
+      border-radius: 5px
+    }
+
+    .shot-view {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(9, 9, 11, .45);
+      opacity: 0;
+      transition: opacity .25s
+    }
+
+    .shot-view span {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      background: var(--accent);
+      color: #0a0a0a;
+      padding: .5rem 1rem;
+      border-radius: 6px;
+      font-weight: 700
+    }
+
+    .shot:hover .shot-view {
+      opacity: 1
+    }
+
     /* Process */
     .process {
       display: grid;
@@ -960,19 +1089,22 @@
       </div>
 
       <!-- KOLAROSE -->
-      <div class="brand-card" style="--brand:#e88aa6">
-        <div class="brand-tile" style="--tile:linear-gradient(135deg,#a83e60,#e0698a)">
-          <div class="brand-stack"><i></i><i></i></div>
-          <div class="brand-mono">KR</div>
-        </div>
+      <div class="brand-card" style="--brand:#d98aa6">
+        <a class="brand-tile brand-tile--img" href="#kolarose-screens">
+          <span class="live-badge">Real design</span>
+          <img src="campaigns/screens/kolarose-postpurchase-1.jpg" alt="KOLAROSE campaign email" loading="lazy">
+          <div class="tile-view"><span>View campaigns &rarr;</span></div>
+        </a>
         <div class="brand-body">
-          <div class="brand-eyebrow">DTC · Lifecycle Flows</div>
+          <div class="brand-eyebrow">DTC · Hair Care</div>
           <div class="brand-name">KOLAROSE</div>
-          <p class="brand-desc">A 2026 flow-based email program — welcome, nurture, and win-back sequences built to run
-            continuously across the customer lifecycle and keep the brand top of mind.</p>
-          <div class="brand-tags"><span>Lifecycle Flows</span><span>Welcome Series</span><span>Win-back</span><span>Automation</span></div>
+          <p class="brand-desc">Botanical hair-growth serum — biotin, rosemary, ginseng and collagen. I designed a
+            full lifecycle program in a clean black-and-white editorial voice: welcome, abandoned checkout &amp; cart,
+            browse &amp; site abandonment, win-back, post-purchase, shipping and cancellation — with founder letters
+            from Lucy.</p>
+          <div class="brand-tags"><span>Full Lifecycle</span><span>8 Flows</span><span>Founder Letters</span><span>Editorial</span><span>German</span></div>
           <div class="brand-foot">
-            <span class="brand-scope">2026 email flows</span>
+            <span class="brand-scope">8 flows · 40+ emails</span>
           </div>
         </div>
       </div>
@@ -999,19 +1131,21 @@
       </div>
 
       <!-- ALUVEA -->
-      <div class="brand-card" style="--brand:#5ec8bc">
-        <div class="brand-tile" style="--tile:linear-gradient(135deg,#2f7f77,#4bb3a8)">
-          <div class="brand-stack"><i></i><i></i></div>
-          <div class="brand-mono">AV</div>
-        </div>
+      <div class="brand-card" style="--brand:#c98a5e">
+        <a class="brand-tile brand-tile--img" href="#aluvea-screens">
+          <span class="live-badge">Real design</span>
+          <img src="campaigns/screens/aluvea-checkout-1.jpg" alt="ALUVÉA campaign email" loading="lazy">
+          <div class="tile-view"><span>View campaigns &rarr;</span></div>
+        </a>
         <div class="brand-body">
-          <div class="brand-eyebrow">DTC · Email Flows</div>
-          <div class="brand-name">ALUVEA</div>
-          <p class="brand-desc">Lifecycle email flows crafted to introduce the brand, build trust, and move subscribers
-            toward conversion with a clean, consistent visual language across every send.</p>
-          <div class="brand-tags"><span>Email Flows</span><span>Brand Introduction</span><span>Conversion</span></div>
+          <div class="brand-eyebrow">DTC · Beauty</div>
+          <div class="brand-name">ALUVÉA</div>
+          <p class="brand-desc">SmoothTrim — a waterproof 2-in-1 trimmer for face and body. I designed the conversion
+            and lifecycle flows in a warm, blush editorial style: founder letters from Mira, a &ldquo;vs. classic
+            razor&rdquo; comparison, real testimonials, and discount escalation (WILLKOMMEN10 &rarr; CHECKOUT15).</p>
+          <div class="brand-tags"><span>Lifecycle Flows</span><span>Cart Recovery</span><span>Comparison</span><span>Testimonials</span><span>German</span></div>
           <div class="brand-foot">
-            <span class="brand-scope">Email flows</span>
+            <span class="brand-scope">Welcome &rarr; Win-back</span>
           </div>
         </div>
       </div>
@@ -1169,6 +1303,144 @@
     <p class="note">Brands marked <strong style="color:var(--accent)">Live email</strong> open a hand-coded,
       pixel-faithful recreation of the real campaign — click any preview to view the full email. More brands are being
       added; the original Figma files are private client work, so reach out for a full walkthrough.</p>
+  </section>
+
+  <section>
+    <div class="section-label">// real campaign screens</div>
+    <h2 class="section-title">The Actual Emails</h2>
+    <p class="section-desc">Real screens from the live flows, pulled straight from the source design files. Click any
+      one to open it full-size in a new tab.</p>
+
+    <div class="screens-brand" id="kolarose-screens">
+      <div class="screens-head"><span class="screens-name">KOLAROSE</span><span class="screens-meta">Botanical hair-growth serum · post-purchase A/B set</span></div>
+      <div class="screens-grid">
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-1.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-2.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-3.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-4.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-5.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-5.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="screens-brand" id="aluvea-screens">
+      <div class="screens-head"><span class="screens-name">ALUVÉA</span><span class="screens-meta">SmoothTrim hair-removal · conversion &amp; lifecycle flows</span></div>
+      <div class="screens-grid">
+        <a class="shot" href="campaigns/screens/aluvea-checkout-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-checkout-1.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email">
+          <span class="shot-tag">Abandoned Checkout</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-checkout-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-checkout-2.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email">
+          <span class="shot-tag">Abandoned Checkout</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-checkout-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-checkout-3.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email">
+          <span class="shot-tag">Abandoned Checkout</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-checkout-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-checkout-4.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email">
+          <span class="shot-tag">Abandoned Checkout</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-cart-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-cart-1.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email">
+          <span class="shot-tag">Abandoned Cart</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-cart-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-cart-2.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email">
+          <span class="shot-tag">Abandoned Cart</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-cart-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-cart-3.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email">
+          <span class="shot-tag">Abandoned Cart</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-cart-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-cart-4.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email">
+          <span class="shot-tag">Abandoned Cart</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-browse-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-browse-1.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email">
+          <span class="shot-tag">Browse Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-browse-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-browse-2.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email">
+          <span class="shot-tag">Browse Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-browse-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-browse-3.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email">
+          <span class="shot-tag">Browse Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-browse-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-browse-4.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email">
+          <span class="shot-tag">Browse Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-site-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-site-1.jpg" loading="lazy" alt="ALUVÉA Site Abandonment email">
+          <span class="shot-tag">Site Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-site-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-site-2.jpg" loading="lazy" alt="ALUVÉA Site Abandonment email">
+          <span class="shot-tag">Site Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-1.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-2.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-3.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-4.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-5.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-5.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+      </div>
+    </div>
   </section>
 
   <section>
