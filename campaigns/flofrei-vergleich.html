@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLOFREI — Was steht im Beipackzettel?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#e7e2d6;font-family:Georgia,'Times New Roman',serif;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Playfair Display',Georgia,serif}
+  .w{max-width:600px;margin:0 auto;background:#fff}
+  .pad{padding:0 34px}
+  /* sender */
+  .sender{display:flex;align-items:center;gap:12px;padding:30px 34px 22px}
+  .av{width:44px;height:44px;border-radius:50%;background:#eef2e9;border:1px dashed #9ab89f;display:flex;align-items:center;justify-content:center;flex:0 0 44px;font-size:20px}
+  .sender .l{font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#3f7a52;font-weight:700}
+  .sender .s{font-family:Arial,sans-serif;font-size:12px;color:#8a8d80}
+  h1{font-family:'Playfair Display',Georgia,serif;font-size:29px;line-height:1.24;font-weight:700;color:#1f2a22;padding:0 34px 16px}
+  h1 .i{font-style:italic;color:#3f7a52}
+  .lead{padding:0 34px 24px;font-size:15.5px;line-height:1.6;color:#3a3d36}
+  .lead b{color:#1f2a22}
+  /* comparison */
+  .cmp{padding:0 34px 8px;position:relative}
+  .cmp-row{display:flex;gap:0;border-radius:14px;overflow:hidden;border:1px solid #ececE4}
+  .cmp-col{flex:1;padding:26px 18px 20px;text-align:center}
+  .cmp-col.bad{background:#f6f2ec}
+  .cmp-col.good{background:#eef5ee}
+  .cmp-ic{width:66px;height:66px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #e4e0d6}
+  .cmp-col.good .cmp-ic{border:2px solid #3f7a52}
+  .cmp-ic svg{width:34px;height:34px}
+  .cmp-t{font-family:Arial,sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:#6a6d63;margin-bottom:8px}
+  .cmp-col.good .cmp-t{font-family:'Playfair Display',Georgia,serif;font-size:19px;text-transform:none;letter-spacing:0;color:#1f2a22;font-weight:700}
+  .cmp-d{font-size:12.5px;line-height:1.5;color:#6a6d63;min-height:52px}
+  .cmp-d .i{font-style:italic}
+  .cmp-tag{display:inline-block;margin-top:12px;font-family:Arial,sans-serif;font-size:12px;font-weight:700;padding:8px 14px;border-radius:20px}
+  .tag-bad{background:#f0e2df;color:#a85c50}
+  .tag-good{background:#1f4a30;color:#fff}
+  .vs{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:#161616;color:#fff;font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:14px;display:flex;align-items:center;justify-content:center;font-weight:700;z-index:2}
+  /* benefits */
+  .ben-lead{padding:30px 34px 6px;font-size:15.5px;line-height:1.6;color:#3a3d36}
+  .ben-lead .i{font-style:italic;color:#3f7a52;font-weight:600}
+  .ben{margin:12px 34px 0;background:#f7f9f5;border:1px solid #e8efe6;border-radius:12px;padding:18px 20px;display:flex;gap:16px}
+  .ben-n{font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:700;color:#bcd3bf;line-height:1;flex:0 0 auto}
+  .ben-h{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:18px;color:#2f6042;font-weight:700;margin-bottom:5px}
+  .ben-p{font-size:13.5px;line-height:1.55;color:#4a4d45}
+  /* close */
+  .close{background:#f2f6f0;margin-top:26px;padding:34px;text-align:center}
+  .close h2{font-family:'Playfair Display',Georgia,serif;font-size:24px;color:#1f2a22;font-weight:700;margin-bottom:12px}
+  .close h2 .i{font-style:italic;color:#3f7a52}
+  .close p{font-size:14.5px;line-height:1.55;color:#4a4d45;max-width:400px;margin:0 auto 22px}
+  .cta{display:inline-block;background:#4a8a5f;color:#fff;text-decoration:none;font-family:Arial,sans-serif;font-size:15px;font-weight:700;padding:15px 34px;border-radius:30px}
+  /* badges */
+  .badges{display:flex;gap:12px;padding:24px 28px;background:#f0e9db}
+  .badge{flex:1;text-align:center}
+  .badge .bi{font-size:20px;margin-bottom:5px}
+  .badge .bt{font-family:Arial,sans-serif;font-size:12px;font-weight:700;color:#33352d;line-height:1.3}
+  .badge .bs{font-family:Arial,sans-serif;font-size:10.5px;color:#7a7d70;line-height:1.3;margin-top:2px}
+  /* sig */
+  .fsig{display:flex;align-items:center;gap:12px;padding:26px 34px}
+  .fsig .n{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:22px;color:#2f6042;font-weight:700}
+  .fsig .m{font-family:Arial,sans-serif;font-size:11px;color:#8a8d80}
+  .fsig .h{font-family:Arial,sans-serif;font-size:12px;color:#6a6d63;margin-bottom:2px}
+  /* footer */
+  .foot{background:#1f4a30;padding:30px 34px 36px;text-align:center}
+  .foot .fl{font-family:'Playfair Display',Georgia,serif;font-size:20px;color:#fff;font-weight:700;margin-bottom:5px}
+  .foot .fl .i{font-style:italic;color:#9dc7a6}
+  .foot .ft{font-family:Arial,sans-serif;font-size:12px;color:#bcd0c1;margin-bottom:22px}
+  .pay{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:22px}
+  .pay span{background:#fff;border-radius:4px;font-family:Arial,sans-serif;font-size:8.5px;font-weight:700;color:#333;padding:5px 7px}
+  .foot a{display:block;color:#cfe0d4;text-decoration:none;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:13px 0;border-top:1px solid rgba(255,255,255,.13)}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="sender">
+    <div class="av">🐾</div>
+    <div><div class="l">Eine Nachricht von Tanja</div><div class="s">Gründerin &middot; Flofrei</div></div>
+  </div>
+
+  <h1>Was steht eigentlich im <span class="i">Beipackzettel</span> chemischer Zecken-Kautabletten?</h1>
+
+  <div class="lead">Herkömmliche Mittel brauchen erst einen Biss: Der Parasit muss zustechen, ins Blut deines Hundes gelangen und <b>bis zu 12 Stunden saugen</b>, bevor er stirbt. Doch gefährliche Krankheiten wie FSME können schon im Moment des Bisses übertragen werden &mdash; chemische Mittel reagieren also zu spät.</div>
+
+  <div class="cmp">
+    <div class="cmp-row">
+      <div class="cmp-col bad">
+        <div class="cmp-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="6" width="16" height="13" rx="2" fill="#e2dccb" stroke="#c3bba4" stroke-width="1"/><rect x="8" y="3" width="8" height="4" rx="1" fill="#cfc7ae"/><circle cx="10" cy="12" r="1.6" fill="#b04a3a"/><circle cx="14" cy="15" r="1.6" fill="#b04a3a"/></svg></div>
+        <div class="cmp-t">Chemische Kautablette</div>
+        <div class="cmp-d">Biss &rarr; ins Blut &rarr; bis zu 12 Std. saugen, bevor sie wirkt.</div>
+        <div class="cmp-tag tag-bad">&times; Wirkt zu spät</div>
+      </div>
+      <div class="cmp-col good">
+        <div class="cmp-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="6" y="8" width="12" height="8" rx="4" fill="#4a8a5f"/><circle cx="10" cy="12" r="1.4" fill="#fff"/><circle cx="14" cy="12" r="1.4" fill="#fff"/><path d="M12 4V8" stroke="#4a8a5f" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        <div class="cmp-t">Flofrei&reg;</div>
+        <div class="cmp-d">Wirkt, <span class="i">bevor</span> der Parasit überhaupt zubeißt.</div>
+        <div class="cmp-tag tag-good">&checkmark; Schützt vor dem Biss</div>
+      </div>
+    </div>
+    <div class="vs serif">vs</div>
+  </div>
+
+  <div class="ben-lead">Wenn du auf neurotoxische Chemie im Blutkreislauf deines Hundes verzichtest, schenkst du deinem Zuhause <span class="i">drei große Vorteile</span>:</div>
+
+  <div class="ben">
+    <div class="ben-n">01</div>
+    <div><div class="ben-h">Ein unsichtbarer Schutzschild</div><div class="ben-p">Unsere SmartRelease-Technologie&trade; nutzt die natürliche Körperwärme deines Hundes und gibt eine feine Wolke aus 6 Pflanzenölen frei &mdash; u.&nbsp;a. Pfefferminze, Kamille und Zitronella &mdash; die seinen Geruch vollständig vor Parasiten verbirgt.</div></div>
+  </div>
+  <div class="ben">
+    <div class="ben-n">02</div>
+    <div><div class="ben-h">Sorgenfreie Spaziergänge</div><div class="ben-p">Sag der Anspannung nach dem Gassigehen ade &mdash; kein Absuchen des Fells mit der Zeckenkarte auf dem Sofa mehr. Du läufst mit reinem Gewissen durch den Wald.</div></div>
+  </div>
+  <div class="ben">
+    <div class="ben-n">03</div>
+    <div><div class="ben-h">Einmal anklippen &amp; vergessen</div><div class="ben-p">Schluss mit klebrigen Sprays, die nur Stunden halten. Du clippst den Anhänger einmal ans Halsband &mdash; und genießt bis zu 12 Monate wasserfesten Schutz.</div></div>
+  </div>
+
+  <div class="close">
+    <h2 class="serif">Schütz deinen Schatz &mdash; <span class="i">sicher.</span></h2>
+    <p>Teste Flofrei 60 Tage lang zu 100 % risikofrei. Überzeugt dich nicht &mdash; du bekommst dein Geld zurück.</p>
+    <a href="#" class="cta">🐾&nbsp; Jetzt zur Kasse &nbsp;&rarr;</a>
+  </div>
+
+  <div class="badges">
+    <div class="badge"><div class="bi">✅</div><div class="bt">60 Tage Geld-zurück</div><div class="bs">ohne Wenn und Aber</div></div>
+    <div class="badge"><div class="bi">🐾</div><div class="bt">2.300+ glückliche Tierbesitzer</div><div class="bs">in der ganzen DACH-Region</div></div>
+    <div class="badge"><div class="bi">🚚</div><div class="bt">Kostenloser Versand</div><div class="bs">ab 80 &euro;</div></div>
+  </div>
+
+  <div class="fsig">
+    <div class="av">🐾</div>
+    <div><div class="h">Viele Grüße,</div><div class="n">Tanja</div><div class="m">Gründerin von Flofrei&reg;</div></div>
+  </div>
+
+  <div class="foot">
+    <div class="fl">flo<span class="i">frei</span>&reg;</div>
+    <div class="ft">Dein Flofrei&reg; Team</div>
+    <div class="pay"><span>AMEX</span><span>Apple&nbsp;Pay</span><span>EPS</span><span>G&nbsp;Pay</span><span>Klarna</span><span>Maestro</span><span>MC</span><span>PayPal</span><span>UnionPay</span><span>VISA</span></div>
+    <a href="#">Über uns</a>
+    <a href="#">Verfolge deine Bestellung</a>
+    <a href="#">Versandbedingungen</a>
+  </div>
+</div>
+</body>
+</html>

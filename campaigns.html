@@ -375,6 +375,82 @@
       z-index: 2
     }
 
+    /* live email preview tile */
+    .brand-tile--live {
+      display: block;
+      padding: 0;
+      background: #efeae0
+    }
+
+    .brand-tile--live::after {
+      display: none
+    }
+
+    .brand-tile--live iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 420px;
+      transform: scale(.5);
+      transform-origin: top left;
+      border: 0;
+      pointer-events: none;
+      z-index: 1
+    }
+
+    .tile-view {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(9, 9, 11, .5);
+      opacity: 0;
+      transition: opacity .25s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+
+    .tile-view span {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      background: var(--brand, var(--accent));
+      color: #0a0a0a;
+      padding: .5rem 1rem;
+      border-radius: 6px;
+      font-weight: 700
+    }
+
+    .brand-card:hover .tile-view {
+      opacity: 1
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 3;
+      font-family: var(--font-mono);
+      font-size: .55rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      background: rgba(9, 9, 11, .72);
+      color: #fff;
+      padding: .28rem .5rem;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: .35rem
+    }
+
+    .live-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand, var(--accent))
+    }
+
     .brand-body {
       padding: 1.4rem 1.4rem 1.6rem;
       display: flex;
@@ -882,10 +958,11 @@
 
       <!-- LEICHTKRAUT -->
       <div class="brand-card" style="--brand:#83c283">
-        <div class="brand-tile" style="--tile:linear-gradient(135deg,#1e4d32,#5a8a55)">
-          <div class="brand-stack"><i></i><i></i></div>
-          <div class="brand-mono">LK</div>
-        </div>
+        <a class="brand-tile brand-tile--live" href="campaigns/leichtkraut-brief.html" target="_blank" rel="noopener">
+          <span class="live-badge">Live email</span>
+          <iframe src="campaigns/leichtkraut-brief.html" loading="lazy" tabindex="-1" title="LEICHTKRAUT — Ein Brief von Dr. Bauer"></iframe>
+          <div class="tile-view"><span>View email &rarr;</span></div>
+        </a>
         <div class="brand-body">
           <div class="brand-eyebrow">DTC · Herbal Wellness</div>
           <div class="brand-name">LEICHTKRAUT</div>
@@ -938,10 +1015,11 @@
 
       <!-- FLOFREI -->
       <div class="brand-card" style="--brand:#6fb6ec">
-        <div class="brand-tile" style="--tile:linear-gradient(135deg,#2c6fa8,#4a9fe0)">
-          <div class="brand-stack"><i></i><i></i></div>
-          <div class="brand-mono">FF</div>
-        </div>
+        <a class="brand-tile brand-tile--live" href="campaigns/flofrei-vergleich.html" target="_blank" rel="noopener">
+          <span class="live-badge">Live email</span>
+          <iframe src="campaigns/flofrei-vergleich.html" loading="lazy" tabindex="-1" title="FLOFREI — Was steht im Beipackzettel?"></iframe>
+          <div class="tile-view"><span>View email &rarr;</span></div>
+        </a>
         <div class="brand-body">
           <div class="brand-eyebrow">DTC · Pet Care</div>
           <div class="brand-name">FLOFREI</div>
@@ -1067,8 +1145,9 @@
       </div>
     </div>
 
-    <p class="note">Note: Full campaign screenshots and per-brand breakdowns are being added to this page. The Figma
-      source files are private client work — reach out if you'd like a walkthrough of any program in detail.</p>
+    <p class="note">Brands marked <strong style="color:var(--accent)">Live email</strong> open a hand-coded,
+      pixel-faithful recreation of the real campaign — click any preview to view the full email. More brands are being
+      added; the original Figma files are private client work, so reach out for a full walkthrough.</p>
   </section>
 
   <section>
