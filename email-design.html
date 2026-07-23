@@ -80,12 +80,18 @@
     .work-scope a{color:var(--muted);text-decoration:none;margin-left:.8rem;border-bottom:1px solid var(--line-2)}
     .work-scope a:hover{color:var(--ink)}
 
-    /* gallery masonry (full-length emails) */
-    .gal{display:flex;gap:1.4rem;align-items:flex-start}
-    .gal-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:1.4rem}
-    .shot{position:relative;display:block;border-radius:12px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 2px 14px rgba(23,24,27,.05);text-decoration:none;transition:transform .3s,box-shadow .3s}
+    /* gallery — horizontal filmstrip of full-length emails */
+    .gal{display:flex;gap:1.2rem;overflow-x:auto;overflow-y:hidden;padding:.4rem .2rem 1.3rem;scroll-snap-type:x proximity;scrollbar-width:thin}
+    .gal::-webkit-scrollbar{height:8px}
+    .gal::-webkit-scrollbar-track{background:transparent}
+    .gal::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:8px}
+    .shot{flex:0 0 auto;height:1340px;scroll-snap-align:start;position:relative;display:block;border-radius:12px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 2px 14px rgba(23,24,27,.05);text-decoration:none;transition:transform .3s,box-shadow .3s}
     .shot:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(23,24,27,.13)}
-    .shot img{width:100%;display:block}
+    .shot img{height:100%;width:auto;display:block}
+    .gal-hint{font-size:.72rem;letter-spacing:.06em;color:var(--muted);margin-top:.2rem}
+    .single .shot{height:auto;max-width:420px}
+    .single .shot img{width:100%;height:auto}
+    @media(max-width:640px){.shot{height:74vh}}
     .shot-tag{position:absolute;top:11px;left:11px;z-index:2;font-size:.56rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.92);color:var(--ink);padding:.3rem .6rem;border-radius:40px;box-shadow:0 1px 6px rgba(0,0,0,.08)}
     .shot-open{position:absolute;top:11px;right:11px;z-index:2;font-size:.56rem;font-weight:600;background:var(--ink);color:#fff;padding:.3rem .6rem;border-radius:40px;opacity:0;transition:opacity .25s}
     .shot:hover .shot-open{opacity:1}
@@ -200,20 +206,15 @@
         <div class="work-scope">8 flows · 40+ emails</div>
       </div>
       <div class="gal">
-        <div class="gal-col">
           <a class="shot" href="campaigns/screens/kolarose-postpurchase-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-1.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
-          <a class="shot" href="campaigns/screens/kolarose-postpurchase-5.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-5.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
-        </div>
-        <div class="gal-col">
           <a class="shot" href="campaigns/screens/kolarose-postpurchase-2.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-2.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
-          <a class="shot" href="campaigns/screens/kolarose-postpurchase-4.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-4.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
-        </div>
-        <div class="gal-col">
           <a class="shot" href="campaigns/screens/kolarose-postpurchase-3.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-3.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
+          <a class="shot" href="campaigns/screens/kolarose-postpurchase-4.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-4.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
+          <a class="shot" href="campaigns/screens/kolarose-postpurchase-5.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-5.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
           <a class="shot" href="campaigns/screens/kolarose-postpurchase-6.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-6.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
           <a class="shot" href="campaigns/screens/kolarose-postpurchase-7.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/kolarose-postpurchase-7.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
-        </div>
       </div>
+      <div class="gal-hint">← scroll for all 7 emails →</div>
     </article>
     <article class="work" id="aluvea" style="--bc:#c98a5e">
       <div class="work-head">
@@ -224,18 +225,13 @@
         <div class="work-scope">Welcome → Win-back</div>
       </div>
       <div class="gal">
-        <div class="gal-col">
           <a class="shot" href="campaigns/screens/aluvea-checkout-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/aluvea-checkout-1.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email"><span class="shot-tag">Abandoned Checkout</span><span class="shot-open">Open ↗</span></a>
-          <a class="shot" href="campaigns/screens/aluvea-site-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/aluvea-site-1.jpg" loading="lazy" alt="ALUVÉA Site Abandonment email"><span class="shot-tag">Site Abandonment</span><span class="shot-open">Open ↗</span></a>
-        </div>
-        <div class="gal-col">
           <a class="shot" href="campaigns/screens/aluvea-cart-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/aluvea-cart-1.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email"><span class="shot-tag">Abandoned Cart</span><span class="shot-open">Open ↗</span></a>
-        </div>
-        <div class="gal-col">
           <a class="shot" href="campaigns/screens/aluvea-browse-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/aluvea-browse-1.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email"><span class="shot-tag">Browse Abandonment</span><span class="shot-open">Open ↗</span></a>
+          <a class="shot" href="campaigns/screens/aluvea-site-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/aluvea-site-1.jpg" loading="lazy" alt="ALUVÉA Site Abandonment email"><span class="shot-tag">Site Abandonment</span><span class="shot-open">Open ↗</span></a>
           <a class="shot" href="campaigns/screens/aluvea-post-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/aluvea-post-1.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email"><span class="shot-tag">Post-Purchase</span><span class="shot-open">Open ↗</span></a>
-        </div>
       </div>
+      <div class="gal-hint">← scroll for all 5 emails →</div>
     </article>
     <article class="work" id="silkynight" style="--bc:#e07a97">
       <div class="work-head">
@@ -246,13 +242,10 @@
         <div class="work-scope">Campaigns & flows</div>
       </div>
       <div class="gal">
-        <div class="gal-col">
           <a class="shot" href="campaigns/screens/silkynight-summer-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/silkynight-summer-1.jpg" loading="lazy" alt="SILKYNIGHT Seasonal Sale email"><span class="shot-tag">Seasonal Sale</span><span class="shot-open">Open ↗</span></a>
-        </div>
-        <div class="gal-col">
           <a class="shot" href="campaigns/screens/silkynight-sleep-1.jpg" target="_blank" rel="noopener"><img src="campaigns/screens/silkynight-sleep-1.jpg" loading="lazy" alt="SILKYNIGHT Education email"><span class="shot-tag">Education</span><span class="shot-open">Open ↗</span></a>
-        </div>
       </div>
+      <div class="gal-hint">← scroll for all 2 emails →</div>
     </article>
     <article class="work" id="leichtkraut" style="--bc:#5a8a55">
       <div class="work-head">
