@@ -1,1026 +1,668 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Design Gallery — Olaitan Hammed</title>
-  <meta name="description"
-    content="20+ production-ready HTML email templates for e-commerce, SaaS, product launches, and retention campaigns. Hand-coded, responsive, and dark-mode ready. View the gallery.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --bg: #09090b;
-      --bg-card: #111113;
-      --border: rgba(255, 255, 255, .06);
-      --accent: #a78bfa;
-      --accent-dim: #6d5aab;
-      --accent-glow: rgba(167, 139, 250, .08);
-      --green: #3dffc0;
-      --text: #a1a1aa;
-      --text-bright: #fafafa;
-      --text-dim: #52525b;
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Outfit', sans-serif
-    }
-
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box
-    }
-
-    html {
-      scroll-behavior: smooth
-    }
-
-    body {
-      font-family: var(--font-sans);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      overflow-x: hidden
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 1rem 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(9, 9, 11, .88);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border)
-    }
-
-    .nav-logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--green);
-      text-decoration: none;
-      letter-spacing: .08em
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-      align-items: center
-    }
-
-    .nav-links a {
-      font-family: var(--font-mono);
-      font-size: .75rem;
-      color: var(--text-dim);
-      text-decoration: none;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      transition: color .25s cubic-bezier(0.4,0,0.2,1)
-    }
-
-    .nav-links a:hover {
-      color: var(--green)
-    }
-
-    .nav-links a.active {
-      color: var(--accent)
-    }
-
-    .nav-cta {
-      font-family: var(--font-mono);
-      font-size: .72rem;
-      color: var(--bg) !important;
-      background: var(--green);
-      padding: .5rem 1.2rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      transition: all .25s cubic-bezier(0.4,0,0.2,1)
-    }
-
-    .nav-cta:hover {
-      background: #5cffcf
-    }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 4px
-    }
-
-    .hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text)
-    }
-
-    .page-hero {
-      padding: 10rem 8vw 4rem;
-      position: relative
-    }
-
-    .page-hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 500px;
-      height: 500px;
-      pointer-events: none
-    }
-
-    .breadcrumb {
-      font-family: var(--font-mono);
-      font-size: .72rem;
-      color: var(--text-dim);
-      margin-bottom: 1.5rem;
-      letter-spacing: .1em
-    }
-
-    .breadcrumb a {
-      color: var(--text-dim);
-      text-decoration: none
-    }
-
-    .breadcrumb a:hover {
-      color: var(--accent)
-    }
-
-    .breadcrumb .sep {
-      margin: 0 .5rem
-    }
-
-    .page-hero h1 {
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 800;
-      color: var(--text-bright);
-      line-height: 1.1;
-      margin-bottom: 1rem;
-      letter-spacing: -.02em
-    }
-
-    .page-hero h1 .accent {
-      color: var(--accent)
-    }
-
-    .page-hero>p {
-      font-size: 1.1rem;
-      color: var(--text);
-      max-width: 600px;
-      margin-bottom: .5rem
-    }
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      font-family: var(--font-mono);
-      font-size: .82rem;
-      color: var(--bg);
-      background: var(--accent);
-      padding: .7rem 1.6rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all .25s cubic-bezier(0.4,0,0.2,1);
-      margin-top: 1rem
-    }
-
-    .hero-cta:hover {
-      background: #bfa4ff
-    }
-
-    .stats-bar {
-      display: flex;
-      gap: 2rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap
-    }
-
-    .stat-pill {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      padding: .5rem 1.2rem
-    }
-
-    .stat-pill .num {
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent)
-    }
-
-    .stat-pill .label {
-      font-size: .78rem;
-      color: var(--text-dim)
-    }
-
-    .email-skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem;
-      margin-top: 1.2rem
-    }
-
-    .email-skills span {
-      font-family: var(--font-mono);
-      font-size: .7rem;
-      padding: .4rem .9rem;
-      background: rgba(167, 139, 250, .06);
-      border: 1px solid rgba(167, 139, 250, .12);
-      border-radius: 50px;
-      color: var(--accent-dim);
-      transition: all .25s cubic-bezier(0.4,0,0.2,1)
-    }
-
-    .email-skills span:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-glow)
-    }
-
-    section {
-      padding: 4rem 8vw
-    }
-
-    .section-label {
-      font-family: var(--font-mono);
-      font-size: .72rem;
-      color: var(--accent);
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      margin-bottom: .5rem
-    }
-
-    .section-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text-bright);
-      margin-bottom: 1rem
-    }
-
-    .section-desc {
-      font-size: 1rem;
-      color: var(--text);
-      max-width: 600px;
-      margin-bottom: 2.5rem
-    }
-
-    .category {
-      margin-bottom: 3rem
-    }
-
-    .cat-header {
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-      margin-bottom: 1.2rem
-    }
-
-    .cat-icon {
-      font-size: 1.3rem
-    }
-
-    .cat-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-bright)
-    }
-
-    .cat-count {
-      font-family: var(--font-mono);
-      font-size: .68rem;
-      color: var(--accent);
-      background: rgba(167, 139, 250, .1);
-      padding: .2rem .6rem;
-      border-radius: 8px
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem
-    }
-
-    .gallery-item {
-      position: relative;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: all .35s cubic-bezier(0.4,0,0.2,1);
-      text-decoration: none;
-      display: block
-    }
-
-    .gallery-item::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .4s cubic-bezier(0.4,0,0.2,1);
-      z-index: 2
-    }
-
-    .gallery-item:hover {
-      border-color: rgba(167, 139, 250, .2);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, .35)
-    }
-
-    .gallery-item:hover::before {
-      transform: scaleX(1)
-    }
-
-    .gallery-item:hover .thumb-overlay {
-      opacity: 1
-    }
-
-    .thumb-wrap {
-      position: relative;
-      height: 280px;
-      overflow: hidden;
-      background: #fff
-    }
-
-    .thumb-wrap iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 200%;
-      height: 560px;
-      transform: scale(.5);
-      transform-origin: top left;
-      border: none;
-      pointer-events: none
-    }
-
-    .thumb-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(9, 9, 11, .6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity .25s cubic-bezier(0.4,0,0.2,1)
-    }
-
-    .thumb-overlay span {
-      font-family: var(--font-mono);
-      font-size: .8rem;
-      color: #fff;
-      background: var(--accent);
-      padding: .55rem 1.2rem;
-      border-radius: 4px;
-      font-weight: 600
-    }
-
-    .gallery-info {
-      padding: 1rem 1.2rem
-    }
-
-    .gallery-num {
-      font-family: var(--font-mono);
-      font-size: .62rem;
-      color: var(--accent-dim);
-      margin-bottom: .25rem
-    }
-
-    .gallery-info h3 {
-      font-size: .95rem;
-      color: var(--text-bright);
-      margin-bottom: .25rem;
-      font-weight: 600
-    }
-
-    .gallery-info p {
-      font-size: .75rem;
-      color: var(--text-dim);
-      line-height: 1.45
-    }
-
-    .gallery-type {
-      font-family: var(--font-mono);
-      font-size: .58rem;
-      color: var(--accent);
-      background: rgba(167, 139, 250, .08);
-      padding: .18rem .45rem;
-      border-radius: 4px;
-      display: inline-block;
-      margin-top: .4rem
-    }
-
-    .process {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.2rem;
-      margin-top: 2.5rem
-    }
-
-    .proc {
-      text-align: center;
-      padding: 1.5rem 1rem
-    }
-
-    .proc-num {
-      font-family: var(--font-mono);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: .5rem
-    }
-
-    .proc h3 {
-      font-size: .95rem;
-      color: var(--text-bright);
-      margin-bottom: .3rem
-    }
-
-    .proc p {
-      font-size: .8rem;
-      color: var(--text-dim);
-      line-height: 1.5
-    }
-
-    .hire-section {
-      text-align: center;
-      padding: 5rem 8vw;
-      border-top: 1px solid var(--border)
-    }
-
-    .hire-section h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text-bright);
-      margin-bottom: .8rem
-    }
-
-    .hire-section p {
-      font-size: 1rem;
-      color: var(--text);
-      max-width: 500px;
-      margin: 0 auto 1.5rem
-    }
-
-    .hire-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      font-family: var(--font-mono);
-      font-size: .85rem;
-      color: var(--bg);
-      background: var(--accent);
-      padding: .85rem 2rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all .25s cubic-bezier(0.4,0,0.2,1)
-    }
-
-    .hire-cta:hover {
-      background: #bfa4ff
-    }
-
-    .pricing-hint {
-      font-family: var(--font-mono);
-      font-size: .76rem;
-      color: var(--text-dim);
-      margin-top: 1rem
-    }
-
-    .pricing-hint span {
-      color: var(--accent)
-    }
-
-    .footer-link {
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color .25s cubic-bezier(0.4,0,0.2,1)
-    }
-    .footer-link:hover { color: var(--green) }
-
-    footer {
-      text-align: center;
-      padding: 2rem 8vw;
-      font-family: var(--font-mono);
-      font-size: .7rem;
-      color: var(--text-dim);
-      border-top: 1px solid var(--border)
-    }
-
-    .craft-bar {
-      display: inline-flex;
-      align-items: center;
-      gap: .55rem;
-      flex-wrap: wrap;
-      margin-top: 1.6rem;
-      font-family: var(--font-mono);
-      font-size: .75rem;
-      color: var(--green);
-      background: rgba(61, 255, 192, .05);
-      border: 1px solid rgba(61, 255, 192, .18);
-      border-radius: 8px;
-      padding: .65rem 1.1rem;
-      letter-spacing: .04em
-    }
-
-    .craft-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      min-width: 7px;
-      background: var(--green);
-      border-radius: 50%
-    }
-
-    .craft-sep {
-      color: rgba(61, 255, 192, .28)
-    }
-
-    .cat-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .55rem;
-      margin-bottom: 2.8rem
-    }
-
-    .cat-chip {
-      font-family: var(--font-mono);
-      font-size: .7rem;
-      padding: .45rem 1rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      color: var(--text);
-      text-decoration: none;
-      transition: all .25s;
-      cursor: pointer
-    }
-
-    .cat-chip:hover {
-      background: rgba(167, 139, 250, .08);
-      border-color: var(--accent);
-      color: var(--accent)
-    }
-
-    .cat-header {
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-      margin-bottom: 1.2rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid var(--border)
-    }
-
-    @media(max-width:900px) {
-      .gallery-grid {
-        grid-template-columns: 1fr 1fr
-      }
-
-      .process {
-        grid-template-columns: 1fr 1fr
-      }
-
-      nav {
-        padding: 1rem 1.5rem
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        background: rgba(9, 9, 11, .96);
-        padding: 1.5rem 2rem;
-        gap: 1.2rem;
-        border-bottom: 1px solid var(--border)
-      }
-
-      .nav-links.open {
-        display: flex
-      }
-
-      .hamburger {
-        display: flex
-      }
-
-      .nav-cta {
-        display: none
-      }
-    }
-
-    @media(max-width:600px) {
-      .gallery-grid {
-        grid-template-columns: 1fr
-      }
-
-      .process {
-        grid-template-columns: 1fr
-      }
-
-      section {
-        padding: 3rem 6vw
-      }
-
-      .page-hero {
-        padding: 8rem 6vw 3rem
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Design Portfolio — Olaitan Hammed</title>
+<meta name="description" content="Email design portfolio: real lifecycle flows and campaign calendars for 7 DTC brands (BROTMEISTER, KOLAROSE, ALUVÉA, LEICHTKRAUT, SILKYNIGHT, FLOFREI, SCHRAUBENWERK) plus hand-coded HTML template work. Conversion-first, hand-built, responsive.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root{
+      --bg:#08080a;--bg-2:#0d0d10;--bg-card:#121216;--bg-card-2:#17171c;
+      --border:rgba(255,255,255,.07);--border-2:rgba(255,255,255,.11);
+      --accent:#a78bfa;--accent-2:#c4b1ff;--accent-dim:#6d5aab;--accent-glow:rgba(167,139,250,.09);
+      --green:#3dffc0;--pink:#f1889f;--amber:#d4a24c;
+      --text:#a1a1aa;--text-bright:#fafafa;--text-dim:#54545c;
+      --mono:'JetBrains Mono',monospace;--sans:'Outfit',sans-serif;
+      --maxw:1180px
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 2rem}
+    a{color:inherit}
+    ::selection{background:rgba(167,139,250,.3);color:#fff}
+
+    /* nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,10,.82);backdrop-filter:blur(22px);border-bottom:1px solid var(--border)}
+    .nav-logo{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--green);text-decoration:none;letter-spacing:.08em}
+    .nav-links{display:flex;gap:1.9rem;list-style:none;align-items:center}
+    .nav-links a{font-family:var(--mono);font-size:.75rem;color:var(--text-dim);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .25s}
+    .nav-links a:hover{color:var(--green)}
+    .nav-links a.active{color:var(--accent)}
+    .nav-cta{font-family:var(--mono);font-size:.72rem;color:var(--bg)!important;background:var(--green);padding:.5rem 1.2rem;border-radius:8px;text-decoration:none;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:all .25s}
+    .nav-cta:hover{background:#5cffcf}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text)}
+
+    /* hero */
+    .hero{position:relative;padding:9.5rem 0 3.5rem;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:1100px;height:700px;background:radial-gradient(ellipse at center,rgba(167,139,250,.10),transparent 62%);pointer-events:none}
+    .hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000,transparent 75%);mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000,transparent 75%);opacity:.5;pointer-events:none}
+    .hero .wrap{position:relative;z-index:1}
+    .breadcrumb{font-family:var(--mono);font-size:.72rem;color:var(--text-dim);margin-bottom:1.4rem;letter-spacing:.1em}
+    .breadcrumb a{color:var(--text-dim);text-decoration:none}
+    .breadcrumb a:hover{color:var(--accent)}
+    .eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:1.3rem}
+    .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+    .hero h1{font-size:clamp(2.7rem,6.2vw,4.6rem);font-weight:800;line-height:1.04;letter-spacing:-.03em;color:var(--text-bright);margin-bottom:1.3rem;max-width:15ch}
+    .hero h1 .g{background:linear-gradient(100deg,var(--accent),#e0d4ff 60%,var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-sub{font-size:1.15rem;color:var(--text);max-width:600px;margin-bottom:2rem}
+    .hero-cta-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+    .btn-primary{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.82rem;font-weight:600;color:var(--bg);background:var(--accent);padding:.85rem 1.7rem;border-radius:9px;text-decoration:none;transition:all .25s}
+    .btn-primary:hover{background:var(--accent-2);transform:translateY(-2px)}
+    .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.82rem;color:var(--text);padding:.8rem 1.5rem;border:1px solid var(--border-2);border-radius:9px;text-decoration:none;transition:all .25s}
+    .btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+    .hero-stats{display:flex;gap:2.6rem;flex-wrap:wrap;margin-top:2.6rem}
+    .hs{display:flex;flex-direction:column}
+    .hs .n{font-family:var(--mono);font-size:1.9rem;font-weight:700;color:var(--text-bright);line-height:1}
+    .hs .n b{color:var(--accent);font-weight:700}
+    .hs .l{font-size:.78rem;color:var(--text-dim);margin-top:.35rem}
+
+    /* brand marquee strip */
+    .clients{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-2)}
+    .clients .wrap{display:flex;align-items:center;gap:2rem;padding:1.1rem 2rem;flex-wrap:wrap}
+    .clients .lab{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap}
+    .clients .row{display:flex;gap:1.9rem;flex-wrap:wrap;align-items:center}
+    .clients .row span{font-family:var(--mono);font-size:.82rem;font-weight:600;letter-spacing:.14em;color:#75757e;transition:color .25s;cursor:default}
+    .clients .row span:hover{color:var(--text-bright)}
+
+    /* sticky section tabs */
+    .tabs{position:sticky;top:57px;z-index:90;background:rgba(8,8,10,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+    .tabs .wrap{display:flex;gap:.3rem;padding:.5rem 2rem;overflow-x:auto}
+    .tabs a{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;padding:.5rem .9rem;border-radius:7px;white-space:nowrap;transition:all .2s}
+    .tabs a:hover{color:var(--text-bright);background:var(--bg-card)}
+
+    /* generic section */
+    section{padding:4.5rem 0;scroll-margin-top:110px}
+    .sec-head{margin-bottom:2.6rem}
+    .sec-num{font-family:var(--mono);font-size:.72rem;color:var(--accent-dim);letter-spacing:.2em}
+    .sec-title{font-size:2.1rem;font-weight:700;color:var(--text-bright);letter-spacing:-.02em;margin:.4rem 0 .7rem}
+    .sec-desc{font-size:1rem;color:var(--text);max-width:640px}
+
+    /* brand grid */
+    .brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+    .brand-card{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:15px;overflow:hidden;display:flex;flex-direction:column;transition:transform .35s,box-shadow .35s,border-color .35s}
+    .brand-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand,var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .4s;z-index:4}
+    .brand-card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.45);border-color:var(--border-2)}
+    .brand-card:hover::before{transform:scaleX(1)}
+    .brand-tile{position:relative;height:196px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--tile,#222)}
+    .brand-tile::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 22% 18%,rgba(255,255,255,.16),transparent 42%),radial-gradient(circle at 82% 90%,rgba(0,0,0,.35),transparent 55%);pointer-events:none}
+    .brand-mono{position:relative;z-index:1;font-family:var(--mono);font-weight:700;font-size:2.5rem;letter-spacing:.12em;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.3)}
+    .brand-stack{position:absolute;right:-26px;bottom:-34px;width:120px;height:150px;z-index:0;opacity:.5}
+    .brand-stack i{position:absolute;inset:0;border-radius:8px 8px 0 0;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.07)}
+    .brand-stack i:nth-child(1){transform:translate(-18px,-18px) rotate(-6deg)}
+    .brand-stack i:nth-child(2){transform:translate(-9px,-9px) rotate(-3deg)}
+    .brand-tile--img,.brand-tile--live{display:block;padding:0;background:#efeae0;text-decoration:none}
+    .brand-tile--img::after,.brand-tile--live::after{display:none}
+    .brand-tile--img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:1}
+    .brand-tile--live iframe{position:absolute;top:0;left:0;width:200%;height:420px;transform:scale(.5);transform-origin:top left;border:0;pointer-events:none;z-index:1}
+    .badge{position:absolute;top:10px;left:10px;z-index:3;font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(8,8,10,.72);color:#fff;padding:.28rem .5rem;border-radius:5px;display:flex;align-items:center;gap:.35rem}
+    .badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--brand,var(--accent))}
+    .tile-view{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;background:rgba(8,8,10,.5);opacity:0;transition:opacity .25s}
+    .tile-view span{font-family:var(--mono);font-size:.72rem;background:var(--brand,var(--accent));color:#0a0a0a;padding:.5rem 1rem;border-radius:6px;font-weight:700}
+    .brand-card:hover .tile-view{opacity:1}
+    .brand-body{padding:1.4rem 1.4rem 1.6rem;display:flex;flex-direction:column;flex:1}
+    .brand-eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brand,var(--accent));margin-bottom:.5rem}
+    .brand-name{font-size:1.18rem;font-weight:700;color:var(--text-bright);letter-spacing:.01em;margin-bottom:.5rem}
+    .brand-desc{font-size:.82rem;color:var(--text);line-height:1.6;margin-bottom:1rem;flex:1}
+    .brand-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem}
+    .brand-tags span{font-family:var(--mono);font-size:.58rem;padding:.25rem .55rem;border-radius:5px;background:rgba(255,255,255,.04);color:var(--text-dim)}
+    .brand-foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem;border-top:1px solid var(--border);padding-top:.9rem}
+    .brand-scope{font-family:var(--mono);font-size:.64rem;color:var(--brand,var(--accent))}
+    .brand-visit{font-family:var(--mono);font-size:.64rem;color:var(--text-dim);text-decoration:none}
+    .brand-visit:hover{color:var(--brand,var(--accent))}
+
+    /* featured case studies */
+    .feature{margin-top:1.4rem;border-radius:18px;padding:2.3rem;display:grid;grid-template-columns:1.25fr 1fr;gap:2.2rem;align-items:center}
+    .feature--bm{background:linear-gradient(140deg,rgba(200,149,42,.09),rgba(18,18,22,.4) 60%);border:1px solid rgba(200,149,42,.2)}
+    .feature--lk{background:linear-gradient(140deg,rgba(46,110,70,.1),rgba(18,18,22,.4) 60%);border:1px solid rgba(90,138,85,.22)}
+    .feature-tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.8rem}
+    .feature--bm .feature-tag{color:var(--amber)}
+    .feature--lk .feature-tag{color:#83c283}
+    .feature h3{font-size:1.6rem;color:var(--text-bright);margin-bottom:.8rem;font-weight:800;letter-spacing:.01em;line-height:1.2}
+    .feature p{font-size:.94rem;color:var(--text);margin-bottom:1rem}
+    .feature-metrics{display:flex;gap:1.8rem;flex-wrap:wrap;margin-top:1.1rem}
+    .feature-metrics .n{font-family:var(--mono);font-size:1.5rem;font-weight:700;display:block}
+    .feature--bm .feature-metrics .n{color:var(--amber)}
+    .feature--lk .feature-metrics .n{color:#83c283}
+    .feature-metrics .l{font-size:.74rem;color:var(--text-dim)}
+    .calendar{display:flex;flex-direction:column;gap:.7rem}
+    .cal-month{display:flex;align-items:center;gap:.9rem}
+    .cal-name{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--text-bright);width:60px;text-transform:uppercase}
+    .cal-track{flex:1;height:10px;border-radius:6px;background:rgba(255,255,255,.05);overflow:hidden}
+    .cal-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#c8952a,#e0b968)}
+    .cal-count{font-family:var(--mono);font-size:.68rem;color:var(--amber);width:70px;text-align:right}
+    .flowmap{display:flex;flex-direction:column;gap:.55rem}
+    .flow-step{display:flex;gap:.8rem;align-items:flex-start;padding:.6rem .85rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-left:2px solid #5a8a55;border-radius:10px}
+    .flow-n{font-family:var(--mono);font-size:.7rem;color:#83c283;min-width:16px;padding-top:.15rem}
+    .flow-c h4{font-size:.82rem;color:var(--text-bright);font-weight:600;margin-bottom:.12rem}
+    .flow-c p{font-size:.72rem;color:var(--text-dim);line-height:1.45;margin:0}
+
+    /* screens gallery */
+    .screens-brand{margin-bottom:2.6rem;scroll-margin-top:120px}
+    .screens-head{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap;margin-bottom:1.1rem;padding-top:1.3rem;border-top:1px solid var(--border)}
+    .screens-name{font-size:1.15rem;font-weight:700;color:var(--text-bright)}
+    .screens-meta{font-family:var(--mono);font-size:.68rem;color:var(--text-dim)}
+    .screens-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+    .shot{position:relative;display:block;height:300px;overflow:hidden;border-radius:11px;border:1px solid var(--border);background:#fff;text-decoration:none;transition:transform .3s,box-shadow .3s}
+    .shot:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.4)}
+    .shot img{width:100%;display:block}
+    .shot::after{content:'';position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.92));pointer-events:none}
+    .shot-tag{position:absolute;top:8px;left:8px;z-index:2;font-family:var(--mono);font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(8,8,10,.72);color:#fff;padding:.25rem .5rem;border-radius:5px}
+    .shot-view{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;background:rgba(8,8,10,.45);opacity:0;transition:opacity .25s}
+    .shot-view span{font-family:var(--mono);font-size:.72rem;background:var(--accent);color:#0a0a0a;padding:.5rem 1rem;border-radius:6px;font-weight:700}
+    .shot:hover .shot-view{opacity:1}
+
+    /* templates gallery */
+    .tpl-note{font-family:var(--mono);font-size:.72rem;color:var(--text-dim);margin-bottom:2rem;padding:.9rem 1.2rem;border-left:2px solid var(--accent-dim);background:var(--accent-glow);border-radius:0 8px 8px 0;max-width:720px}
+    .tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+    .tpl{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:11px;overflow:hidden;text-decoration:none;display:block;transition:transform .3s,border-color .3s,box-shadow .3s}
+    .tpl:hover{transform:translateY(-3px);border-color:rgba(167,139,250,.2);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+    .tpl-thumb{position:relative;height:260px;overflow:hidden;background:#fff}
+    .tpl-thumb iframe{position:absolute;top:0;left:0;width:200%;height:520px;transform:scale(.5);transform-origin:top left;border:none;pointer-events:none}
+    .tpl-ov{position:absolute;inset:0;background:rgba(8,8,10,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s}
+    .tpl-ov span{font-family:var(--mono);font-size:.75rem;color:#fff;background:var(--accent);padding:.5rem 1rem;border-radius:5px;font-weight:600}
+    .tpl:hover .tpl-ov{opacity:1}
+    .tpl-info{padding:1rem 1.1rem}
+    .tpl-info h3{font-size:.92rem;color:var(--text-bright);margin-bottom:.2rem;font-weight:600}
+    .tpl-info p{font-size:.74rem;color:var(--text-dim);line-height:1.45}
+    .tpl-type{font-family:var(--mono);font-size:.57rem;color:var(--accent);background:rgba(167,139,250,.08);padding:.18rem .45rem;border-radius:4px;display:inline-block;margin-top:.5rem}
+
+    /* process */
+    .process{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+    .proc{padding:1.6rem 1.2rem;background:var(--bg-card);border:1px solid var(--border);border-radius:12px}
+    .proc-num{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--accent);margin-bottom:.5rem}
+    .proc h3{font-size:.95rem;color:var(--text-bright);margin-bottom:.3rem}
+    .proc p{font-size:.8rem;color:var(--text-dim);line-height:1.55}
+
+    /* hire */
+    .hire{text-align:center;border-top:1px solid var(--border);padding:5rem 0}
+    .hire h2{font-size:2.1rem;font-weight:700;color:var(--text-bright);margin-bottom:.8rem}
+    .hire p{font-size:1rem;color:var(--text);max-width:520px;margin:0 auto 1.6rem}
+    .hire-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+    .pricing-hint{font-family:var(--mono);font-size:.76rem;color:var(--text-dim);margin-top:1.3rem}
+    .pricing-hint span{color:var(--accent)}
+
+    /* footer */
+    footer{text-align:center;padding:2.4rem 0;font-family:var(--mono);font-size:.7rem;color:var(--text-dim);border-top:1px solid var(--border)}
+    .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap}
+    .footer-links a{color:var(--text-dim);text-decoration:none;transition:color .25s}
+    .footer-links a:hover{color:var(--green)}
+
+    @media(max-width:900px){
+      .brand-grid,.tpl-grid,.process{grid-template-columns:1fr 1fr}
+      .feature{grid-template-columns:1fr}
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(8,8,10,.97);padding:1.5rem 2rem;gap:1.2rem;border-bottom:1px solid var(--border)}
+      .nav-links.open{display:flex}
+      .hamburger{display:flex}.nav-cta{display:none}
+      .tabs{top:57px}
+    }
+    @media(max-width:600px){
+      .brand-grid,.tpl-grid,.process{grid-template-columns:1fr}
+      .wrap{padding:0 1.3rem}
+      .hero{padding:8rem 0 2.5rem}
+      .hero-stats{gap:1.6rem}
+    }
+</style>
 </head>
-
 <body>
 
-  <nav>
-    <a href="index.html" class="nav-logo">OH.</a>
-    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')"
-      aria-label="Menu"><span></span><span></span><span></span></button>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="fullstack.html">Fullstack</a></li>
-      <li><a href="automation.html">Automation</a></li>
-      <li><a href="email-design.html" class="active">Email Design</a></li>
-      <li><a href="campaigns.html">Campaigns</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="mailto:hammedolaitan5@gmail.com" class="nav-cta">Hire Me</a></li>
-    </ul>
-  </nav>
+<nav>
+  <a href="index.html" class="nav-logo">OH.</a>
+  <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="fullstack.html">Fullstack</a></li>
+    <li><a href="automation.html">Automation</a></li>
+    <li><a href="email-design.html" class="active">Email Design</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="mailto:hammedolaitan5@gmail.com" class="nav-cta">Hire Me</a></li>
+  </ul>
+</nav>
 
-  <div class="page-hero">
-    <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span>Email Design</div>
-    <h1><span class="accent">Email</span> Designer</h1>
-    <p>Pixel-perfect HTML email templates for product launches, e-commerce, onboarding, and marketing campaigns. Built
-      on a high-converting, performance-first design framework.</p>
-    <a href="mailto:hammedolaitan5@gmail.com" class="hero-cta">Get an Email Designed &rarr;</a>
-    <div class="stats-bar">
-      <div class="stat-pill"><span class="num">20</span><span class="label">Templates</span></div>
-      <div class="stat-pill"><span class="num">5</span><span class="label">Categories</span></div>
-      <div class="stat-pill"><span class="num">100%</span><span class="label">Hand-coded</span></div>
+<header class="hero">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Email Design</div>
+    <div class="eyebrow"><span class="dot"></span> Email Designer</div>
+    <h1>Emails that <span class="g">real brands</span> actually send.</h1>
+    <p class="hero-sub">I design conversion-first email — full lifecycle flows and multi-month campaign calendars for
+      direct-to-consumer brands, plus a library of hand-coded HTML templates. Hand-built, responsive, dark-mode ready.</p>
+    <div class="hero-cta-row">
+      <a href="mailto:hammedolaitan5@gmail.com" class="btn-primary">Start an Email Project &rarr;</a>
+      <a href="#work" class="btn-ghost">See client work</a>
+      <a href="https://www.behance.net/gallery/233411173/eMail-Marketing-and-Newsletter-designs" target="_blank" rel="noopener" class="btn-ghost">Behance ↗</a>
     </div>
-    <div class="craft-bar">
-      <span class="craft-dot"></span>
-      Hand-coded HTML
-      <span class="craft-sep">·</span>
-      Outlook 2016+ tested
-      <span class="craft-sep">·</span>
-      Dark mode ready
-      <span class="craft-sep">·</span>
-      Mobile-first
-    </div>
-
-    <div class="email-skills">
-      <span>HTML Email</span><span>Inline CSS</span><span>Responsive</span><span>Dark
-        Mode</span><span>E-Commerce</span><span>Onboarding</span><span>Subscription</span><span>Newsletter</span><span>Fashion</span><span>SaaS</span><span>DTC
-        Brands</span>
+    <div class="hero-stats">
+      <div class="hs"><span class="n">7</span><span class="l">Client brands</span></div>
+      <div class="hs"><span class="n">26<b>+</b></span><span class="l">Real campaign screens</span></div>
+      <div class="hs"><span class="n">13</span><span class="l">Hand-coded templates</span></div>
+      <div class="hs"><span class="n">100<b>%</b></span><span class="l">Hand-built</span></div>
     </div>
   </div>
+</header>
 
-  <section>
-    <div class="section-label">// portfolio</div>
-    <h2 class="section-title">Email Design Gallery</h2>
-    <p class="section-desc">20 production-ready email designs grouped by type. Each hand-coded, responsive, and built on
-      a performance-first framework that maximizes conversions.</p>
-
-    <div class="cat-filters">
-      <a href="#cat-launch" class="cat-chip">🚀 Product Launch</a>
-      <a href="#cat-welcome" class="cat-chip">👋 Welcome &amp; Onboarding</a>
-      <a href="#cat-promo" class="cat-chip">🔥 Promotional &amp; Sales</a>
-      <a href="#cat-sub" class="cat-chip">🔄 Subscription &amp; Retention</a>
-      <a href="#cat-newsletter" class="cat-chip">📰 Newsletter</a>
+<div class="clients">
+  <div class="wrap">
+    <span class="lab">Designed for</span>
+    <div class="row">
+      <span>BROTMEISTER</span><span>KOLAROSE</span><span>ALUVÉA</span><span>LEICHTKRAUT</span><span>SILKYNIGHT</span><span>FLOFREI</span><span>SCHRAUBENWERK</span>
     </div>
+  </div>
+</div>
 
-    <div class="category" id="cat-launch">
-      <div class="cat-header"><span class="cat-icon">🚀</span><span class="cat-name">Product Launch &
-          Announcements</span><span class="cat-count">5</span></div>
-      <div class="gallery-grid">
-        <a href="emails/email-01-superlist.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-01-superlist.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">01</div>
-            <h3>Superlist — Make</h3>
-            <p>AI feature launch with abstract hero and product showcase.</p><span class="gallery-type">Product
-              Launch</span>
-          </div>
+<div class="tabs">
+  <div class="wrap">
+    <a href="#work">Client Work</a>
+    <a href="#cases">Case Studies</a>
+    <a href="#screens">Real Screens</a>
+    <a href="#templates">Templates</a>
+    <a href="#process">Process</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section id="work">
+    <div class="sec-head">
+      <div class="sec-num">01 / client work</div>
+      <h2 class="sec-title">Brands I've Designed For</h2>
+      <p class="sec-desc">Each engagement is a full email program — not a one-off template. From first-touch welcome
+        flows to multi-month seasonal campaign calendars, here are the brands behind the work.</p>
+    </div>
+    <div class="brand-grid">
+      <div class="brand-card" style="--brand:#d98aa6">
+        <a class="brand-tile brand-tile--img" href="#kolarose-screens"><span class="badge">Real design</span><img src="campaigns/screens/kolarose-postpurchase-1.jpg" alt="KOLAROSE campaign email" loading="lazy"><div class="tile-view"><span>View campaigns &rarr;</span></div></a>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Hair Care</div>
+          <div class="brand-name">KOLAROSE</div>
+          <p class="brand-desc">Botanical hair-growth serum — biotin, rosemary, ginseng and collagen. I designed a full lifecycle program in a clean black-and-white editorial voice: welcome, abandoned checkout &amp; cart, browse &amp; site abandonment, win-back, post-purchase, shipping and cancellation — with founder letters from Lucy.</p>
+          <div class="brand-tags"><span>Full Lifecycle</span><span>8 Flows</span><span>Founder Letters</span><span>Editorial</span><span>German</span></div>
+          <div class="brand-foot"><span class="brand-scope">8 flows · 40+ emails</span></div>
+        </div>
+      </div>
+      <div class="brand-card" style="--brand:#c98a5e">
+        <a class="brand-tile brand-tile--img" href="#aluvea-screens"><span class="badge">Real design</span><img src="campaigns/screens/aluvea-checkout-1.jpg" alt="ALUVÉA campaign email" loading="lazy"><div class="tile-view"><span>View campaigns &rarr;</span></div></a>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Beauty</div>
+          <div class="brand-name">ALUVÉA</div>
+          <p class="brand-desc">SmoothTrim — a waterproof 2-in-1 trimmer for face and body. I designed the conversion and lifecycle flows in a warm, blush editorial style: founder letters from Mira, a &ldquo;vs. classic razor&rdquo; comparison, real testimonials, and discount escalation (WILLKOMMEN10 &rarr; CHECKOUT15).</p>
+          <div class="brand-tags"><span>Lifecycle Flows</span><span>Cart Recovery</span><span>Comparison</span><span>Testimonials</span><span>German</span></div>
+          <div class="brand-foot"><span class="brand-scope">Welcome &rarr; Win-back</span></div>
+        </div>
+      </div>
+      <div class="brand-card" style="--brand:#f1889f">
+        <a class="brand-tile brand-tile--img" href="#silkynight-screens"><span class="badge">Real design</span><img src="campaigns/screens/silkynight-summer-1.jpg" alt="SILKYNIGHT campaign email" loading="lazy"><div class="tile-view"><span>View campaigns &rarr;</span></div></a>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Silk &amp; Sleep</div>
+          <div class="brand-name">SILKYNIGHT</div>
+          <p class="brand-desc">100% mulberry-silk sleep essentials — pillowcases, bonnets and sleepwear (OEKO-TEX Grade 6A, 19 Momme). I designed the campaigns and recovery flows in a soft, editorial style: skin-and-sleep education, seasonal sales, and cart/site recovery with free-shipping and 60-day-guarantee reassurance.</p>
+          <div class="brand-tags"><span>Campaigns</span><span>Cart Recovery</span><span>Product Education</span><span>Seasonal</span><span>German</span></div>
+          <div class="brand-foot"><span class="brand-scope">Campaigns &amp; flows</span></div>
+        </div>
+      </div>
+      <div class="brand-card" style="--brand:#83c283">
+        <a class="brand-tile brand-tile--live" href="campaigns/leichtkraut-brief.html" target="_blank" rel="noopener"><span class="badge">Live email</span><iframe src="campaigns/leichtkraut-brief.html" loading="lazy" tabindex="-1" title="LEICHTKRAUT — Ein Brief von Dr. Bauer"></iframe><div class="tile-view"><span>View email &rarr;</span></div></a>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Herbal Wellness</div>
+          <div class="brand-name">LEICHTKRAUT</div>
+          <p class="brand-desc">Plant-based lymphatic-drainage drops, sold on centuries of herbal tradition. I designed a German-language campaign set in a calm, editorial voice — a "letter from Dr. Bauer" brand story, ingredient education, problem-and-approach explainers, and multi-bottle <em>Kur</em> (regimen) offers.</p>
+          <div class="brand-tags"><span>Campaigns</span><span>Storytelling</span><span>Product Education</span><span>Cart Recovery</span><span>German</span></div>
+          <div class="brand-foot"><span class="brand-scope">10+ campaigns &amp; flows</span></div>
+        </div>
+      </div>
+      <div class="brand-card" style="--brand:#6fb6ec">
+        <a class="brand-tile brand-tile--live" href="campaigns/flofrei-vergleich.html" target="_blank" rel="noopener"><span class="badge">Live email</span><iframe src="campaigns/flofrei-vergleich.html" loading="lazy" tabindex="-1" title="FLOFREI — Was steht im Beipackzettel?"></iframe><div class="tile-view"><span>View email &rarr;</span></div></a>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Pet Care</div>
+          <div class="brand-name">FLOFREI</div>
+          <p class="brand-desc">Chemical-free tick &amp; flea protection for dogs — a plant-oil collar tag that works before a parasite can bite. I designed the checkout-recovery and conversion flow: personal letters from founder Tanja, a "why chemical tablets act too late" comparison, real customer proof, and discount escalation (FLOFREI15 &rarr; WARENKORB10).</p>
+          <div class="brand-tags"><span>Cart Recovery</span><span>Founder Letters</span><span>Comparison</span><span>Discount Flow</span><span>German</span></div>
+          <div class="brand-foot"><span class="brand-scope">Checkout-recovery flow</span></div>
+        </div>
+      </div>
+      <div class="brand-card" style="--brand:#d4a24c">
+        <a class="brand-tile" href="#brotmeister" style="--tile:linear-gradient(135deg,#8a5a1e,#c8952a)"><div class="brand-stack"><i></i><i></i></div><div class="brand-mono">BM</div></a>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Home &amp; Kitchen</div>
+          <div class="brand-name">BROTMEISTER</div>
+          <p class="brand-desc">Premium bread bags in 100% cotton and beeswax. I designed a full seasonal campaign calendar — 30+ dated sends from March through July 2026 — spanning launch announcements, product education, social proof, and conversion pushes.</p>
+          <div class="brand-tags"><span>Campaign Calendar</span><span>Product Education</span><span>Social Proof</span><span>Seasonal</span></div>
+          <div class="brand-foot"><span class="brand-scope">30+ sends · Mar–Jul</span><a href="https://brot-meister.com" target="_blank" rel="noopener" class="brand-visit">brot-meister.com ↗</a></div>
+        </div>
+      </div>
+      <div class="brand-card" style="--brand:#8fa3bd">
+        <div class="brand-tile" style="--tile:linear-gradient(135deg,#26364f,#4a688f)"><div class="brand-stack"><i></i><i></i></div><div class="brand-mono">SW</div></div>
+        <div class="brand-body">
+          <div class="brand-eyebrow">DTC · Tools / Automotive</div>
+          <div class="brand-name">SCHRAUBENWERK</div>
+          <p class="brand-desc">A compact offset wrench built for tight engine spaces. I designed the conversion flows in a rugged industrial style — steel-and-blue layouts, mechanic testimonials, spec breakdowns, and a &ldquo;vs. ordinary tools&rdquo; comparison, with founder letters from Daniel (WILLKOMMEN10 &rarr; OFFSET15).</p>
+          <div class="brand-tags"><span>Cart Recovery</span><span>Comparison</span><span>Testimonials</span><span>Industrial</span><span>German</span></div>
+          <div class="brand-foot"><span class="brand-scope">Welcome &rarr; Checkout</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cases">
+    <div class="sec-head">
+      <div class="sec-num">02 / case studies</div>
+      <h2 class="sec-title">Two Programs, Up Close</h2>
+      <p class="sec-desc">How a single hero product stays fresh across a season, and how a full lifecycle earns trust
+        before it ever asks for the sale.</p>
+    </div>
+    <div class="feature feature--bm" id="brotmeister">
+      <div>
+        <div class="feature-tag">// featured case study</div>
+        <h3>BROTMEISTER — a five-month campaign calendar</h3>
+        <p>BROTMEISTER's hero product is a premium bread bag made from 100% cotton and beeswax. The brief: keep a
+          single hero product fresh and desirable across an entire season without fatiguing the list.</p>
+        <p>The answer was a rotating campaign calendar — each send taking a different angle on the same product:
+          the problem it solves, how it's made, customer proof, seasonal timing, and clear conversion pushes.</p>
+        <div class="feature-metrics">
+          <div class="m"><span class="n">30+</span><span class="l">Dated campaigns</span></div>
+          <div class="m"><span class="n">4</span><span class="l">Months (Mar–Jul)</span></div>
+          <div class="m"><span class="n">1</span><span class="l">Hero product</span></div>
+        </div>
+      </div>
+      <div class="calendar">
+        <div class="cal-month"><span class="cal-name">March</span><div class="cal-track"><div class="cal-fill" style="width:28%"></div></div><span class="cal-count">3 sends</span></div>
+        <div class="cal-month"><span class="cal-name">April</span><div class="cal-track"><div class="cal-fill" style="width:100%"></div></div><span class="cal-count">13 sends</span></div>
+        <div class="cal-month"><span class="cal-name">May</span><div class="cal-track"><div class="cal-fill" style="width:52%"></div></div><span class="cal-count">7 sends</span></div>
+        <div class="cal-month"><span class="cal-name">July</span><div class="cal-track"><div class="cal-fill" style="width:56%"></div></div><span class="cal-count">7 sends</span></div>
+      </div>
+    </div>
+    <div class="feature feature--lk">
+      <div>
+        <div class="feature-tag">// featured case study</div>
+        <h3>LEICHTKRAUT — a full lifecycle email program</h3>
+        <p>LEICHTKRAUT sells plant-based lymphatic-drainage drops in a category crowded with loud, over-promising
+          supplements. The brief: earn trust first, then convert — without ever sounding like a hard sell.</p>
+        <p>I designed the whole lifecycle as calm, editorial German emails — personal letters from founders Dr. Bauer
+          and Ava — carrying subscribers from first hello all the way through to reorder.</p>
+        <div class="feature-metrics">
+          <div class="m"><span class="n">10+</span><span class="l">Campaigns &amp; flows</span></div>
+          <div class="m"><span class="n">6</span><span class="l">Lifecycle stages</span></div>
+          <div class="m"><span class="n">DE</span><span class="l">Language</span></div>
+        </div>
+      </div>
+      <div class="flowmap">
+        <div class="flow-step"><span class="flow-n">01</span><div class="flow-c"><h4>Story &amp; Trust</h4><p>Editorial brand-story letters rooting the product in centuries of herbal tradition.</p></div></div>
+        <div class="flow-step"><span class="flow-n">02</span><div class="flow-c"><h4>Ingredient Education</h4><p>"A look at the plants" + clean-standards: Stillingia root, red clover, cleavers &amp; clematis, lab-tested, made in Germany.</p></div></div>
+        <div class="flow-step"><span class="flow-n">03</span><div class="flow-c"><h4>The Kur Offer</h4><p>1 / 3-for-2 / 5-for-3 regimen bundles framed around consistency — "give your body time".</p></div></div>
+        <div class="flow-step"><span class="flow-n">04</span><div class="flow-c"><h4>Cart Recovery</h4><p>Personal "just one step away" nudges with a testimonial, the 30-day guarantee, and a saved-cart reminder.</p></div></div>
+        <div class="flow-step"><span class="flow-n">05</span><div class="flow-c"><h4>Discount Escalation</h4><p>Timed <span style="font-family:var(--mono);color:#83c283">CHECKOUT15</span> &rarr; final-night <span style="font-family:var(--mono);color:#83c283">NATUR10</span> reminders for fence-sitters.</p></div></div>
+        <div class="flow-step"><span class="flow-n">06</span><div class="flow-c"><h4>Post-Purchase &amp; Reorder</h4><p>A day-25 "how does it feel?" self-assessment that segments by result and drives replenishment before the bottle runs out.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens">
+    <div class="sec-head">
+      <div class="sec-num">03 / real campaign screens</div>
+      <h2 class="sec-title">The Actual Emails</h2>
+      <p class="sec-desc">Real screens from the live flows, pulled straight from the source design files. Click any one
+        to open it full-size in a new tab.</p>
+    </div>
+    <div class="screens-brand" id="kolarose-screens">
+      <div class="screens-head"><span class="screens-name">KOLAROSE</span><span class="screens-meta">Botanical hair-growth serum · post-purchase A/B set</span></div>
+      <div class="screens-grid">
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-1.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-08-calla.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-08-calla.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">08</div>
-            <h3>Calla — New Arrivals</h3>
-            <p>Elegant shoe brand with serif type and testimonial.</p><span class="gallery-type">New Product</span>
-          </div>
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-2.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-09-vivo.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-09-vivo.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">09</div>
-            <h3>Vivo — Free Shipping</h3>
-            <p>Warm announcement with benefit icons and two-column footer.</p><span
-              class="gallery-type">Announcement</span>
-          </div>
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-3.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-13-pins-aces.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-13-pins-aces.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">13</div>
-            <h3>Pins & Aces — Brand</h3>
-            <p>Google search UI concept with dark theme product categories.</p><span class="gallery-type">Brand
-              Launch</span>
-          </div>
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-4.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-14-mendora.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-14-mendora.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">14</div>
-            <h3>Mendora — Founder Story</h3>
-            <p>Dr. Parsa skincare with journey timeline and trust badges.</p><span class="gallery-type">Founder
-              Story</span>
-          </div>
+        <a class="shot" href="campaigns/screens/kolarose-postpurchase-5.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/kolarose-postpurchase-5.jpg" loading="lazy" alt="KOLAROSE Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
       </div>
     </div>
-
-    <div class="category" id="cat-welcome">
-      <div class="cat-header"><span class="cat-icon">👋</span><span class="cat-name">Welcome & Onboarding</span><span
-          class="cat-count">3</span></div>
-      <div class="gallery-grid">
-        <a href="emails/email-02-funfit.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-02-funfit.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">02</div>
-            <h3>FunFit — Welcome</h3>
-            <p>Envelope illustration, discount code, and rewards system.</p><span class="gallery-type">Welcome</span>
-          </div>
+    <div class="screens-brand" id="aluvea-screens">
+      <div class="screens-head"><span class="screens-name">ALUVÉA</span><span class="screens-meta">SmoothTrim hair-removal · conversion &amp; lifecycle flows</span></div>
+      <div class="screens-grid">
+        <a class="shot" href="campaigns/screens/aluvea-checkout-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-checkout-1.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email">
+          <span class="shot-tag">Abandoned Checkout</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-05-pitch.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-05-pitch.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">05</div>
-            <h3>Pitch — Team Setup</h3>
-            <p>SaaS onboarding with purple gradient and 3-step walkthrough.</p><span class="gallery-type">SaaS
-              Onboarding</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-checkout-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-checkout-2.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email">
+          <span class="shot-tag">Abandoned Checkout</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-10-magic-mind.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-10-magic-mind.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">10</div>
-            <h3>Magic Mind — Order</h3>
-            <p>Order confirmation with benefit icons and brain upgrade section.</p><span
-              class="gallery-type">Post-Purchase</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-checkout-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-checkout-3.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email">
+          <span class="shot-tag">Abandoned Checkout</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-      </div>
-    </div>
-
-    <div class="category" id="cat-promo">
-      <div class="cat-header"><span class="cat-icon">🔥</span><span class="cat-name">Promotional & Sales</span><span
-          class="cat-count">5</span></div>
-      <div class="gallery-grid">
-        <a href="emails/email-04-hangin.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-04-hangin.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">04</div>
-            <h3>Hangin — Holiday Sale</h3>
-            <p>Live countdown timer, fashion photography, coupon code.</p><span class="gallery-type">Sale</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-checkout-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-checkout-4.jpg" loading="lazy" alt="ALUVÉA Abandoned Checkout email">
+          <span class="shot-tag">Abandoned Checkout</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-07-zieme.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-07-zieme.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">07</div>
-            <h3>Zieme — 40% Off</h3>
-            <p>Bold typography, coupon code, and collection grid.</p><span class="gallery-type">E-Commerce Promo</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-cart-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-cart-1.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email">
+          <span class="shot-tag">Abandoned Cart</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-15-conscious-bar.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-15-conscious-bar.html" loading="eager"
-              tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">15</div>
-            <h3>Conscious Bar — Dates</h3>
-            <p>Warm brown palette, infographic grid, seamless transitions.</p><span class="gallery-type">Product
-              Promo</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-cart-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-cart-2.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email">
+          <span class="shot-tag">Abandoned Cart</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-18-forest-ink.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-18-forest-ink.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">18</div>
-            <h3>Forest Ink — Restock</h3>
-            <p>Dark theme restock alert with testimonial and urgency.</p><span class="gallery-type">Restock Alert</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-cart-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-cart-3.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email">
+          <span class="shot-tag">Abandoned Cart</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-20-ilus.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-20-ilus.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">20</div>
-            <h3>ILUS — Indulge Capsule</h3>
-            <p>Blush pink styling email with outfit grids and per-outfit CTAs.</p><span class="gallery-type">Fashion
-              Styling</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-cart-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-cart-4.jpg" loading="lazy" alt="ALUVÉA Abandoned Cart email">
+          <span class="shot-tag">Abandoned Cart</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-      </div>
-    </div>
-
-    <div class="category" id="cat-sub">
-      <div class="cat-header"><span class="cat-icon">🔄</span><span class="cat-name">Subscription &
-          Retention</span><span class="cat-count">5</span></div>
-      <div class="gallery-grid">
-        <a href="emails/email-11-doingwell.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-11-doingwell.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">11</div>
-            <h3>Doingwell — Hydration</h3>
-            <p>Clean educational email with colored benefit dots.</p><span class="gallery-type">Educational</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-browse-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-browse-1.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email">
+          <span class="shot-tag">Browse Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-12-neutonic-keep-going.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-12-neutonic-keep-going.html" loading="eager"
-              tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">12</div>
-            <h3>Neutonic — Keep Going</h3>
-            <p>Retention email with long-term benefits and trust badges.</p><span class="gallery-type">Retention</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-browse-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-browse-2.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email">
+          <span class="shot-tag">Browse Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-16-neutonic-subscription.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-16-neutonic-subscription.html" loading="eager"
-              tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">16</div>
-            <h3>Neutonic — Subscription</h3>
-            <p>Order confirmation with rewards roadmap timeline.</p><span class="gallery-type">Order Confirmation</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-browse-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-browse-3.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email">
+          <span class="shot-tag">Browse Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-17-gains-bulk.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-17-gains-bulk.html" loading="eager" tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">17</div>
-            <h3>Gains in Bulk — Reminder</h3>
-            <p>Dark/orange subscription reminder with free gift offer.</p><span class="gallery-type">Subscription
-              Reminder</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-browse-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-browse-4.jpg" loading="lazy" alt="ALUVÉA Browse Abandonment email">
+          <span class="shot-tag">Browse Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-19-neutonic-billing.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-19-neutonic-billing.html" loading="eager"
-              tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">19</div>
-            <h3>Neutonic — Billing</h3>
-            <p>Billing reminder with delay buttons and product upsell.</p><span class="gallery-type">Billing</span>
-          </div>
+        <a class="shot" href="campaigns/screens/aluvea-site-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-site-1.jpg" loading="lazy" alt="ALUVÉA Site Abandonment email">
+          <span class="shot-tag">Site Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-site-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-site-2.jpg" loading="lazy" alt="ALUVÉA Site Abandonment email">
+          <span class="shot-tag">Site Abandonment</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-1.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-2.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-2.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-3.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-3.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-4.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-4.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
+        </a>
+        <a class="shot" href="campaigns/screens/aluvea-post-5.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/aluvea-post-5.jpg" loading="lazy" alt="ALUVÉA Post-Purchase email">
+          <span class="shot-tag">Post-Purchase</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
       </div>
     </div>
-
-    <div class="category" id="cat-newsletter">
-      <div class="cat-header"><span class="cat-icon">📰</span><span class="cat-name">Newsletter</span><span
-          class="cat-count">2</span></div>
-      <div class="gallery-grid">
-        <a href="emails/email-03-1000-email-ideas.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-03-1000-email-ideas.html" loading="eager"
-              tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">03</div>
-            <h3>1000 Email Ideas</h3>
-            <p>Welcome newsletter with content cards and signature.</p><span class="gallery-type">Newsletter</span>
-          </div>
+    <div class="screens-brand" id="silkynight-screens">
+      <div class="screens-head"><span class="screens-name">SILKYNIGHT</span><span class="screens-meta">100% mulberry-silk sleep · campaigns &amp; recovery flows</span></div>
+      <div class="screens-grid">
+        <a class="shot" href="campaigns/screens/silkynight-summer-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/silkynight-summer-1.jpg" loading="lazy" alt="SILKYNIGHT Seasonal Sale email">
+          <span class="shot-tag">Seasonal Sale</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
-        <a href="emails/email-06-1000-email-ideas.html" target="_blank" class="gallery-item">
-          <div class="thumb-wrap"><iframe src="emails/email-06-1000-email-ideas.html" loading="eager"
-              tabindex="-1"></iframe>
-            <div class="thumb-overlay"><span>View &rarr;</span></div>
-          </div>
-          <div class="gallery-info">
-            <div class="gallery-num">06</div>
-            <h3>1000 Email Ideas (Alt)</h3>
-            <p>Alternative layout with content archive cards.</p><span class="gallery-type">Newsletter</span>
-          </div>
+        <a class="shot" href="campaigns/screens/silkynight-sleep-1.jpg" target="_blank" rel="noopener">
+          <img src="campaigns/screens/silkynight-sleep-1.jpg" loading="lazy" alt="SILKYNIGHT Education email">
+          <span class="shot-tag">Education</span>
+          <div class="shot-view"><span>Open full &rarr;</span></div>
         </a>
       </div>
     </div>
   </section>
 
-  <section>
-    <div class="section-label">// my approach</div>
-    <h2 class="section-title">How I Design Emails</h2>
-    <p class="section-desc">Every email follows a performance-first framework designed to maximize clicks, conversions,
-      and revenue.</p>
+  <section id="templates">
+    <div class="sec-head">
+      <div class="sec-num">04 / template library</div>
+      <h2 class="sec-title">Hand-Coded HTML Templates</h2>
+      <p class="sec-desc">A curated set of spec templates built on a conversion-first framework — hero-first,
+        benefit-driven, CTA-repeat. Each is live, responsive HTML.</p>
+    </div>
+    <div class="tpl-note">These are self-initiated spec pieces demonstrating range across launch, onboarding, promo,
+      retention and newsletter formats. Every one is hand-coded and rendered live below.</div>
+    <div class="tpl-grid">
+      <a href="emails/email-01-superlist.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-01-superlist.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Superlist — Make</h3><p>AI feature launch with abstract hero and product showcase.</p><span class="tpl-type">Product Launch</span></div>
+      </a>
+      <a href="emails/email-08-calla.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-08-calla.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Calla — New Arrivals</h3><p>Elegant shoe brand with serif type and testimonial.</p><span class="tpl-type">New Product</span></div>
+      </a>
+      <a href="emails/email-13-pins-aces.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-13-pins-aces.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Pins &amp; Aces — Brand</h3><p>Search-UI concept with dark theme product categories.</p><span class="tpl-type">Brand Launch</span></div>
+      </a>
+      <a href="emails/email-14-mendora.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-14-mendora.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Mendora — Founder Story</h3><p>Skincare founder story with journey timeline and trust badges.</p><span class="tpl-type">Founder Story</span></div>
+      </a>
+      <a href="emails/email-05-pitch.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-05-pitch.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Pitch — Team Setup</h3><p>SaaS onboarding with gradient hero and 3-step walkthrough.</p><span class="tpl-type">SaaS Onboarding</span></div>
+      </a>
+      <a href="emails/email-10-magic-mind.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-10-magic-mind.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Magic Mind — Order</h3><p>Order confirmation with benefit icons and upsell section.</p><span class="tpl-type">Post-Purchase</span></div>
+      </a>
+      <a href="emails/email-04-hangin.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-04-hangin.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Hangin — Holiday Sale</h3><p>Live countdown timer, fashion photography, coupon code.</p><span class="tpl-type">Sale</span></div>
+      </a>
+      <a href="emails/email-07-zieme.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-07-zieme.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Zieme — 40% Off</h3><p>Bold typography, coupon code, and collection grid.</p><span class="tpl-type">E-Commerce Promo</span></div>
+      </a>
+      <a href="emails/email-20-ilus.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-20-ilus.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>ILUS — Indulge Capsule</h3><p>Blush styling email with outfit grids and per-outfit CTAs.</p><span class="tpl-type">Fashion Styling</span></div>
+      </a>
+      <a href="emails/email-15-conscious-bar.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-15-conscious-bar.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Conscious Bar — Dates</h3><p>Warm palette, infographic grid, seamless transitions.</p><span class="tpl-type">Product Promo</span></div>
+      </a>
+      <a href="emails/email-18-forest-ink.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-18-forest-ink.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Forest Ink — Restock</h3><p>Dark theme restock alert with testimonial and urgency.</p><span class="tpl-type">Restock Alert</span></div>
+      </a>
+      <a href="emails/email-12-neutonic-keep-going.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-12-neutonic-keep-going.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>Neutonic — Keep Going</h3><p>Retention email with long-term benefits and trust badges.</p><span class="tpl-type">Retention</span></div>
+      </a>
+      <a href="emails/email-03-1000-email-ideas.html" target="_blank" class="tpl">
+        <div class="tpl-thumb"><iframe src="emails/email-03-1000-email-ideas.html" loading="lazy" tabindex="-1"></iframe><div class="tpl-ov"><span>View &rarr;</span></div></div>
+        <div class="tpl-info"><h3>1000 Email Ideas</h3><p>Welcome newsletter with content cards and signature.</p><span class="tpl-type">Newsletter</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="sec-head">
+      <div class="sec-num">05 / my approach</div>
+      <h2 class="sec-title">How I Design a Program</h2>
+      <p class="sec-desc">Whether it's a one-off launch or a multi-month calendar, every send is built to earn its
+        place in the inbox.</p>
+    </div>
     <div class="process">
-      <div class="proc">
-        <div class="proc-num">01</div>
-        <h3>Study</h3>
-        <p>Analyze the brand, audience, and campaign goals to inform design direction.</p>
-      </div>
-      <div class="proc">
-        <div class="proc-num">02</div>
-        <h3>Design</h3>
-        <p>Layout composition, typography, color, and visual hierarchy — mobile-first.</p>
-      </div>
-      <div class="proc">
-        <div class="proc-num">03</div>
-        <h3>Code</h3>
-        <p>Hand-coded HTML with inline CSS, tested across email clients and dark mode.</p>
-      </div>
-      <div class="proc">
-        <div class="proc-num">04</div>
-        <h3>Deliver</h3>
-        <p>Production-ready templates optimized for deliverability and engagement.</p>
-      </div>
+      <div class="proc"><div class="proc-num">01</div><h3>Map</h3><p>Plan the calendar or flow — what each send says, who it's for, and where it sits in the customer journey.</p></div>
+      <div class="proc"><div class="proc-num">02</div><h3>Angle</h3><p>Give every email a distinct angle so a single product or offer stays fresh across the whole program.</p></div>
+      <div class="proc"><div class="proc-num">03</div><h3>Design</h3><p>Compose hero-first — brand-true type and color, mobile-first hierarchy, repeated CTAs.</p></div>
+      <div class="proc"><div class="proc-num">04</div><h3>Ship</h3><p>Deliver production-ready designs, ready to build and send on schedule or trigger as automated flows.</p></div>
     </div>
   </section>
 
-  <div class="hire-section">
+</main>
+
+<div class="hire">
+  <div class="wrap">
     <h2>Need Emails That Convert?</h2>
-    <p>Send me your brand, your product, and your campaign goal. I'll design an email that drives clicks.</p>
-    <a href="mailto:hammedolaitan5@gmail.com" class="hire-cta">Get an Email Designed &rarr;</a>
-    <p class="pricing-hint">Email templates from <span>$50</span></p>
-  </div>
-
-  <footer>
-    <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
-      <a href="https://github.com/hholaitan01" target="_blank" class="footer-link">GitHub</a>
-      <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" class="footer-link">LinkedIn</a>
-      <a href="https://wa.me/2349039616768" target="_blank" class="footer-link">WhatsApp</a>
-      <a href="mailto:hammedolaitan5@gmail.com" class="footer-link">Email</a>
+    <p>Send me your brand, your product, and your calendar. I'll design a send system that keeps your list engaged and
+      converting.</p>
+    <div class="hire-row">
+      <a href="mailto:hammedolaitan5@gmail.com" class="btn-primary">Start an Email Project &rarr;</a>
+      <a href="https://www.behance.net/gallery/233411173/eMail-Marketing-and-Newsletter-designs" target="_blank" rel="noopener" class="btn-ghost">Full gallery on Behance ↗</a>
     </div>
-    &copy; 2026 Olaitan Hammed. Built with purpose.
-  </footer>
+    <p class="pricing-hint">Email templates from <span>$50</span> · Full campaign programs <span>on request</span></p>
+  </div>
+</div>
 
-  <script>
-    const obs = new IntersectionObserver(e => { e.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'translateY(0)' } }) }, { threshold: .08 });
-    document.querySelectorAll('section,.page-hero,.hire-section').forEach(s => { s.style.opacity = '0'; s.style.transform = 'translateY(25px)'; s.style.transition = 'opacity .6s cubic-bezier(0.4,0,0.2,1),transform .6s cubic-bezier(0.4,0,0.2,1)'; obs.observe(s) });
-  </script>
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/hholaitan01" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank">LinkedIn</a>
+    <a href="https://www.behance.net/gallery/233411173/eMail-Marketing-and-Newsletter-designs" target="_blank">Behance</a>
+    <a href="https://wa.me/2349039616768" target="_blank">WhatsApp</a>
+    <a href="mailto:hammedolaitan5@gmail.com">Email</a>
+  </div>
+  &copy; 2026 Olaitan Hammed. Built with purpose.
+</footer>
+
+<script>
+  const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.style.opacity='1';en.target.style.transform='none'}})},{threshold:.06});
+  document.querySelectorAll('section,.feature,.hire').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(24px)';s.style.transition='opacity .6s cubic-bezier(0.4,0,0.2,1),transform .6s cubic-bezier(0.4,0,0.2,1)';obs.observe(s)});
+</script>
 </body>
-
 </html>
