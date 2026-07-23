@@ -58,6 +58,10 @@
     .clients .row span{font-family:var(--serif);font-size:1rem;color:var(--ink-soft);letter-spacing:.01em}
     .clients .row .sep{color:var(--line-2);font-family:var(--sans)}
 
+    /* cover collage */
+    .cover{width:100%;overflow:hidden;line-height:0;border-bottom:1px solid var(--line);background:#ece9e2}
+    .cover img{width:100%;height:clamp(240px,40vw,500px);object-fit:cover;object-position:center;display:block}
+
     /* section scaffolding */
     section{padding:4.5rem 0;scroll-margin-top:80px}
     .sec-top{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:3rem}
@@ -190,6 +194,8 @@
     </div>
   </div>
 </header>
+
+<div class="cover"><img src="campaigns/assets/cover-collage.jpg" alt="A selection of email designs by Olaitan Hammed" loading="eager"></div>
 
 <main class="wrap">
   <section id="work">
