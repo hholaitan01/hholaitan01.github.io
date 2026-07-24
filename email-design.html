@@ -133,6 +133,28 @@
     .step h4{font-size:.95rem;color:var(--ink);margin-bottom:.3rem;font-weight:600}
     .step p{font-size:.86rem;color:var(--text);line-height:1.55}
 
+    /* capabilities / skills */
+    .cap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+    .cap-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.6rem 1.5rem;box-shadow:0 2px 14px rgba(23,24,27,.04)}
+    .cap-card .n{font-family:var(--serif);font-size:1.1rem;color:var(--muted);display:block;margin-bottom:.5rem}
+    .cap-card h4{font-size:1rem;color:var(--ink);font-weight:600;margin-bottom:.4rem}
+    .cap-card p{font-size:.85rem;color:var(--text);line-height:1.55}
+    .tools{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.8rem;align-items:center}
+    .tools .lab{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-right:.4rem}
+    .tool{font-size:.85rem;font-weight:500;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:40px;padding:.5rem 1.1rem}
+    /* best practices */
+    .bp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem 2.4rem}
+    .bp .n{font-family:var(--serif);font-size:1rem;color:var(--muted);display:block;margin-bottom:.3rem}
+    .bp h4{font-size:1rem;color:var(--ink);font-weight:600;margin-bottom:.3rem}
+    .bp p{font-size:.86rem;color:var(--text);line-height:1.55}
+    /* about */
+    .about{display:grid;grid-template-columns:1.4fr 1fr;gap:3rem;align-items:start;border-top:1px solid var(--line);padding-top:3rem}
+    .about h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,3.6vw,2.6rem);color:var(--ink);line-height:1.1;margin-bottom:1.1rem}
+    .about p{font-size:1.05rem;color:var(--ink-soft);line-height:1.65;margin-bottom:1rem}
+    .about-str{display:flex;flex-direction:column;gap:1.1rem}
+    .about-str .s h4{font-size:.95rem;color:var(--ink);font-weight:600;margin-bottom:.2rem}
+    .about-str .s p{font-size:.86rem;color:var(--text);line-height:1.5;margin:0}
+
     /* hire */
     .hire{text-align:center;padding:6rem 0;border-top:1px solid var(--line)}
     .hire h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,5vw,3.4rem);color:var(--ink);line-height:1.05;margin-bottom:1rem}
@@ -147,7 +169,8 @@
     .footer-links a:hover{color:var(--ink)}
 
     @media(max-width:860px){
-      .approach{grid-template-columns:1fr 1fr}
+      .approach,.cap-grid,.bp-grid{grid-template-columns:1fr 1fr}
+      .about{grid-template-columns:1fr;gap:1.8rem}
       .single,.calwrap,.ph{grid-template-columns:1fr}
       .ph-mono{height:150px}
       .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--paper);padding:1.4rem 2rem;gap:1.1rem;border-bottom:1px solid var(--line)}
@@ -155,7 +178,7 @@
     }
     @media(max-width:640px){
       .wrap{padding:0 1.4rem}.nav{padding:1.15rem 1.4rem}
-      .gal{flex-direction:column}.approach{grid-template-columns:1fr}
+      .gal{flex-direction:column}.approach,.cap-grid,.bp-grid{grid-template-columns:1fr}
       .hero{padding:8.5rem 0 2.5rem}
     }
 </style>
@@ -198,6 +221,19 @@
 <div class="cover"><img src="campaigns/assets/cover-collage.jpg" alt="A selection of email designs by Olaitan Hammed" loading="eager"></div>
 
 <main class="wrap">
+  <section id="skills">
+    <div class="sec-top">
+      <h2 class="serif">What I do</h2>
+      <p>Design and code handled by one person, start to finish — no handoff gap between the two.</p>
+    </div>
+    <div class="cap-grid">
+      <div class="cap-card"><span class="n serif">HTML</span><h4>Hand-coded HTML</h4><p>Bulletproof, table-based markup with inline CSS that renders everywhere from Outlook to Apple Mail.</p></div>
+      <div class="cap-card"><span class="n serif">CSS</span><h4>CSS &amp; dark mode</h4><p>Pixel-level control, progressive enhancement, and colour that holds up when the inbox goes dark.</p></div>
+      <div class="cap-card"><span class="n serif">Design</span><h4>Email design</h4><p>Conversion-first layouts in Figma — hero-first hierarchy, brand-true type and colour, repeated CTAs.</p></div>
+      <div class="cap-card"><span class="n serif">Flows</span><h4>Responsiveness</h4><p>Mobile-first designs and full lifecycle flows that render cleanly across every client and screen.</p></div>
+    </div>
+  </section>
+
   <section id="work">
     <div class="sec-top">
       <h2 class="serif">Selected client work</h2>
@@ -329,6 +365,21 @@
     </article>
   </section>
 
+  <section id="practices">
+    <div class="sec-top">
+      <h2 class="serif">Best practices, every send</h2>
+      <p>The non-negotiables that separate an email that lands from one that gets deleted.</p>
+    </div>
+    <div class="bp-grid">
+      <div class="bp"><span class="n serif">01</span><h4>CAN-SPAM &amp; GDPR compliant</h4><p>Clear sender identity, honest subject lines, and a working unsubscribe on every send.</p></div>
+      <div class="bp"><span class="n serif">02</span><h4>Accessibility</h4><p>Real text over images, semantic order, alt text and sensible colour contrast.</p></div>
+      <div class="bp"><span class="n serif">03</span><h4>A design eye</h4><p>Hierarchy, whitespace and brand-true type and colour so every email feels considered.</p></div>
+      <div class="bp"><span class="n serif">04</span><h4>Rigorous testing</h4><p>Checked in Outlook, Apple Mail, Gmail and on mobile before anything ships.</p></div>
+      <div class="bp"><span class="n serif">05</span><h4>Flexible, resilient code</h4><p>Bulletproof HTML that degrades gracefully across every quirky email client.</p></div>
+      <div class="bp"><span class="n serif">06</span><h4>Personalisation</h4><p>Merge tags, dynamic blocks and flow triggers that speak to the individual.</p></div>
+    </div>
+  </section>
+
   <section id="approach">
     <div class="sec-top">
       <h2 class="serif">How I work</h2>
@@ -339,6 +390,25 @@
       <div class="step"><span class="n serif">02</span><h4>Angle</h4><p>Give every email a distinct angle so a single product or offer stays fresh across the program.</p></div>
       <div class="step"><span class="n serif">03</span><h4>Design</h4><p>Compose hero-first — brand-true type and colour, mobile-first hierarchy, repeated CTAs.</p></div>
       <div class="step"><span class="n serif">04</span><h4>Ship</h4><p>Deliver production-ready designs, ready to build and send on schedule or trigger as flows.</p></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="about">
+      <div>
+        <h3 class="serif">About</h3>
+        <p>I'm Olaitan Hammed — I design and build conversion-first email for direct-to-consumer brands. From a single launch to a multi-month campaign calendar or a full lifecycle flow, I take each program from strategy and Figma layouts all the way to hand-coded, responsive HTML that's ready to send.</p>
+        <p>Based in Lagos, working with brands worldwide.</p>
+      </div>
+      <div class="about-str">
+        <div class="s"><h4>Design + code in one</h4><p>No handoff gap — the person who designs it is the person who builds it.</p></div>
+        <div class="s"><h4>Whole-funnel thinking</h4><p>Every send knows where it sits in the journey and what it's there to do.</p></div>
+        <div class="s"><h4>Brand-true, every time</h4><p>Type, colour and voice that feel like an extension of the brand, not a template.</p></div>
+      </div>
+    </div>
+    <div class="tools">
+      <span class="lab">Tools</span>
+      <span class="tool">Figma</span><span class="tool">Klaviyo</span><span class="tool">Photoshop</span><span class="tool">Mailchimp</span><span class="tool">Shopify</span><span class="tool">Canva</span>
     </div>
   </section>
 </main>
@@ -366,7 +436,7 @@
 
 <script>
   const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.style.opacity='1';en.target.style.transform='none'}})},{threshold:.05});
-  document.querySelectorAll('.work,.hire,#approach').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(22px)';s.style.transition='opacity .7s cubic-bezier(0.4,0,0.2,1),transform .7s cubic-bezier(0.4,0,0.2,1)';obs.observe(s)});
+  document.querySelectorAll('.work,.hire,#skills,#practices,#approach,#about').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(22px)';s.style.transition='opacity .7s cubic-bezier(0.4,0,0.2,1),transform .7s cubic-bezier(0.4,0,0.2,1)';obs.observe(s)});
 </script>
 </body>
 </html>
