@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCHRAUBENWERK — Werkzeug, das wirklich rankommt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0c0e12;font-family:'Outfit',Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .w{max-width:600px;margin:0 auto;background:#12151b}
+  /* header */
+  .head{background:#0f1319;padding:22px 30px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06)}
+  .logo{display:inline-flex;align-items:center;gap:9px;color:#fff}
+  .logo svg{width:22px;height:22px}
+  .logo span{font-weight:800;font-size:16px;letter-spacing:.16em}
+  /* hero */
+  .hero{position:relative;background:radial-gradient(120% 90% at 50% 0%,#1c222c 0%,#0d1015 70%);padding:40px 30px 20px;text-align:center;overflow:hidden}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(60% 40% at 50% 90%,rgba(43,82,201,.22),transparent 70%);pointer-events:none}
+  .hero h1{position:relative;color:#fff;font-size:34px;font-weight:800;line-height:1.12;letter-spacing:-.01em;margin-bottom:14px}
+  .hero p{position:relative;color:#aab3c2;font-size:14px;line-height:1.6;max-width:400px;margin:0 auto 20px}
+  .code{position:relative;display:inline-block;border:1px dashed #5b78c8;border-radius:8px;color:#cdd8f0;font-weight:700;font-size:13px;letter-spacing:.28em;padding:11px 20px;margin-bottom:18px}
+  .cta{position:relative;display:inline-block;background:#2b52c9;color:#fff;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:.02em;padding:15px 34px;border-radius:8px;box-shadow:0 8px 24px rgba(43,82,201,.4)}
+  .wrench{position:relative;margin:26px auto 4px;width:340px;max-width:90%;display:block}
+  /* riveted steel divider */
+  .plate{height:26px;background:linear-gradient(180deg,#5a6472,#3a4350);display:flex;align-items:center;justify-content:space-around;padding:0 16px}
+  .plate i{width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c9d0da,#5b6572);box-shadow:inset 0 -1px 1px rgba(0,0,0,.5)}
+  /* blue section */
+  .blue{background:#2b52c9;background-image:linear-gradient(180deg,#2f57cf,#264aba);padding:34px 26px}
+  .blue h2{color:#fff;font-size:24px;font-weight:800;text-align:center;line-height:1.2;margin-bottom:22px}
+  .cards{display:grid;gap:12px}
+  .card{background:#fff;border-radius:12px;padding:18px 18px 16px;text-align:center}
+  .card .ic{width:40px;height:40px;border-radius:10px;background:#eef2fb;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+  .card .ic svg{width:22px;height:22px}
+  .card h3{font-size:14px;font-weight:800;color:#141821;margin-bottom:5px}
+  .card p{font-size:12.5px;color:#5a6273;line-height:1.5}
+  .blue-cta{text-align:center;margin-top:22px}
+  .blue-cta a{display:inline-block;background:#fff;color:#20408f;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:.06em;padding:14px 30px;border-radius:8px}
+  /* testimonial */
+  .rev{background:#12151b;padding:32px 26px}
+  .rev-t{color:#fff;font-weight:800;font-size:20px;text-align:center;margin-bottom:18px}
+  .rev-card{background:#1a1e26;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px}
+  .rev-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .rev-av{width:42px;height:42px;border-radius:50%;background:#2b52c9;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+  .rev-nm{color:#fff;font-weight:700;font-size:13px}
+  .rev-nm b{display:block;font-weight:500;color:#7f8a9b;font-size:11px;letter-spacing:.08em;margin-top:2px}
+  .stars{color:#ffb020;font-size:13px;letter-spacing:2px;margin-left:auto}
+  .rev-card p{color:#b7c0cf;font-size:13px;line-height:1.6}
+  /* trust */
+  .trust{background:#2b52c9;display:flex;justify-content:space-around;padding:22px 20px;text-align:center}
+  .trust div{color:#eaf0ff}
+  .trust .ic{font-size:19px;margin-bottom:5px}
+  .trust b{display:block;font-size:12px;font-weight:700}
+  .trust span{font-size:10.5px;color:#c2cef2}
+  /* footer */
+  .foot{background:#1e40a0;background-image:linear-gradient(180deg,#264aba,#1b3892);padding:30px 26px;text-align:center}
+  .foot .logo{margin-bottom:18px;color:#fff}
+  .pay{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:20px}
+  .pay span{background:#fff;border-radius:4px;font-size:8.5px;font-weight:700;color:#333;padding:5px 7px;font-family:Arial}
+  .foot a{display:block;color:#cdd9f7;text-decoration:none;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;padding:12px 0;border-top:1px solid rgba(255,255,255,.14)}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="head">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a3.7 3.7 0 0 0-4.9 4.6L3 17.7 6.3 21l6.8-6.8a3.7 3.7 0 0 0 4.6-4.9l-2.4 2.4-2.1-.6-.6-2.1 2.1-2.7Z" stroke="#2b52c9" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span>SCHRAUBENWERK</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>Werkzeug, das<br>wirklich rankommt</h1>
+    <p>Du kennst das. Schraube damit. Hier dir 10&nbsp;% auf deine erste Bestellung — der Offset Schlüssel, der da rankommt, wo andere aufgeben.</p>
+    <div class="code">CODE:&nbsp; WILLKOMMEN10</div><br>
+    <a href="#" class="cta">JETZT BESTELLEN</a>
+    <svg class="wrench" viewBox="0 0 340 120">
+      <defs><linearGradient id="bl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a72e6"/><stop offset="1" stop-color="#254bb5"/></linearGradient></defs>
+      <rect x="70" y="50" width="200" height="20" rx="10" fill="url(#bl)"/>
+      <rect x="70" y="50" width="200" height="7" rx="3.5" fill="#7d9bf0" opacity=".6"/>
+      <circle cx="66" cy="60" r="26" fill="url(#bl)"/><circle cx="66" cy="60" r="11" fill="#0f1319"/>
+      <circle cx="274" cy="60" r="26" fill="url(#bl)"/>
+      <rect x="266" y="52" width="16" height="16" rx="3" fill="#0f1319"/>
+      <text x="170" y="64" text-anchor="middle" fill="#dbe6ff" font-family="Outfit,Arial" font-weight="800" font-size="11" letter-spacing="2">SCHRAUBENWERK</text>
+    </svg>
+  </div>
+
+  <div class="plate"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+  <div class="blue">
+    <h2>Gebaut für die Stellen,<br>an die andere aufgeben</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h11m0 0-4-4m4 4-4 4M20 5v14" stroke="#2b52c9" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3>Kommt ran, wo andere scheitern</h3>
+        <p>Kompakt, präzise, für die Winkel gemacht, die normales Werkzeug ignoriert.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke="#2b52c9" stroke-width="2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="#2b52c9" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3>Feine Verzahnung</h3>
+        <p>Mehr Kontrolle, weniger Rutschen, weniger Fluchen im Motorraum.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#2b52c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Praxisgetestet</h3>
+        <p>Jedes Werkzeug wird in echten Einsätzen getestet, bevor es zu dir kommt.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 4.5 3.4 7.5 8 9 4.6-1.5 8-4.5 8-9V6l-8-3Z" stroke="#2b52c9" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <h3>Solide gebaut</h3>
+        <p>Kein billiges Plastik, kein Flex, wo keiner sein soll. Für echte Jobs.</p>
+      </div>
+    </div>
+    <div class="blue-cta"><a href="#">ZUM OFFSET SCHLÜSSEL</a></div>
+  </div>
+
+  <div class="plate"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+  <div class="rev">
+    <div class="rev-t">Aus der Werkstatt</div>
+    <div class="rev-card">
+      <div class="rev-top">
+        <div class="rev-av">MR</div>
+        <div class="rev-nm">Markus R.<b>HAMBURG · VERIFIZIERTER KAUF</b></div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <p>„20 Jahre schraube ich schon, und dieses Ding kommt an Stellen ran, gegen die ich jahrelang ankämpfte. Kompakt, solide, ohne Schnickschnack. Jeden Cent wert.“</p>
+    </div>
+  </div>
+
+  <div class="trust">
+    <div><div class="ic">🛡️</div><b>60 Tage testen</b><span>ohne Risiko</span></div>
+    <div><div class="ic">🔒</div><b>Rundum abgesichert</b><span>sicherer Kauf</span></div>
+    <div><div class="ic">🚚</div><b>Schneller Versand</b><span>direkt zu dir</span></div>
+  </div>
+
+  <div class="foot">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a3.7 3.7 0 0 0-4.9 4.6L3 17.7 6.3 21l6.8-6.8a3.7 3.7 0 0 0 4.6-4.9l-2.4 2.4-2.1-.6-.6-2.1 2.1-2.7Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span>SCHRAUBENWERK</span>
+    </div>
+    <div class="pay"><span>VISA</span><span>MC</span><span>AMEX</span><span>PayPal</span><span>Klarna</span><span>Apple&nbsp;Pay</span><span>G&nbsp;Pay</span></div>
+    <a href="#">Datenschutzerklärung</a>
+    <a href="#">Impressum</a>
+    <a href="#">Widerrufsrecht</a>
+    <a href="#">AGB</a>
+    <a href="#">Versand</a>
+  </div>
+</div>
+</body>
+</html>
