@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ink Clone — Lockscreen Calendar & Note Maker</title>
+<meta name="description" content="A free, open-source web clone of Ink: Lockscreen Calendar, Note. Turn any photo into a phone lockscreen wallpaper with your calendar, agenda and events overlaid — right in your browser. Nothing leaves your device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf7f2;
+  --bg-panel:#ffffff;
+  --bg-sunken:#f4efe8;
+  --ink:#1c1917;
+  --ink-soft:#57534e;
+  --ink-faint:#a8a29e;
+  --orange:#f0803c;
+  --orange-deep:#e06a2a;
+  --orange-soft:#fdeee1;
+  --border:#ece5db;
+  --border-strong:#ddd3c6;
+  --radius:16px;
+  --shadow-sm:0 1px 3px rgba(28,25,23,.06);
+  --shadow-md:0 8px 30px rgba(28,25,23,.08);
+  --shadow-lg:0 20px 60px rgba(28,25,23,.14);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17140f;
+    --bg-panel:#211d17;
+    --bg-sunken:#1a1712;
+    --ink:#f5f0e8;
+    --ink-soft:#b8afa2;
+    --ink-faint:#7c7367;
+    --orange:#f0803c;
+    --orange-deep:#f79461;
+    --orange-soft:#3a2a1c;
+    --border:#312b23;
+    --border-strong:#3f382e;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.3);
+    --shadow-md:0 8px 30px rgba(0,0,0,.35);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.5);
+  }
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+/* Header */
+header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 1.5rem;background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.05rem;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,#fff,#fbe9d8);
+  border:1.5px solid var(--orange);display:grid;place-items:center;box-shadow:var(--shadow-sm)}
+.brand .logo svg{width:20px;height:20px}
+.brand small{display:block;font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:1px}
+.header-right{display:flex;align-items:center;gap:.5rem}
+.tag-pill{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-deep);
+  background:var(--orange-soft);border:1px solid color-mix(in srgb,var(--orange) 25%,transparent);padding:.35rem .7rem;border-radius:100px}
+.ghost-link{font-size:.8rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:.4rem .6rem;border-radius:8px}
+.ghost-link:hover{color:var(--ink);background:var(--bg-sunken)}
+
+/* Layout */
+.app{display:grid;grid-template-columns:minmax(320px,380px) 1fr;gap:1.5rem;max-width:1200px;margin:0 auto;padding:1.5rem;align-items:start}
+@media (max-width:880px){.app{grid-template-columns:1fr}.preview-col{order:-1}}
+
+/* Preview column */
+.preview-col{position:sticky;top:80px}
+@media (max-width:880px){.preview-col{position:static}}
+.phone-wrap{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.phone{position:relative;width:100%;max-width:300px;aspect-ratio:1170/2532;border-radius:44px;
+  background:#000;padding:11px;box-shadow:var(--shadow-lg);border:1px solid rgba(0,0,0,.2)}
+.phone::after{content:"";position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  width:34%;height:26px;background:#000;border-radius:100px;z-index:3}
+#previewCanvas{width:100%;height:100%;border-radius:34px;display:block;background:#222}
+.preview-actions{display:flex;gap:.6rem;width:100%;max-width:300px}
+.hint{font-size:.72rem;color:var(--ink-faint);text-align:center;max-width:300px}
+
+/* Controls column */
+.controls{display:flex;flex-direction:column;gap:1rem}
+.card{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+.card-head{display:flex;align-items:center;gap:.6rem;padding:1rem 1.15rem;cursor:pointer;user-select:none}
+.card-head .ico{width:30px;height:30px;flex:none;border-radius:8px;background:var(--orange-soft);color:var(--orange-deep);display:grid;place-items:center}
+.card-head .ico svg{width:17px;height:17px}
+.card-head h3{font-size:.92rem;font-weight:700;letter-spacing:-.01em;flex:1}
+.card-head .chev{color:var(--ink-faint);transition:transform .25s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:0 1.15rem 1.15rem;display:flex;flex-direction:column;gap:.9rem}
+.card.collapsed .card-body{display:none}
+
+label.field{display:flex;flex-direction:column;gap:.4rem;font-size:.78rem;font-weight:600;color:var(--ink-soft)}
+input[type=text],input[type=date],input[type=time],select,textarea{
+  font-family:var(--font);font-size:.88rem;color:var(--ink);background:var(--bg-sunken);
+  border:1px solid var(--border-strong);border-radius:10px;padding:.6rem .7rem;width:100%;outline:none;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px color-mix(in srgb,var(--orange) 18%,transparent)}
+textarea{resize:vertical;min-height:58px}
+
+.row{display:flex;gap:.6rem}
+.row>*{flex:1}
+
+/* Segmented control */
+.seg{display:flex;background:var(--bg-sunken);border:1px solid var(--border-strong);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;font-family:var(--font);font-size:.78rem;font-weight:600;color:var(--ink-soft);
+  background:transparent;border:none;border-radius:7px;padding:.45rem .3rem;cursor:pointer;transition:.15s}
+.seg button.on{background:var(--bg-panel);color:var(--ink);box-shadow:var(--shadow-sm)}
+.seg.orange button.on{background:var(--orange);color:#fff}
+
+/* Slider */
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:100px;background:var(--bg-sunken);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--orange);border:3px solid var(--bg-panel);box-shadow:var(--shadow-sm);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--orange);border:3px solid var(--bg-panel);cursor:pointer}
+
+/* Swatches */
+.swatches{display:flex;gap:.5rem;flex-wrap:wrap}
+.swatch{width:34px;height:34px;border-radius:9px;border:2px solid var(--border-strong);cursor:pointer;position:relative;transition:transform .12s}
+.swatch:hover{transform:scale(1.08)}
+.swatch.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--bg-panel),0 0 0 4px var(--ink)}
+
+/* Buttons */
+.btn{font-family:var(--font);font-size:.85rem;font-weight:700;border:none;border-radius:11px;padding:.7rem 1rem;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;transition:.15s;white-space:nowrap}
+.btn svg{width:16px;height:16px}
+.btn-primary{background:var(--orange);color:#fff;box-shadow:var(--shadow-sm)}
+.btn-primary:hover{background:var(--orange-deep)}
+.btn-ghost{background:var(--bg-sunken);color:var(--ink);border:1px solid var(--border-strong)}
+.btn-ghost:hover{background:var(--border)}
+.btn-block{width:100%}
+.btn-sm{padding:.45rem .7rem;font-size:.78rem;border-radius:9px}
+
+/* Events list */
+.events{display:flex;flex-direction:column;gap:.5rem}
+.event{display:flex;align-items:center;gap:.7rem;background:var(--bg-sunken);border:1px solid var(--border);border-radius:11px;padding:.6rem .75rem}
+.event .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.event .meta{flex:1;min-width:0}
+.event .meta .t{font-size:.82rem;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.event .meta .s{font-size:.7rem;color:var(--ink-faint)}
+.event .x{background:none;border:none;color:var(--ink-faint);cursor:pointer;font-size:1.1rem;line-height:1;padding:.2rem;border-radius:6px}
+.event .x:hover{color:var(--orange-deep);background:var(--orange-soft)}
+.empty{font-size:.78rem;color:var(--ink-faint);text-align:center;padding:.8rem;font-style:italic}
+
+/* Info / hero band */
+.info{max-width:1200px;margin:1rem auto 3rem;padding:0 1.5rem}
+.info-inner{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow-sm)}
+.info h2{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem}
+.info p{font-size:.9rem;color:var(--ink-soft);max-width:70ch}
+.info p a{color:var(--orange-deep);font-weight:600}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.4rem}
+.feat{display:flex;gap:.7rem;align-items:flex-start}
+.feat .fi{width:32px;height:32px;flex:none;border-radius:9px;background:var(--orange-soft);color:var(--orange-deep);display:grid;place-items:center}
+.feat .fi svg{width:18px;height:18px}
+.feat b{display:block;font-size:.85rem;margin-bottom:.1rem}
+.feat span{font-size:.78rem;color:var(--ink-soft)}
+.disclaimer{font-size:.74rem;color:var(--ink-faint);margin-top:1.4rem;border-top:1px solid var(--border);padding-top:1rem}
+
+footer{text-align:center;padding:2rem 1.5rem 3rem;font-size:.78rem;color:var(--ink-faint)}
+footer a{color:var(--ink-soft)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--ink);color:var(--bg);font-size:.82rem;font-weight:600;padding:.7rem 1.2rem;border-radius:100px;
+  box-shadow:var(--shadow-lg);z-index:100;pointer-events:none;transition:.3s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="index.html">
+    <span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#e06a2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M7.5 13l1.5 1.5L12 11" stroke-width="2.2"/><path d="M14 13.5h4M14 17h3"/></svg>
+    </span>
+    <span>Ink Clone<small>Lockscreen Calendar · Note</small></span>
+  </a>
+  <div class="header-right">
+    <span class="tag-pill">Runs on your device</span>
+    <a class="ghost-link" href="#about">About</a>
+  </div>
+</header>
+
+<main class="app">
+  <!-- LEFT: controls -->
+  <section class="controls" aria-label="Wallpaper controls">
+
+    <!-- Background -->
+    <div class="card" data-card="bg">
+      <div class="card-head">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span>
+        <h3>Background</h3>
+        <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-ghost btn-block" id="uploadBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          Upload your photo
+        </button>
+        <input type="file" id="fileInput" accept="image/*" class="visually-hidden">
+        <div>
+          <label class="field" style="margin-bottom:.5rem">Or pick a gradient</label>
+          <div class="swatches" id="gradientSwatches"></div>
+        </div>
+        <label class="field">Darken level <span id="dimVal" style="color:var(--ink-faint);font-weight:500"></span>
+          <input type="range" id="dim" min="0" max="80" value="35">
+        </label>
+      </div>
+    </div>
+
+    <!-- Clock -->
+    <div class="card" data-card="clock">
+      <div class="card-head">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <h3>Clock &amp; date</h3>
+        <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <label class="field">Time
+            <input type="time" id="clockTime" value="09:41">
+          </label>
+          <label class="field">Reference date
+            <input type="date" id="refDate">
+          </label>
+        </div>
+        <label class="field">Clock format
+          <div class="seg" id="clockFmt">
+            <button data-v="24" class="on">24-hour</button>
+            <button data-v="12">12-hour</button>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Overlay style -->
+    <div class="card" data-card="overlay">
+      <div class="card-head">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span>
+        <h3>Lockscreen overlay</h3>
+        <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="card-body">
+        <label class="field">Show
+          <div class="seg orange" id="overlayMode">
+            <button data-v="calendar" class="on">Calendar</button>
+            <button data-v="agenda">Agenda</button>
+            <button data-v="both">Both</button>
+          </div>
+        </label>
+        <label class="field">Week starts on
+          <div class="seg" id="weekStart">
+            <button data-v="1" class="on">Monday</button>
+            <button data-v="0">Sunday</button>
+          </div>
+        </label>
+        <label class="field">Today marker
+          <div class="seg" id="marker">
+            <button data-v="dot" class="on">Dot</button>
+            <button data-v="ring">Ring</button>
+            <button data-v="square">Square</button>
+          </div>
+        </label>
+        <div>
+          <label class="field" style="margin-bottom:.5rem">Text &amp; accent color</label>
+          <div class="swatches" id="textSwatches"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events -->
+    <div class="card" data-card="events">
+      <div class="card-head">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+        <h3>Events &amp; notes</h3>
+        <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="card-body">
+        <label class="field">Title
+          <input type="text" id="evTitle" placeholder="e.g. Buy groceries for the week" maxlength="60">
+        </label>
+        <div class="row">
+          <label class="field">Date
+            <input type="date" id="evDate">
+          </label>
+          <label class="field">Time
+            <input type="time" id="evTime">
+          </label>
+        </div>
+        <label class="field">Note (optional)
+          <input type="text" id="evNote" placeholder="e.g. check the pantry first" maxlength="80">
+        </label>
+        <div class="row">
+          <div style="flex:none"><div class="swatches" id="evColor"></div></div>
+          <button class="btn btn-primary" id="addEvent" style="flex:1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Add event
+          </button>
+        </div>
+        <div class="events" id="eventsList"></div>
+        <button class="btn btn-ghost btn-sm" id="seedBtn" style="align-self:flex-start">Load sample events</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- RIGHT: preview -->
+  <section class="preview-col">
+    <div class="phone-wrap">
+      <div class="phone"><canvas id="previewCanvas" width="1170" height="2532"></canvas></div>
+      <div class="preview-actions">
+        <button class="btn btn-primary btn-block" id="downloadBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download wallpaper
+        </button>
+        <button class="btn btn-ghost" id="resetBtn" title="Reset everything">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
+      </div>
+      <p class="hint">Save the PNG, then set it as your Lock Screen wallpaper. On iPhone: Photos → share → <b>Use as Wallpaper</b>. Everything is generated locally — no photo or event ever leaves your browser.</p>
+    </div>
+  </section>
+</main>
+
+<section class="info" id="about">
+  <div class="info-inner">
+    <h2>About this clone</h2>
+    <p>This is a free, open-source web re-creation of the iOS app <b>“Ink: Lockscreen Calendar, Note”</b> by SilverAI Joint Stock Company — an app that turns your phone’s Lock Screen into a calendar and planner you see without unlocking. This clone rebuilds that core idea entirely in the browser: pair a photo with a clean calendar or agenda overlay, add your events, and export a wallpaper you can set on any phone.</p>
+    <div class="feat-grid">
+      <div class="feat"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span><div><b>Calendar overlay</b><span>Month grid with a customizable “today” marker — dot, ring or square.</span></div></div>
+      <div class="feat"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><div><b>Agenda &amp; to-do</b><span>Your next events listed on the Lock Screen with time, title and note.</span></div></div>
+      <div class="feat"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></span><div><b>Full customization</b><span>Your photo or a gradient, darken level, week start, colors and clock format.</span></div></div>
+      <div class="feat"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><b>Private by design</b><span>Rendered on-device with an HTML canvas. Nothing is uploaded, stored or tracked.</span></div></div>
+    </div>
+    <p class="disclaimer">Disclaimer: This is an independent, educational fan clone built for the portfolio of Olaitan Hammed. It is not affiliated with, endorsed by, or connected to SilverAI Joint Stock Company or the original “Ink” app, and uses no assets from it. The original app is available on the <a href="https://apps.apple.com/us/app/ink-lockscreen-calendar-note/id6769250805" target="_blank" rel="noopener">Apple App Store</a>.</p>
+  </div>
+</section>
+
+<footer>
+  Built by <a href="index.html">Olaitan Hammed</a> · An open web clone of Ink · <span id="year"></span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = s => document.querySelector(s);
+  const canvas = $('#previewCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const STORE = 'inkClone.v1';
+
+  const GRADIENTS = [
+    ['#f0803c','#c2410c'], ['#0ea5e9','#1e3a8a'], ['#8b5cf6','#4c1d95'],
+    ['#10b981','#064e3b'], ['#f43f5e','#881337'], ['#334155','#0f172a'],
+    ['#fda4af','#7c2d12'], ['#fbbf24','#b45309']
+  ];
+  const TEXT_COLORS = ['#ffffff','#1c1917','#fed7aa','#bae6fd','#fecdd3','#111827'];
+  const EVENT_COLORS = ['#f0803c','#0ea5e9','#10b981','#8b5cf6','#f43f5e','#eab308'];
+
+  const defaults = () => ({
+    bgType:'gradient', gradient:0, image:null,
+    dim:35, clock:'09:41', clockFmt:'24',
+    refDate: toISO(new Date()),
+    overlay:'both', weekStart:1, marker:'dot', textColor:'#ffffff',
+    events:[], newEvColor:'#f0803c'
+  });
+  let S = load() || defaults();
+  let bgImage = null;
+
+  function toISO(d){ const z=new Date(d.getTime()-d.getTimezoneOffset()*60000); return z.toISOString().slice(0,10); }
+  function load(){ try{ const r=JSON.parse(localStorage.getItem(STORE)); return r&&typeof r==='object'?r:null; }catch(e){ return null; } }
+  function save(){ try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){} }
+
+  function loadImage(dataUrl, cb){
+    if(!dataUrl){ bgImage=null; cb&&cb(); return; }
+    const img=new Image(); img.onload=()=>{ bgImage=img; cb&&cb(); }; img.onerror=()=>{ bgImage=null; cb&&cb(); }; img.src=dataUrl;
+  }
+
+  /* ---------- Rendering ---------- */
+  function drawBackground(){
+    if(S.bgType==='image' && bgImage){
+      const ir=bgImage.width/bgImage.height, cr=W/H;
+      let dw,dh,dx,dy;
+      if(ir>cr){ dh=H; dw=H*ir; dx=(W-dw)/2; dy=0; } else { dw=W; dh=W/ir; dx=0; dy=(H-dh)/2; }
+      ctx.drawImage(bgImage,dx,dy,dw,dh);
+    } else {
+      const g=GRADIENTS[S.gradient]||GRADIENTS[0];
+      const grad=ctx.createLinearGradient(0,0,W*0.4,H);
+      grad.addColorStop(0,g[0]); grad.addColorStop(1,g[1]);
+      ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+    }
+    if(S.dim>0){ ctx.fillStyle=`rgba(0,0,0,${S.dim/100})`; ctx.fillRect(0,0,W,H); }
+  }
+
+  function fmtClock(){
+    const [h,m]=(S.clock||'09:41').split(':').map(Number);
+    if(S.clockFmt==='12'){ const ap=h>=12?'':''; let hh=h%12; if(hh===0)hh=12; return {main:`${hh}:${String(m).padStart(2,'0')}`, ap: h>=12?'PM':'AM'}; }
+    return {main:`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`, ap:''};
+  }
+
+  function drawHeader(){
+    const d=new Date(S.refDate+'T00:00:00');
+    const dateStr=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    ctx.fillStyle=S.textColor; ctx.textAlign='center';
+    ctx.font='500 46px Inter, sans-serif';
+    ctx.fillText(dateStr, W/2, 300);
+    const c=fmtClock();
+    ctx.font='300 300px Inter, sans-serif';
+    if(c.ap){
+      ctx.fillText(c.main, W/2, 560);
+      ctx.font='400 70px Inter, sans-serif';
+      ctx.fillText(c.ap, W/2, 660);
+    } else {
+      ctx.fillText(c.main, W/2, 560);
+    }
+  }
+
+  function hexA(hex,a){
+    const h=hex.replace('#',''); const n=h.length===3?h.split('').map(x=>x+x).join(''):h;
+    const r=parseInt(n.slice(0,2),16),g=parseInt(n.slice(2,4),16),b=parseInt(n.slice(4,6),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  function drawCalendar(topY){
+    const d=new Date(S.refDate+'T00:00:00');
+    const year=d.getFullYear(), month=d.getMonth(), today=d.getDate();
+    const pad=90, gridW=W-pad*2, cols=7, cw=gridW/cols;
+    const tc=S.textColor;
+
+    // panel
+    const rows=6, rowH=118, headH=150;
+    const panelH=headH+rows*rowH+50;
+    ctx.fillStyle=hexA('#000000',0.16);
+    roundRect(pad-30, topY-40, gridW+60, panelH, 40); ctx.fill();
+
+    ctx.textAlign='left';
+    ctx.fillStyle=tc;
+    ctx.font='700 54px Inter, sans-serif';
+    ctx.fillText(d.toLocaleDateString('en-US',{month:'long'})+' '+year, pad, topY+30);
+
+    // weekday headers
+    const names=['S','M','T','W','T','F','S'];
+    const order=[]; for(let i=0;i<7;i++) order.push((S.weekStart+i)%7);
+    ctx.font='700 32px Inter, sans-serif'; ctx.textAlign='center';
+    order.forEach((wd,i)=>{ ctx.fillStyle=hexA(tc,0.55); ctx.fillText(names[wd], pad+cw*i+cw/2, topY+110); });
+
+    // days
+    const firstDow=new Date(year,month,1).getDay();
+    let startOffset=(firstDow-S.weekStart+7)%7;
+    const daysInMonth=new Date(year,month+1,0).getDate();
+    ctx.font='500 40px Inter, sans-serif';
+    let cell=0;
+    // event day set
+    const evDays=new Set(S.events.filter(e=>{ const ed=new Date(e.date+'T00:00:00'); return ed.getFullYear()===year&&ed.getMonth()===month;}).map(e=>new Date(e.date+'T00:00:00').getDate()));
+    for(let day=1;day<=daysInMonth;day++){
+      const idx=startOffset+day-1; const col=idx%7, rw=Math.floor(idx/7);
+      const cx=pad+cw*col+cw/2, cy=topY+headH+rw*rowH+40;
+      if(day===today){
+        ctx.fillStyle=S.newEvColor;
+        if(S.marker==='dot'){
+          ctx.fillStyle=tc; ctx.fillText(String(day),cx,cy);
+          ctx.beginPath(); ctx.arc(cx,cy+40,7,0,7); ctx.fillStyle=S.newEvColor; ctx.fill();
+        } else if(S.marker==='ring'){
+          ctx.beginPath(); ctx.arc(cx,cy-13,44,0,7); ctx.lineWidth=6; ctx.strokeStyle=S.newEvColor; ctx.stroke();
+          ctx.fillStyle=tc; ctx.fillText(String(day),cx,cy);
+        } else {
+          ctx.fillStyle=S.newEvColor; roundRect(cx-46,cy-59,92,92,20); ctx.fill();
+          ctx.fillStyle='#ffffff'; ctx.fillText(String(day),cx,cy);
+        }
+      } else {
+        ctx.fillStyle=tc; ctx.fillText(String(day),cx,cy);
+        if(evDays.has(day)){ ctx.beginPath(); ctx.arc(cx,cy+40,6,0,7); ctx.fillStyle=hexA(tc,0.6); ctx.fill(); }
+      }
+      cell++;
+    }
+    return topY+panelH-40;
+  }
+
+  function drawAgenda(topY){
+    const tc=S.textColor;
+    const refISO=S.refDate;
+    const up=S.events.slice().sort((a,b)=> (a.date+ (a.time||'')).localeCompare(b.date+(b.time||'')))
+      .filter(e=> e.date>=refISO).slice(0,4);
+    const list = up.length?up : S.events.slice().sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||''))).slice(0,4);
+    const pad=90, w=W-pad*2;
+    const rowH=150;
+    const panelH=90 + Math.max(list.length,1)*rowH + 30;
+    ctx.fillStyle=hexA('#000000',0.16); roundRect(pad-30,topY-40,w+60,panelH,40); ctx.fill();
+
+    ctx.textAlign='left'; ctx.fillStyle=tc; ctx.font='700 46px Inter, sans-serif';
+    ctx.fillText('Agenda', pad, topY+20);
+
+    if(!list.length){
+      ctx.fillStyle=hexA(tc,0.6); ctx.font='400 40px Inter, sans-serif';
+      ctx.fillText('No events yet — add one to see it here.', pad, topY+110);
+      return topY+panelH-40;
+    }
+    list.forEach((e,i)=>{
+      const y=topY+90+i*rowH;
+      ctx.fillStyle=e.color||S.newEvColor;
+      roundRect(pad, y-6, 10, 96, 5); ctx.fill();
+      // time
+      const timeLabel = e.time ? formatTime(e.time) : 'All day';
+      ctx.fillStyle=hexA(tc,0.7); ctx.font='600 34px Inter, sans-serif'; ctx.textAlign='left';
+      ctx.fillText(timeLabel, pad+40, y+34);
+      const dObj=new Date(e.date+'T00:00:00');
+      const dLabel=dObj.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      ctx.fillStyle=hexA(tc,0.45); ctx.font='500 30px Inter, sans-serif';
+      ctx.fillText(dLabel, pad+40, y+76);
+      // title
+      ctx.fillStyle=tc; ctx.font='600 42px Inter, sans-serif';
+      ctx.fillText(clip(e.title,26), pad+330, y+26);
+      if(e.note){ ctx.fillStyle=hexA(tc,0.6); ctx.font='400 32px Inter, sans-serif'; ctx.fillText(clip(e.note,34), pad+330, y+74); }
+    });
+    return topY+panelH-40;
+  }
+
+  function formatTime(t){
+    const [h,m]=t.split(':').map(Number);
+    if(S.clockFmt==='12'){ let hh=h%12||12; return `${hh}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`; }
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+  }
+  function clip(s,n){ s=s||''; return s.length>n?s.slice(0,n-1)+'…':s; }
+
+  function roundRect(x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+  }
+
+  function render(){
+    ctx.clearRect(0,0,W,H);
+    drawBackground();
+    drawHeader();
+    let y=820;
+    if(S.overlay==='calendar'){ drawCalendar(y); }
+    else if(S.overlay==='agenda'){ drawAgenda(y); }
+    else { const ny=drawCalendar(y); drawAgenda(ny+120); }
+    // bottom flashlight/camera glyphs for realism
+    ctx.fillStyle=hexA(S.textColor,0.85);
+    circleGlyph(190, H-260, 70); circleGlyph(W-190, H-260, 70);
+    // grab bar
+    ctx.fillStyle=hexA(S.textColor,0.6); roundRect(W/2-90,H-90,180,12,6); ctx.fill();
+  }
+  function circleGlyph(x,y,r){
+    ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fillStyle=hexA('#000000',0.28); ctx.fill();
+  }
+
+  /* ---------- UI wiring ---------- */
+  function buildSwatches(){
+    const gs=$('#gradientSwatches'); gs.innerHTML='';
+    GRADIENTS.forEach((g,i)=>{
+      const b=document.createElement('button');
+      b.className='swatch'+(S.bgType==='gradient'&&S.gradient===i?' on':'');
+      b.style.background=`linear-gradient(150deg,${g[0]},${g[1]})`;
+      b.setAttribute('aria-label','Gradient '+(i+1));
+      b.onclick=()=>{ S.bgType='gradient'; S.gradient=i; S.image=null; bgImage=null; commit(); };
+      gs.appendChild(b);
+    });
+    const ts=$('#textSwatches'); ts.innerHTML='';
+    TEXT_COLORS.forEach(c=>{
+      const b=document.createElement('button');
+      b.className='swatch'+(S.textColor===c?' on':''); b.style.background=c;
+      b.setAttribute('aria-label','Text color '+c);
+      b.onclick=()=>{ S.textColor=c; commit(); }; ts.appendChild(b);
+    });
+    const ec=$('#evColor'); ec.innerHTML='';
+    EVENT_COLORS.forEach(c=>{
+      const b=document.createElement('button');
+      b.className='swatch'+(S.newEvColor===c?' on':''); b.style.background=c;
+      b.style.width='30px'; b.style.height='30px';
+      b.setAttribute('aria-label','Event color '+c);
+      b.onclick=()=>{ S.newEvColor=c; commit(); }; ec.appendChild(b);
+    });
+  }
+
+  function renderEvents(){
+    const list=$('#eventsList'); list.innerHTML='';
+    const sorted=S.events.slice().sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
+    if(!sorted.length){ list.innerHTML='<div class="empty">No events yet. Add one above.</div>'; return; }
+    sorted.forEach(e=>{
+      const row=document.createElement('div'); row.className='event';
+      const d=new Date(e.date+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      const t=e.time?formatTime(e.time):'All day';
+      row.innerHTML=`<span class="dot" style="background:${e.color}"></span>
+        <div class="meta"><div class="t"></div><div class="s"></div></div>
+        <button class="x" aria-label="Remove">×</button>`;
+      row.querySelector('.t').textContent=e.title;
+      row.querySelector('.s').textContent=`${d} · ${t}`+(e.note?` · ${e.note}`:'');
+      row.querySelector('.x').onclick=()=>{ S.events=S.events.filter(x=>x.id!==e.id); commit(); };
+      list.appendChild(row);
+    });
+  }
+
+  function setSeg(id,val,key){
+    document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.toggle('on',b.dataset.v===String(val)));
+  }
+  function wireSeg(id,key,cast){
+    document.querySelectorAll('#'+id+' button').forEach(b=>{
+      b.onclick=()=>{ S[key]=cast?cast(b.dataset.v):b.dataset.v; commit(); };
+    });
+  }
+
+  function syncControls(){
+    setSeg('clockFmt',S.clockFmt); setSeg('overlayMode',S.overlay);
+    setSeg('weekStart',S.weekStart); setSeg('marker',S.marker);
+    $('#dim').value=S.dim; $('#dimVal').textContent=S.dim+'%';
+    $('#clockTime').value=S.clock; $('#refDate').value=S.refDate;
+    buildSwatches(); renderEvents();
+  }
+
+  function commit(){ save(); syncControls(); render(); }
+
+  function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1900); }
+
+  /* events */
+  $('#uploadBtn').onclick=()=>$('#fileInput').click();
+  $('#fileInput').onchange=e=>{
+    const f=e.target.files[0]; if(!f) return;
+    if(f.size>12*1024*1024){ toast('Image too large (max 12 MB)'); return; }
+    const r=new FileReader();
+    r.onload=()=>{ S.image=r.result; S.bgType='image'; loadImage(r.result,()=>{ commit(); toast('Photo added'); }); };
+    r.readAsDataURL(f);
+  };
+  $('#dim').oninput=e=>{ S.dim=+e.target.value; $('#dimVal').textContent=S.dim+'%'; render(); };
+  $('#dim').onchange=()=>save();
+  $('#clockTime').onchange=e=>{ S.clock=e.target.value||'09:41'; commit(); };
+  $('#refDate').onchange=e=>{ S.refDate=e.target.value||toISO(new Date()); commit(); };
+  wireSeg('clockFmt','clockFmt'); wireSeg('overlayMode','overlay');
+  wireSeg('weekStart','weekStart',Number); wireSeg('marker','marker');
+
+  $('#addEvent').onclick=()=>{
+    const title=$('#evTitle').value.trim();
+    const date=$('#evDate').value || S.refDate;
+    if(!title){ toast('Add a title first'); $('#evTitle').focus(); return; }
+    S.events.push({ id:Date.now()+''+Math.random().toString(36).slice(2,6), title, date, time:$('#evTime').value, note:$('#evNote').value.trim(), color:S.newEvColor });
+    $('#evTitle').value=''; $('#evNote').value=''; $('#evTime').value='';
+    commit(); toast('Event added');
+  };
+  $('#evTitle').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#addEvent').click(); });
+
+  $('#seedBtn').onclick=()=>{
+    const base=new Date(S.refDate+'T00:00:00');
+    const mk=(off,t,title,note,c)=>{ const d=new Date(base); d.setDate(d.getDate()+off); return {id:Date.now()+off+Math.random().toString(36).slice(2,5),title,date:toISO(d),time:t,note,color:c}; };
+    S.events=[
+      mk(0,'11:00','Buy groceries for the week','check the pantry first','#f0803c'),
+      mk(0,'16:30','Pay monthly apartment fee','','#0ea5e9'),
+      mk(1,'09:00','Team standup','share automation update','#8b5cf6'),
+      mk(2,'','Laundry + finish reading','','#10b981')
+    ];
+    commit(); toast('Sample events loaded');
+  };
+
+  $('#downloadBtn').onclick=()=>{
+    render();
+    canvas.toBlob(blob=>{
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url; a.download='ink-lockscreen-'+S.refDate+'.png'; a.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+      toast('Wallpaper downloaded');
+    },'image/png');
+  };
+
+  $('#resetBtn').onclick=()=>{
+    if(!confirm('Reset all settings and events?')) return;
+    S=defaults(); bgImage=null; save(); syncControls(); render(); toast('Reset done');
+  };
+
+  // collapsible cards
+  document.querySelectorAll('.card-head').forEach(h=>{
+    h.onclick=()=>h.parentElement.classList.toggle('collapsed');
+  });
+
+  $('#year').textContent=new Date().getFullYear();
+
+  // init
+  if(!$('#refDate').value) S.refDate=S.refDate||toISO(new Date());
+  loadImage(S.bgType==='image'?S.image:null, ()=>{ syncControls(); render(); });
+})();
+</script>
+</body>
+</html>
