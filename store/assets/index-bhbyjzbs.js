@@ -22944,6 +22944,8 @@ var jm = [{
         inStock: !0
     }],
     Nm = [`/images/lifestyle_4.webp`, `/images/lifestyle_3.webp`, `/images/lifestyle_1.png`, `/images/lifestyle_2.webp`, `/images/lifestyle_5.webp`],
+    catImageMap = {vibrators:`/images/cat_vibrators.jpg`,`for her`:`/images/cat_forher.jpg`,`for him`:`/images/cat_forhim.jpg`,`couple toys`:`/images/cat_couples.jpg`,couples:`/images/cat_couples.jpg`,massagers:`/images/cat_massagers.jpg`,massage:`/images/cat_massagers.jpg`,accessories:`/images/cat_accessories.jpg`,lingerie:`/images/cat_forher.jpg`,lubricants:`/images/cat_massagers.jpg`,bondage:`/images/cat_accessories.jpg`,wellness:`/images/cat_massagers.jpg`,toys:`/images/cat_vibrators.jpg`},
+    getCatImage = (cat) => cat.image || catImageMap[(cat.name||``).toLowerCase()] || null,
     Pm = [{
         text: `Completely changed my understanding of pleasure. The quality is unmatched.`,
         author: `Sarah K.`,
@@ -24903,8 +24905,8 @@ function Hm() {
                         x(cat.id);
                         document.getElementById(`shop`)?.scrollIntoView({behavior:`smooth`})
                     },
-                    children: [(0, $.jsx)(`img`, {
-                        src: cat.image,
+                    children: [getCatImage(cat) ? (0, $.jsx)(`img`, {
+                        src: getCatImage(cat),
                         alt: cat.name,
                         style: {
                             position: `absolute`,
@@ -24913,6 +24915,18 @@ function Hm() {
                             height: `100%`,
                             objectFit: `cover`
                         }
+                    }) : (0, $.jsx)(`div`, {
+                        style: {
+                            position: `absolute`,
+                            inset: 0,
+                            background: `linear-gradient(135deg, #1a1a1a, #111)`,
+                            display: `flex`,
+                            alignItems: `center`,
+                            justifyContent: `center`,
+                            fontSize: 80,
+                            opacity: .15
+                        },
+                        children: cat.icon || `✦`
                     }), (0, $.jsx)(`div`, {
                         className: `le-cat-card-overlay`
                     }), (0, $.jsxs)(`div`, {
