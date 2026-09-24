@@ -24123,7 +24123,7 @@ function Vm({
 }
 
 function Hm() {
-    let [e, t] = (0, D.useState)(`store`), [n, r] = (0, D.useState)(Mm), [i, a] = (0, D.useState)(jm), [o, s] = (0, D.useState)(!0), [c, l] = (0, D.useState)(null), [u, d] = (0, D.useState)(``), [f, p] = (0, D.useState)(``), [m, h] = (0, D.useState)(``), [g, _] = (0, D.useState)(!1), [v, y] = (0, D.useState)(0), [b, x] = (0, D.useState)(`all`), [ee, te] = (0, D.useState)(0), [S, ne] = (0, D.useState)([]), [re, C] = (0, D.useState)(!1), [ie, ae] = (0, D.useState)({}), [mobileMenu, setMobileMenu] = (0, D.useState)(!1);
+    let [e, t] = (0, D.useState)(`store`), [n, r] = (0, D.useState)(Mm), [i, a] = (0, D.useState)(jm), [o, s] = (0, D.useState)(!0), [c, l] = (0, D.useState)(null), [u, d] = (0, D.useState)(``), [f, p] = (0, D.useState)(``), [m, h] = (0, D.useState)(``), [g, _] = (0, D.useState)(!1), [v, y] = (0, D.useState)(0), [b, x] = (0, D.useState)(`all`), [ee, te] = (0, D.useState)(0), [S, ne] = (0, D.useState)([]), [re, C] = (0, D.useState)(!1), [ie, ae] = (0, D.useState)({}), [mobileMenu, setMobileMenu] = (0, D.useState)(!1), [custName, setCustName] = (0, D.useState)(``), [custEmail, setCustEmail] = (0, D.useState)(``), [custPhone, setCustPhone] = (0, D.useState)(``), [custAddress, setCustAddress] = (0, D.useState)(``), [custCity, setCustCity] = (0, D.useState)(``), [custState, setCustState] = (0, D.useState)(``), [custNote, setCustNote] = (0, D.useState)(``), [showCheckoutForm, setShowCheckoutForm] = (0, D.useState)(!1);
     (0, D.useEffect)(() => {
         let n = cf(Em, n => {
             l(n), n && e === `admin-login` && t(`admin`)
@@ -24180,6 +24180,12 @@ function Hm() {
         t && y(e => e - t.qty), ne(t => t.filter(t => t.cartKey !== e))
     }, ce = S.reduce((e, t) => e + t.price * t.qty, 0), le = b === `all` ? n.filter(e => e.inStock) : n.filter(e => e.category === b && e.inStock), ue = () => {
         if (S.length === 0) return;
+        if (!custName.trim() || !custPhone.trim() || !custAddress.trim() || !custCity.trim() || !custState.trim()) {
+            alert(`Please fill in all required delivery details before checkout.`);
+            setShowCheckoutForm(!0);
+            return
+        }
+        let customerEmail = custEmail.trim() || `customer@lebylami.com`;
         let orderItems = S.map(t => {
             let n = t.selectedColor ? ` (${t.selectedColor.name})` : ``;
             return t.name + n + ` x${t.qty}`
@@ -24188,7 +24194,7 @@ function Hm() {
         let popup = new PaystackPop();
         popup.newTransaction({
             key: `pk_live_d82e9d9e43f16845916043561de9014e58c9a1fb`,
-            email: `customer@lebylami.com`,
+            email: customerEmail,
             amount: amountKobo,
             currency: `NGN`,
             metadata: {
@@ -24196,6 +24202,22 @@ function Hm() {
                     display_name: `Order Items`,
                     variable_name: `order_items`,
                     value: orderItems
+                }, {
+                    display_name: `Customer Name`,
+                    variable_name: `customer_name`,
+                    value: custName
+                }, {
+                    display_name: `Phone`,
+                    variable_name: `phone`,
+                    value: custPhone
+                }, {
+                    display_name: `Delivery Address`,
+                    variable_name: `delivery_address`,
+                    value: `${custAddress}, ${custCity}, ${custState}`
+                }, {
+                    display_name: `Note`,
+                    variable_name: `note`,
+                    value: custNote || `N/A`
                 }]
             },
             onSuccess: (transaction) => {
@@ -24205,11 +24227,15 @@ function Hm() {
                     e += `▸ ${t.name}${n} × ${t.qty} — ₦${Qm(t.price*t.qty)}\n`
                 });
                 e += `\n*Total: ₦${Qm(ce)}*\n*Payment: Confirmed ✅*`;
+                e += `\n\n📦 *Delivery Details*\n*Name:* ${custName}\n*Phone:* ${custPhone}\n*Address:* ${custAddress}, ${custCity}, ${custState}`;
+                if (custNote.trim()) e += `\n*Note:* ${custNote}`;
                 let t = `https://wa.me/2347060408151?text=` + encodeURIComponent(e);
                 window.open(t, `_blank`);
                 ne([]);
                 y(0);
                 C(!1);
+                setShowCheckoutForm(!1);
+                setCustName(``);setCustEmail(``);setCustPhone(``);setCustAddress(``);setCustCity(``);setCustState(``);setCustNote(``);
                 alert(`Payment successful! Reference: ` + transaction.reference)
             },
             onCancel: () => {
@@ -24659,8 +24685,8 @@ function Hm() {
                             },
                             children: [`₦`, Qm(ce)]
                         })]
-                    }), (0, $.jsx)(`button`, {
-                        onClick: ue,
+                    }), !showCheckoutForm ? (0, $.jsx)(`button`, {
+                        onClick: () => setShowCheckoutForm(!0),
                         style: {
                             width: `100%`,
                             background: `#E8503A`,
@@ -24675,7 +24701,66 @@ function Hm() {
                             fontFamily: `'Inter','DM Sans',sans-serif`,
                             transition: `all .3s`
                         },
-                        children: `Checkout with Paystack`
+                        children: `Proceed to Checkout`
+                    }) : (0, $.jsxs)(`div`, {
+                        style: {marginTop:16},
+                        children: [(0, $.jsx)(`div`, {
+                            style: {fontSize:11,letterSpacing:3,textTransform:`uppercase`,color:`#888`,marginBottom:12,fontFamily:`'Inter',sans-serif`},
+                            children: `Delivery Details`
+                        }), [`Full Name *`, `Email`, `Phone Number *`, `Delivery Address *`, `City *`, `State *`, `Order Note`].map((label, idx) => {
+                            let vals = [custName, custEmail, custPhone, custAddress, custCity, custState, custNote];
+                            let setters = [setCustName, setCustEmail, setCustPhone, setCustAddress, setCustCity, setCustState, setCustNote];
+                            let placeholders = [`Enter your full name`, `you@email.com`, `e.g. 08012345678`, `Street address`, `e.g. Lagos`, `e.g. Lagos`, `Any special instructions...`];
+                            return idx === 6 ? (0, $.jsx)(`textarea`, {
+                                placeholder: placeholders[idx],
+                                value: vals[idx],
+                                onChange: ev => setters[idx](ev.target.value),
+                                rows: 2,
+                                style: {width:`100%`,background:`#1a1a1a`,border:`1px solid #333`,color:`#fff`,padding:`10px 12px`,fontSize:13,fontFamily:`'Inter',sans-serif`,marginBottom:8,resize:`vertical`,outline:`none`},
+                                key: label
+                            }) : (0, $.jsx)(`input`, {
+                                type: idx === 1 ? `email` : idx === 2 ? `tel` : `text`,
+                                placeholder: placeholders[idx],
+                                value: vals[idx],
+                                onChange: ev => setters[idx](ev.target.value),
+                                style: {width:`100%`,background:`#1a1a1a`,border:`1px solid #333`,color:`#fff`,padding:`10px 12px`,fontSize:13,fontFamily:`'Inter',sans-serif`,marginBottom:8,outline:`none`,boxSizing:`border-box`},
+                                key: label
+                            })
+                        }), (0, $.jsx)(`button`, {
+                            onClick: ue,
+                            style: {
+                                width: `100%`,
+                                background: `#E8503A`,
+                                border: `none`,
+                                color: `#fff`,
+                                padding: `16px`,
+                                fontSize: 11,
+                                letterSpacing: 3,
+                                textTransform: `uppercase`,
+                                cursor: `pointer`,
+                                fontWeight: 600,
+                                fontFamily: `'Inter','DM Sans',sans-serif`,
+                                transition: `all .3s`,
+                                marginTop: 8
+                            },
+                            children: `Pay ₦${Qm(ce)} with Paystack`
+                        }), (0, $.jsx)(`button`, {
+                            onClick: () => setShowCheckoutForm(!1),
+                            style: {
+                                width: `100%`,
+                                background: `transparent`,
+                                border: `1px solid #333`,
+                                color: `#888`,
+                                padding: `12px`,
+                                fontSize: 10,
+                                letterSpacing: 2,
+                                textTransform: `uppercase`,
+                                cursor: `pointer`,
+                                fontFamily: `'Inter','DM Sans',sans-serif`,
+                                marginTop: 8
+                            },
+                            children: `Back to Cart`
+                        })]
                     })]
                 })]
             })]
@@ -24951,7 +25036,7 @@ function Hm() {
                                     children: [`₦`, Qm(e.price)]
                                 }), (0, $.jsxs)(`span`, {
                                     style: {fontSize:11,color:`#888`,marginLeft:4},
-                                    children: [`($`, Qm(e.priceDollar || e.price / 1600), `)`]
+                                    children: [`($`, Qm(e.priceDollar || e.price / 1300), `)`]
                                 }), e.oldPrice && (0, $.jsxs)(`span`, {
                                     className: `le-pcard-save`,
                                     children: [`Save ₦`, Qm(e.oldPrice - e.price)]
