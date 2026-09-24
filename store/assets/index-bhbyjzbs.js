@@ -24219,7 +24219,7 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
         let amountKobo = Math.round(ce * 100);
         let popup = new PaystackPop();
         popup.newTransaction({
-            key: `pk_live_d4a5dbdb07f25f8ba6e22c27b12fdff29e9ad3e5`,
+            key: `pk_live_d82e9d9e43f16845916043561de9014e58c9a1fb`,
             email: `customer@lebylami.com`,
             amount: amountKobo,
             currency: `NGN`,
