@@ -22819,7 +22819,7 @@ var jm = [{
         badge: `BESTSELLER`,
         category: `cat_1`,
         image: `/images/product_rose_romeo_1773603299502.png`,
-        color: `#C4788A`,
+        color: `#E8503A`,
         colors: [{
             name: `Rose Pink`,
             hex: `#C4788A`
@@ -23039,86 +23039,46 @@ function zm({
             small: .55,
             default: 1,
             large: 1.4
-        } [e] || 1,
-        n = `#e8e0d8`,
-        r = `#C4788A`;
-    return (0, $.jsxs)(`svg`, {
-        width: 200 * t,
-        height: 48 * t,
-        viewBox: `0 0 200 48`,
-        fill: `none`,
-        children: [(0, $.jsxs)(`g`, {
-            transform: `translate(0,4)`,
-            children: [(0, $.jsx)(`path`, {
-                d: `M20 0L40 20L20 40L0 20Z`,
-                fill: `none`,
-                stroke: r,
-                strokeWidth: `1.2`
-            }), (0, $.jsx)(`path`, {
-                d: `M20 6L34 20L20 34L6 20Z`,
-                fill: `none`,
-                stroke: r,
-                strokeWidth: `0.5`,
-                opacity: `0.4`
-            }), (0, $.jsx)(`text`, {
-                x: `12`,
-                y: `21`,
+        } [e] || 1;
+    return (0, $.jsxs)(`div`, {
+        style: {
+            display: `inline-flex`,
+            flexDirection: `column`,
+            alignItems: `center`,
+            lineHeight: 1
+        },
+        children: [(0, $.jsx)(`span`, {
+            style: {
                 fontFamily: `'Cormorant Garamond',Georgia,serif`,
-                fontSize: `14`,
-                fontWeight: `600`,
-                fill: n,
-                children: `L`
-            }), (0, $.jsx)(`text`, {
-                x: `22`,
-                y: `21`,
+                fontSize: 28 * t,
+                fontWeight: 600,
+                letterSpacing: 8 * t,
+                textTransform: `uppercase`,
+                color: `#fff`
+            },
+            children: `Luxury Essentials`
+        }), (0, $.jsx)(`span`, {
+            style: {
                 fontFamily: `'Cormorant Garamond',Georgia,serif`,
-                fontSize: `14`,
-                fontWeight: `300`,
+                fontSize: 16 * t,
+                fontWeight: 400,
                 fontStyle: `italic`,
-                fill: r,
-                children: `E`
-            }), (0, $.jsx)(`text`, {
-                x: `20`,
-                y: `28`,
-                fontFamily: `'Cormorant Garamond',Georgia,serif`,
-                fontSize: `5`,
-                fontWeight: `400`,
-                fontStyle: `italic`,
-                fill: r,
-                textAnchor: `middle`,
-                children: `by Lami`
-            })]
-        }), (0, $.jsxs)(`g`, {
-            transform: `translate(48,0)`,
-            children: [(0, $.jsx)(`text`, {
-                x: `0`,
-                y: `18`,
-                fontFamily: `'Cormorant Garamond',Georgia,serif`,
-                fontSize: `12`,
-                fontWeight: `300`,
-                fill: n,
-                letterSpacing: `4`,
-                children: `LUXURY`
-            }), (0, $.jsx)(`text`, {
-                x: `0`,
-                y: `32`,
-                fontFamily: `'Cormorant Garamond',Georgia,serif`,
-                fontSize: `12`,
-                fontWeight: `300`,
-                fill: n,
-                letterSpacing: `4`,
-                children: `ESSENTIALS`
-            }), (0, $.jsx)(`text`, {
-                x: `0`,
-                y: `44`,
-                fontFamily: `'Cormorant Garamond',Georgia,serif`,
-                fontSize: `12`,
-                fontWeight: `400`,
-                fontStyle: `italic`,
-                fill: r,
-                letterSpacing: `3`,
-                children: `BY LAMI`
-            })]
+                letterSpacing: 4 * t,
+                color: `#E8503A`,
+                marginTop: 2 * t
+            },
+            children: `by Lami`
+        }), (0, $.jsx)(`span`, {
+            style: {
+                fontFamily: `'Inter','DM Sans',sans-serif`,
+                fontSize: 8 * t,
+                fontWeight: 400,
+                letterSpacing: 6 * t,
+                textTransform: `uppercase`,
+                color: `#666`,
+                marginTop: 4 * t
+            },
+            children: `NIGERIA`
         })]
     })
 }
@@ -23142,7 +23102,7 @@ function Bm({
         badge: ``,
         category: s[0]?.id || ``,
         image: ``,
-        color: `#C4788A`,
+        color: `#E8503A`,
         colors: [],
         description: ``,
         inStock: !0
@@ -23888,7 +23848,7 @@ function Bm({
                                 children: [(0, $.jsx)(`span`, {
                                     style: {
                                         fontSize: 20,
-                                        color: `#C4788A`
+                                        color: `#E8503A`
                                     },
                                     children: e.icon
                                 }), (0, $.jsx)(`span`, {
@@ -23964,7 +23924,7 @@ function Bm({
                                     height: 36,
                                     background: _.icon === e ? `#C4788A22` : `#111`,
                                     border: `1px solid ${_.icon===e?`#C4788A`:`#222`}`,
-                                    color: `#C4788A`,
+                                    color: `#E8503A`,
                                     fontSize: 16,
                                     cursor: `pointer`,
                                     display: `flex`,
@@ -23995,6 +23955,7 @@ function Bm({
     })
 }
 
+
 function Vm({
     title: e,
     onBack: t
@@ -24019,10 +23980,10 @@ function Vm({
                 style: {marginBottom: 20},
                 children: `Visit our retail locations to explore our full collection in person. Our knowledgeable staff are available to help you find the perfect product.`
             }), (0, $.jsx)(`div`, {
-                style: {marginBottom: 32, padding: `24px`, border: `1px solid #222`, background: `#111`},
+                style: {marginBottom: 32, padding: `24px 32px`, border: `1px solid #222`, background: `#111`},
                 children: (0, $.jsxs)(`div`, {
                     children: [(0, $.jsx)(`h3`, {
-                        style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 24, fontWeight: 400, marginBottom: 12, color: `#C4788A`},
+                        style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 24, fontWeight: 400, marginBottom: 12, color: `#E8503A`},
                         children: `Lagos Store`
                     }), (0, $.jsx)(`p`, {
                         style: {marginBottom: 8},
@@ -24045,23 +24006,23 @@ function Vm({
             }), (0, $.jsxs)(`div`, {
                 style: {marginBottom: 20},
                 children: [(0, $.jsx)(`p`, {
-                    style: {marginBottom: 8, color: `#C4788A`},
-                    children: `📱 WhatsApp / Phone`
+                    style: {marginBottom: 8, color: `#E8503A`, fontFamily: `'Inter','DM Sans',sans-serif`, fontSize: 13, letterSpacing: 2, textTransform: `uppercase`},
+                    children: `WhatsApp / Phone`
                 }), (0, $.jsx)(`p`, {
                     children: `+234 706 040 8151`
                 })]
             }), (0, $.jsxs)(`div`, {
                 style: {marginBottom: 20},
                 children: [(0, $.jsx)(`p`, {
-                    style: {marginBottom: 8, color: `#C4788A`},
-                    children: `📸 Instagram`
+                    style: {marginBottom: 8, color: `#E8503A`, fontFamily: `'Inter','DM Sans',sans-serif`, fontSize: 13, letterSpacing: 2, textTransform: `uppercase`},
+                    children: `Instagram`
                 }), (0, $.jsx)(`p`, {
                     children: `@lebylami`
                 })]
             }), (0, $.jsxs)(`div`, {
                 children: [(0, $.jsx)(`p`, {
-                    style: {marginBottom: 8, color: `#C4788A`},
-                    children: `🎵 TikTok`
+                    style: {marginBottom: 8, color: `#E8503A`, fontFamily: `'Inter','DM Sans',sans-serif`, fontSize: 13, letterSpacing: 2, textTransform: `uppercase`},
+                    children: `TikTok`
                 }), (0, $.jsx)(`p`, {
                     children: `@lami_hammed`
                 })]
@@ -24072,13 +24033,13 @@ function Vm({
                 style: {marginBottom: 20},
                 children: `At Luxury Essentials by Lami, your satisfaction is our priority. We offer a hassle-free 48-hour return policy.`
             }), (0, $.jsx)(`h3`, {
-                style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 24, fontWeight: 400, marginBottom: 12, color: `#C4788A`},
+                style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 24, fontWeight: 400, marginBottom: 12, color: `#E8503A`},
                 children: `48-Hour Return Window`
             }), (0, $.jsx)(`p`, {
                 style: {marginBottom: 20},
                 children: `You may return any unopened, unused product within 48 hours of delivery for a full refund or store credit. Items must be in their original packaging and in resaleable condition.`
             }), (0, $.jsx)(`h3`, {
-                style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 24, fontWeight: 400, marginBottom: 12, color: `#C4788A`},
+                style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 24, fontWeight: 400, marginBottom: 12, color: `#E8503A`},
                 children: `How to Return`
             }), (0, $.jsx)(`p`, {
                 children: `Contact us on WhatsApp at +234 706 040 8151 within 48 hours of receiving your order. Our team will guide you through the return process.`
@@ -24088,28 +24049,28 @@ function Vm({
     var content = pageContent[e];
     return (0, $.jsxs)(`div`, {
         style: {
-            background: `#0a0a0a`,
-            color: `#e8e0d8`,
+            background: `#000`,
+            color: `#fff`,
             minHeight: `100vh`,
-            fontFamily: `'Outfit',sans-serif`,
+            fontFamily: `'Inter','DM Sans',sans-serif`,
             display: `flex`,
             flexDirection: `column`
         },
         children: [(0, $.jsx)(`style`, {
             children: `
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Outfit:wght@200;300;400;500;600&display=swap');
-        .info-btn { background:none; border:1px solid #333; color:#e8e0d8; padding:8px 20px; font-family:'Outfit',sans-serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all .3s;}
-        .info-btn:hover { border-color:#C4788A; color:#C4788A; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap');
+        .info-back-btn { background:none; border:1px solid #333; color:#fff; padding:12px 32px; font-family:'Inter','DM Sans',sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; cursor:pointer; transition:all .3s;}
+        .info-back-btn:hover { border-color:#E8503A; color:#E8503A; }
       `
         }), (0, $.jsx)(`div`, {
             style: {
-                padding: `20px 40px`,
-                borderBottom: `1px solid #151515`
+                padding: `24px 40px`,
+                borderBottom: `1px solid #1a1a1a`
             },
             children: (0, $.jsx)(`button`, {
-                className: `info-btn`,
+                className: `info-back-btn`,
                 onClick: t,
-                children: `← Back to Store`
+                children: `Back to Store`
             })
         }), (0, $.jsxs)(`div`, {
             style: {
@@ -24124,14 +24085,16 @@ function Vm({
                     fontFamily: `'Cormorant Garamond',serif`,
                     fontSize: 48,
                     fontWeight: 300,
-                    marginBottom: 40
+                    marginBottom: 40,
+                    letterSpacing: 2
                 },
                 children: e
             }), (0, $.jsx)(`div`, {
                 style: {
-                    color: `#888`,
+                    color: `#999`,
                     lineHeight: 1.8,
-                    fontSize: 16
+                    fontSize: 15,
+                    fontFamily: `'Inter','DM Sans',sans-serif`
                 },
                 children: content ? content : (0, $.jsxs)(`p`, {
                     children: [`This page is currently being updated. Please check back soon for our latest information regarding `, e.toLowerCase(), `.`]
@@ -24139,13 +24102,14 @@ function Vm({
             })]
         }), (0, $.jsx)(`footer`, {
             style: {
-                borderTop: `1px solid #151515`,
+                borderTop: `1px solid #1a1a1a`,
                 padding: `40px`,
                 textAlign: `center`,
                 fontSize: 11,
                 color: `#555`,
-                letterSpacing: 2,
-                textTransform: `uppercase`
+                letterSpacing: 3,
+                textTransform: `uppercase`,
+                fontFamily: `'Inter','DM Sans',sans-serif`
             },
             children: `© 2025 Luxury Essentials by Lami | +234 706 040 8151`
         })]
@@ -24153,7 +24117,7 @@ function Vm({
 }
 
 function Hm() {
-    let [e, t] = (0, D.useState)(`store`), [n, r] = (0, D.useState)(Mm), [i, a] = (0, D.useState)(jm), [o, s] = (0, D.useState)(!0), [c, l] = (0, D.useState)(null), [u, d] = (0, D.useState)(``), [f, p] = (0, D.useState)(``), [m, h] = (0, D.useState)(``), [g, _] = (0, D.useState)(!1), [v, y] = (0, D.useState)(0), [b, x] = (0, D.useState)(`all`), [ee, te] = (0, D.useState)(0), [S, ne] = (0, D.useState)([]), [re, C] = (0, D.useState)(!1), [ie, ae] = (0, D.useState)({});
+    let [e, t] = (0, D.useState)(`store`), [n, r] = (0, D.useState)(Mm), [i, a] = (0, D.useState)(jm), [o, s] = (0, D.useState)(!0), [c, l] = (0, D.useState)(null), [u, d] = (0, D.useState)(``), [f, p] = (0, D.useState)(``), [m, h] = (0, D.useState)(``), [g, _] = (0, D.useState)(!1), [v, y] = (0, D.useState)(0), [b, x] = (0, D.useState)(`all`), [ee, te] = (0, D.useState)(0), [S, ne] = (0, D.useState)([]), [re, C] = (0, D.useState)(!1), [ie, ae] = (0, D.useState)({}), [mobileMenu, setMobileMenu] = (0, D.useState)(!1);
     (0, D.useEffect)(() => {
         let n = cf(Em, n => {
             l(n), n && e === `admin-login` && t(`admin`)
@@ -24172,9 +24136,7 @@ function Hm() {
         try {
             await Im(e), r(e.products), a(e.categories)
         } catch (e) {
-            alert(`Failed to save to database: ` + e.message + `
-
-Your changes were NOT saved. Check Firestore rules and try again.`)
+            alert(`Failed to save to database: ` + e.message + `\n\nYour changes were NOT saved. Check Firestore rules and try again.`)
         }
     }, oe = async () => {
         h(``), _(!0);
@@ -24251,8 +24213,8 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
     };
     if (o) return (0, $.jsx)(`div`, {
         style: {
-            background: `#0a0a0a`,
-            color: `#C4788A`,
+            background: `#000`,
+            color: `#E8503A`,
             display: `flex`,
             alignItems: `center`,
             justifyContent: `center`,
@@ -24267,9 +24229,9 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
         let e = {
             background: `#111`,
             border: `1px solid ${m?`#ff4444`:`#222`}`,
-            color: `#e8e0d8`,
+            color: `#fff`,
             padding: `14px 20px`,
-            fontFamily: `'Outfit',sans-serif`,
+            fontFamily: `'Inter','DM Sans',sans-serif`,
             fontSize: 14,
             width: `100%`,
             outline: `none`,
@@ -24277,16 +24239,16 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
         };
         return (0, $.jsxs)(`div`, {
             style: {
-                background: `#0a0a0a`,
-                color: `#e8e0d8`,
+                background: `#000`,
+                color: `#fff`,
                 display: `flex`,
                 alignItems: `center`,
                 justifyContent: `center`,
                 height: `100vh`,
-                fontFamily: `'Outfit',sans-serif`
+                fontFamily: `'Inter','DM Sans',sans-serif`
             },
             children: [(0, $.jsx)(`style`, {
-                children: `@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Outfit:wght@200;300;400;500;600&display=swap');`
+                children: `@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap');`
             }), (0, $.jsxs)(`div`, {
                 style: {
                     textAlign: `center`,
@@ -24340,11 +24302,11 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                         disabled: g || !u || !f,
                         style: {
                             flex: 1,
-                            background: `#C4788A`,
+                            background: `#E8503A`,
                             border: `none`,
-                            color: `#0a0a0a`,
+                            color: `#fff`,
                             padding: `12px`,
-                            fontFamily: `'Outfit',sans-serif`,
+                            fontFamily: `'Inter','DM Sans',sans-serif`,
                             fontSize: 12,
                             letterSpacing: 2,
                             textTransform: `uppercase`,
@@ -24362,7 +24324,7 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                             border: `1px solid #333`,
                             color: `#999`,
                             padding: `12px`,
-                            fontFamily: `'Outfit',sans-serif`,
+                            fontFamily: `'Inter','DM Sans',sans-serif`,
                             fontSize: 12,
                             letterSpacing: 2,
                             textTransform: `uppercase`,
@@ -24400,145 +24362,168 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
         }
     }) : (0, $.jsxs)(`div`, {
         style: {
-            fontFamily: `'Cormorant Garamond',Georgia,serif`,
-            background: `#0a0a0a`,
-            color: `#e8e0d8`,
+            fontFamily: `'Inter','DM Sans',sans-serif`,
+            background: `#000`,
+            color: `#fff`,
             minHeight: `100vh`,
             overflowX: `hidden`
         },
         children: [(0, $.jsx)(`style`, {
             children: `
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
         *{margin:0;padding:0;box-sizing:border-box}
-        ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:#0a0a0a} ::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
-        .le-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(10,10,10,.95),rgba(10,10,10,0));backdrop-filter:blur(10px)}
-        .le-nav-links{display:flex;gap:32px;list-style:none;font-family:'Outfit',sans-serif;font-weight:300;font-size:13px;letter-spacing:2px;text-transform:uppercase}
-        .le-nav-links a{color:#999;text-decoration:none;transition:color .3s;position:relative;cursor:pointer}
-        .le-nav-links a:hover{color:#e8e0d8}
-        .le-nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:#C4788A;transition:width .3s}
-        .le-nav-links a:hover::after{width:100%}
-        .le-cart-btn{background:none;border:1px solid #333;color:#e8e0d8;padding:8px 20px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;position:relative}
-        .le-cart-btn:hover{border-color:#C4788A;color:#C4788A}
-        .le-badge{position:absolute;top:-6px;right:-6px;background:#C4788A;color:#fff;width:18px;height:18px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center}
+        ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:#000} ::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+        .le-announce{position:fixed;top:0;left:0;right:0;z-index:150;background:#E8503A;padding:10px 20px;text-align:center;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#fff;font-weight:500}
+        .le-nav{position:fixed;top:36px;left:0;right:0;z-index:100;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;background:transparent;transition:background .3s}
+        .le-nav.scrolled{background:rgba(0,0,0,.95);backdrop-filter:blur(10px)}
+        .le-nav-left{display:flex;align-items:center;gap:16px}
+        .le-nav-menu-btn{background:none;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Inter','DM Sans',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:0}
+        .le-nav-menu-btn svg{width:20px;height:20px}
+        .le-nav-center{position:absolute;left:50%;transform:translateX(-50%)}
+        .le-nav-right{display:flex;align-items:center;gap:20px}
+        .le-nav-icon{background:none;border:none;color:#fff;cursor:pointer;position:relative;padding:4px;display:flex;align-items:center;justify-content:center}
+        .le-nav-icon svg{width:20px;height:20px}
+        .le-badge{position:absolute;top:-4px;right:-6px;background:#E8503A;color:#fff;width:16px;height:16px;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:600}
+        .le-mobile-menu{position:fixed;inset:0;z-index:300;background:#000;display:flex;flex-direction:column;padding:80px 40px 40px}
+        .le-mobile-menu-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer}
+        .le-mobile-menu a,.le-mobile-menu button{display:block;background:none;border:none;color:#fff;font-family:'Inter','DM Sans',sans-serif;font-size:24px;font-weight:300;letter-spacing:2px;text-transform:lowercase;padding:16px 0;cursor:pointer;text-decoration:none;text-align:left;border-bottom:1px solid #1a1a1a;width:100%}
         .le-hero{height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
         .le-hero-bg{position:absolute;inset:0}
-        .le-hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.25;filter:blur(2px)}
-        .le-hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(10,10,10,.6),rgba(10,10,10,.9) 70%)}
-        .le-hero-grain{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.5;pointer-events:none}
-        .le-orb{position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(120px);opacity:.15;animation:orbF 15s ease-in-out infinite}
-        @keyframes orbF{0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(30px,-20px)scale(1.05)}66%{transform:translate(-20px,30px)scale(.95)}}
+        .le-hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.4}
+        .le-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.5) 100%)}
         @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-        @keyframes scrollL{0%{top:-100%}100%{top:200%}}
-        @keyframes marqueeA{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
         @keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+        @keyframes scrollL{0%{top:-100%}100%{top:200%}}
         .le-hero-content{position:relative;z-index:2;text-align:center;max-width:800px;padding:0 24px}
-        .le-eyebrow{font-family:'Outfit',sans-serif;font-size:12px;font-weight:400;letter-spacing:6px;text-transform:uppercase;color:#C4788A;margin-bottom:24px;opacity:0;transform:translateY(20px);animation:fadeUp 1s .3s forwards}
-        .le-hero-title{font-size:clamp(48px,8vw,96px);font-weight:300;line-height:1.05;margin-bottom:24px;opacity:0;transform:translateY(30px);animation:fadeUp 1s .5s forwards}
-        .le-hero-title em{font-style:italic;font-weight:400;color:#C4788A}
-        .le-hero-sub{font-family:'Outfit',sans-serif;font-size:15px;font-weight:300;color:#888;line-height:1.7;max-width:500px;margin:0 auto 40px;opacity:0;transform:translateY(20px);animation:fadeUp 1s .7s forwards}
-        .le-cta{display:inline-flex;align-items:center;gap:12px;background:transparent;border:1px solid #C4788A;color:#e8e0d8;padding:16px 48px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:all .5s;text-decoration:none}
-        .le-cta:hover{background:#C4788A;color:#0a0a0a;padding:16px 56px}
-        .le-cta-anim{opacity:0;transform:translateY(20px);animation:fadeUp 1s .9s forwards}
-        .le-scroll-ind{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#444;display:flex;flex-direction:column;align-items:center;gap:8px}
-        .le-scroll-line{width:1px;height:40px;background:#333;position:relative;overflow:hidden}
-        .le-scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:1px;height:100%;background:#C4788A;animation:scrollL 2s infinite}
-        .le-section{padding:120px 40px;position:relative}
-        .le-section-label{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:5px;text-transform:uppercase;color:#555;margin-bottom:16px}
-        .le-section-title{font-size:clamp(32px,5vw,56px);font-weight:300;line-height:1.15;margin-bottom:16px}
-        .le-section-title em{font-style:italic;color:#C4788A}
-        .le-cat-row{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
-        .le-cat-pill{font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:10px 24px;border:1px solid #222;background:none;color:#777;cursor:pointer;transition:all .3s;white-space:nowrap}
-        .le-cat-pill:hover{border-color:#444;color:#e8e0d8}
-        .le-cat-pill.active{border-color:#C4788A;color:#C4788A;background:#C4788A11}
-        .le-products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-top:40px}
-        .le-pcard{background:#111;border:1px solid #1a1a1a;overflow:hidden;cursor:pointer;transition:all .5s cubic-bezier(.16,1,.3,1)}
-        .le-pcard:hover{border-color:#2a2a2a;transform:translateY(-6px);box-shadow:0 20px 60px -20px rgba(0,0,0,.5)}
-        .le-pcard-img{height:320px;position:relative;overflow:hidden;background:#111}
-        .le-pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
-        .le-pcard:hover .le-pcard-img img{transform:scale(1.06)}
-        .le-pcard-badge{position:absolute;top:16px;left:16px;font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:#C4788A;color:#0a0a0a;padding:4px 12px;font-weight:500;z-index:2}
-        .le-pcard-add{position:absolute;bottom:0;left:0;right:0;background:rgba(196,120,138,.95);color:#0a0a0a;text-align:center;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;transform:translateY(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);cursor:pointer;border:none;width:100%;font-weight:500;z-index:2}
+        .le-hero-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,7vw,80px);font-weight:300;line-height:1.1;margin-bottom:20px;text-transform:lowercase;opacity:0;transform:translateY(30px);animation:fadeUp 1s .3s forwards}
+        .le-hero-title strong{font-weight:700}
+        .le-hero-sub{font-size:14px;font-weight:300;color:rgba(255,255,255,.7);line-height:1.7;max-width:480px;margin:0 auto 40px;opacity:0;transform:translateY(20px);animation:fadeUp 1s .6s forwards}
+        .le-discover-btn{display:inline-block;background:transparent;border:1px solid #fff;color:#fff;padding:14px 48px;font-family:'Inter','DM Sans',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:all .4s;text-decoration:none;opacity:0;transform:translateY(20px);animation:fadeUp 1s .8s forwards}
+        .le-discover-btn:hover{background:#fff;color:#000}
+        .le-brand-statement{padding:100px 40px;text-align:center;background:#000}
+        .le-brand-statement p{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(18px,2.5vw,28px);font-weight:300;line-height:1.8;max-width:800px;margin:0 auto;color:rgba(255,255,255,.8)}
+        .le-cat-section{padding:80px 40px;background:#000}
+        .le-cat-section-title{font-family:'Inter','DM Sans',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#999;margin-bottom:40px}
+        .le-cat-scroll{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px;-ms-overflow-style:none;scrollbar-width:none}
+        .le-cat-scroll::-webkit-scrollbar{display:none}
+        .le-cat-card{min-width:280px;height:360px;position:relative;overflow:hidden;cursor:pointer;flex-shrink:0;background:#1a1a1a}
+        .le-cat-card-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.8) 100%);z-index:1}
+        .le-cat-card-content{position:absolute;bottom:0;left:0;right:0;padding:32px;z-index:2}
+        .le-cat-card-name{font-family:'Inter','DM Sans',sans-serif;font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+        .le-cat-card-btn{background:transparent;border:1px solid #fff;color:#fff;padding:10px 28px;font-family:'Inter','DM Sans',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+        .le-cat-card-btn:hover{background:#fff;color:#000}
+        .le-promo-banner{position:relative;height:500px;overflow:hidden;background:#111}
+        .le-promo-banner img{width:100%;height:100%;object-fit:cover;opacity:.5}
+        .le-promo-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
+        .le-promo-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(32px,5vw,56px);font-weight:300;margin-bottom:24px;text-transform:lowercase}
+        .le-promo-title strong{font-weight:700}
+        .le-shop-section{padding:80px 40px;background:#111}
+        .le-shop-label{font-family:'Inter','DM Sans',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#999;margin-bottom:24px}
+        .le-cat-filters{display:flex;gap:8px;margin-bottom:40px;flex-wrap:wrap}
+        .le-cat-filter{font-family:'Inter','DM Sans',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:8px 20px;border:1px solid #333;background:none;color:#999;cursor:pointer;transition:all .3s;white-space:nowrap}
+        .le-cat-filter:hover{border-color:#666;color:#fff}
+        .le-cat-filter.active{border-color:#E8503A;color:#E8503A;background:rgba(232,80,58,.08)}
+        .le-products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+        .le-pcard{background:#fff;overflow:hidden;cursor:pointer;transition:all .4s;position:relative}
+        .le-pcard:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.3)}
+        .le-pcard-img{height:320px;position:relative;overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center}
+        .le-pcard-img img{max-width:85%;max-height:85%;object-fit:contain;transition:transform .5s ease}
+        .le-pcard:hover .le-pcard-img img{transform:scale(1.05)}
+        .le-pcard-wishlist{position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;z-index:2;padding:4px}
+        .le-pcard-wishlist svg{width:20px;height:20px;stroke:#999;fill:none;stroke-width:1.5;transition:all .3s}
+        .le-pcard-wishlist:hover svg{stroke:#E8503A}
+        .le-pcard-badge{position:absolute;top:16px;left:16px;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:#E8503A;color:#fff;padding:4px 10px;font-weight:600;z-index:2}
+        .le-pcard-add{position:absolute;bottom:0;left:0;right:0;background:#000;color:#fff;text-align:center;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px;transform:translateY(100%);transition:transform .3s ease;cursor:pointer;border:none;width:100%;font-weight:500;z-index:2}
         .le-pcard:hover .le-pcard-add{transform:translateY(0)}
-        .le-pcard-info{padding:24px}
-        .le-pcard-name{font-size:20px;font-weight:400;margin-bottom:4px}
-        .le-pcard-sub{font-family:'Outfit',sans-serif;font-size:12px;color:#666;letter-spacing:1px;margin-bottom:16px}
-        .le-pcard-price{font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;color:#C4788A}
-        .le-pcard-old{font-size:14px;color:#555;text-decoration:line-through;margin-left:8px;font-weight:300}
-        .le-color-swatches{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-        .le-color-swatch{width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .3s;padding:0;outline:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
-        .le-color-swatch:hover{transform:scale(1.15);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
-        .le-color-swatch.active{border-color:#C4788A;transform:scale(1.15);box-shadow:0 0 0 1px #C4788A,inset 0 0 0 1px rgba(255,255,255,.15)}
-        .le-pcard-no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;opacity:.3}
-        .le-marquee-wrap{overflow:hidden;padding:80px 0;border-top:1px solid #151515;border-bottom:1px solid #151515}
-        .le-marquee{display:flex;gap:64px;animation:marqueeA 25s linear infinite;white-space:nowrap}
-        .le-marquee-item{font-size:clamp(36px,6vw,72px);font-weight:300;color:#1a1a1a;letter-spacing:4px;flex-shrink:0}
-        .le-marquee-item em{font-style:italic;color:#2a1a1f}
-        .le-mq-dot{color:#C4788A;margin:0 8px}
-        .le-split{display:grid;grid-template-columns:1fr 1fr;min-height:500px}
+        .le-pcard-info{padding:20px;background:#fff;color:#000}
+        .le-pcard-name{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;color:#000}
+        .le-pcard-sub{font-size:11px;color:#888;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
+        .le-pcard-desc{font-size:12px;color:#666;line-height:1.5;margin-bottom:10px}
+        .le-color-swatches{display:flex;gap:6px;margin-bottom:10px}
+        .le-color-swatch{width:16px;height:16px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .3s;padding:0;outline:none}
+        .le-color-swatch:hover{transform:scale(1.2)}
+        .le-color-swatch.active{border-color:#E8503A;transform:scale(1.2)}
+        .le-pcard-price-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+        .le-pcard-old{font-size:13px;color:#999;text-decoration:line-through;font-weight:400}
+        .le-pcard-price{font-size:14px;font-weight:600;color:#E8503A}
+        .le-pcard-save{font-size:10px;color:#E8503A;letter-spacing:1px;text-transform:uppercase;font-weight:600}
+        .le-pcard-no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:#ddd}
+        .le-split{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:#000}
         .le-split-visual{position:relative;overflow:hidden}
         .le-split-visual img{width:100%;height:100%;object-fit:cover}
-        .le-split-content{display:flex;flex-direction:column;justify-content:center;padding:80px 64px}
-        .le-split-content p{font-family:'Outfit',sans-serif;font-size:15px;color:#888;line-height:1.8;margin-bottom:32px}
-        .le-features{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#1a1a1a}
-        .le-feature{background:#0a0a0a;padding:48px 32px;text-align:center;transition:all .4s}
-        .le-feature:hover{background:#0e0e0e}
-        .le-feat-icon{font-size:28px;margin-bottom:20px;color:#C4788A}
-        .le-feat-title{font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
-        .le-feat-desc{font-family:'Outfit',sans-serif;font-size:13px;color:#555;line-height:1.6}
-        .le-test-section{text-align:center;padding:120px 40px;background:linear-gradient(180deg,#0a0a0a,#0e0e0e 50%,#0a0a0a)}
-        .le-test-text{font-size:clamp(22px,3vw,32px);font-weight:300;font-style:italic;max-width:700px;margin:0 auto 24px;line-height:1.6;min-height:100px}
-        .le-test-author{font-family:'Outfit',sans-serif;font-size:13px;color:#666;letter-spacing:3px;text-transform:uppercase}
-        .le-test-stars{color:#C4788A;font-size:14px;margin-bottom:32px}
+        .le-split-content{display:flex;flex-direction:column;justify-content:center;padding:80px 64px;background:#000}
+        .le-split-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#999;margin-bottom:16px}
+        .le-split-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,4vw,48px);font-weight:300;margin-bottom:24px;text-transform:lowercase}
+        .le-split-title strong{font-weight:700}
+        .le-split-text{font-size:14px;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:32px}
+        .le-test-section{text-align:center;padding:100px 40px;background:#000}
+        .le-test-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#999;margin-bottom:40px}
+        .le-test-stars{color:#E8503A;font-size:14px;margin-bottom:24px;letter-spacing:4px}
+        .le-test-text{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(20px,3vw,30px);font-weight:300;font-style:italic;max-width:700px;margin:0 auto 24px;line-height:1.6;min-height:80px;color:rgba(255,255,255,.9)}
+        .le-test-author{font-size:12px;color:#666;letter-spacing:3px;text-transform:uppercase}
         .le-test-dots{display:flex;gap:8px;justify-content:center;margin-top:32px}
         .le-test-dot{width:6px;height:6px;border-radius:50%;background:#333;cursor:pointer;transition:all .3s;border:none}
-        .le-test-dot.active{background:#C4788A;width:24px;border-radius:3px}
-        .le-cta-section{padding:120px 40px;text-align:center;position:relative;overflow:hidden}
-        .le-cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(196,120,138,.06),transparent 60%)}
-        .le-input-wrap{display:flex;gap:0;max-width:480px;margin:48px auto 0}
-        .le-input{flex:1;background:#111;border:1px solid #222;border-right:none;color:#e8e0d8;padding:16px 24px;font-family:'Outfit',sans-serif;font-size:14px;outline:none}
-        .le-input:focus{border-color:#C4788A}
-        .le-input::placeholder{color:#444}
-        .le-submit{background:#C4788A;border:1px solid #C4788A;color:#0a0a0a;padding:16px 32px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-weight:500;transition:all .3s}
-        .le-submit:hover{background:#d4889a}
-        .le-footer{border-top:1px solid #151515;padding:64px 40px 32px}
+        .le-test-dot.active{background:#E8503A;width:24px;border-radius:3px}
+        .le-newsletter{padding:100px 40px;text-align:center;background:#1a1a1a}
+        .le-newsletter-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,4vw,44px);font-weight:300;margin-bottom:16px}
+        .le-newsletter-sub{font-size:13px;color:#999;margin-bottom:40px;letter-spacing:1px}
+        .le-newsletter-form{display:flex;gap:0;max-width:480px;margin:0 auto}
+        .le-newsletter-input{flex:1;background:#111;border:1px solid #333;border-right:none;color:#fff;padding:14px 20px;font-family:'Inter','DM Sans',sans-serif;font-size:13px;outline:none}
+        .le-newsletter-input:focus{border-color:#E8503A}
+        .le-newsletter-input::placeholder{color:#555}
+        .le-newsletter-submit{background:#E8503A;border:1px solid #E8503A;color:#fff;padding:14px 28px;font-family:'Inter','DM Sans',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-weight:500;transition:all .3s}
+        .le-newsletter-submit:hover{background:#d4442f}
+        .le-footer{border-top:1px solid #1a1a1a;padding:64px 40px 32px;background:#000}
         .le-footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-        .le-footer-brand p{font-family:'Outfit',sans-serif;font-size:13px;color:#555;line-height:1.7;margin-top:16px}
-        .le-footer-title{font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#666;margin-bottom:20px}
+        .le-footer-brand p{font-size:13px;color:#666;line-height:1.7;margin-top:16px}
+        .le-footer-title{font-size:11px;letter-spacing:3px;text-transform:lowercase;color:#999;margin-bottom:20px}
         .le-footer-links{list-style:none}
-        .le-footer-links li{margin-bottom:12px}
-        .le-footer-links a{font-family:'Outfit',sans-serif;font-size:13px;color:#444;text-decoration:none;transition:color .3s;cursor:pointer}
-        .le-footer-links a:hover{color:#C4788A}
-        .le-footer-bottom{border-top:1px solid #151515;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-        .le-footer-copy{font-family:'Outfit',sans-serif;font-size:11px;color:#333}
-        .le-footer-socials{display:flex;gap:16px}
-        .le-footer-social{width:36px;height:36px;border:1px solid #1a1a1a;display:flex;align-items:center;justify-content:center;color:#555;font-size:14px;text-decoration:none;transition:all .3s;font-family:'Outfit',sans-serif;cursor:pointer}
-        .le-footer-social:hover{border-color:#C4788A;color:#C4788A}
-        .le-admin-link{font-family:'Outfit',sans-serif;font-size:11px;color:#222;cursor:pointer;transition:color .3s;text-decoration:none}
-        .le-admin-link:hover{color:#C4788A}
+        .le-footer-links li{margin-bottom:10px}
+        .le-footer-links a{font-size:13px;color:#5B9A8B;text-decoration:none;transition:color .3s;cursor:pointer}
+        .le-footer-links a:hover{color:#E8503A}
+        .le-footer-bottom{border-top:1px solid #1a1a1a;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+        .le-footer-copy{font-size:11px;color:#444}
+        .le-footer-payments{display:flex;gap:8px;align-items:center}
+        .le-footer-payment{width:40px;height:26px;background:#1a1a1a;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#666;letter-spacing:1px;font-weight:600}
+        .le-footer-socials{display:flex;gap:12px}
+        .le-footer-social{width:36px;height:36px;border:1px solid #1a1a1a;display:flex;align-items:center;justify-content:center;color:#5B9A8B;font-size:14px;text-decoration:none;transition:all .3s;cursor:pointer}
+        .le-footer-social:hover{border-color:#E8503A;color:#E8503A}
+        .le-admin-link{font-size:11px;color:#222;cursor:pointer;transition:color .3s;text-decoration:none}
+        .le-admin-link:hover{color:#E8503A}
         .le-wa-float{position:fixed;bottom:28px;right:28px;z-index:90;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:all .3s;text-decoration:none;border:none;cursor:pointer}
         .le-wa-float:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.5)}
         .le-wa-float svg{width:28px;height:28px;fill:#fff}
-        .le-cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;backdrop-filter:blur(4px)}
-        .le-cart-drawer{position:fixed;top:0;right:0;bottom:0;width:400px;max-width:90vw;background:#0e0e0e;z-index:201;border-left:1px solid #1a1a1a;display:flex;flex-direction:column;animation:slideIn .3s ease}
-        .le-cart-header{padding:24px;border-bottom:1px solid #151515;display:flex;justify-content:space-between;align-items:center}
+        .le-cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;backdrop-filter:blur(4px)}
+        .le-cart-drawer{position:fixed;top:0;right:0;bottom:0;width:400px;max-width:90vw;background:#111;z-index:201;border-left:1px solid #1a1a1a;display:flex;flex-direction:column;animation:slideIn .3s ease}
+        .le-cart-header{padding:24px;border-bottom:1px solid #1a1a1a;display:flex;justify-content:space-between;align-items:center}
         .le-cart-close{background:none;border:none;color:#666;font-size:24px;cursor:pointer;transition:color .3s}
-        .le-cart-close:hover{color:#e8e0d8}
+        .le-cart-close:hover{color:#fff}
         .le-cart-body{flex:1;overflow-y:auto;padding:24px}
-        .le-cart-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #151515}
-        .le-cart-item-img{width:60px;height:60px;border-radius:4px;overflow:hidden;flex-shrink:0}
+        .le-cart-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #1a1a1a}
+        .le-cart-item-img{width:60px;height:60px;overflow:hidden;flex-shrink:0;background:#1a1a1a}
         .le-cart-item-img img{width:100%;height:100%;object-fit:cover}
-        .le-cart-footer{padding:24px;border-top:1px solid #151515}
+        .le-cart-footer{padding:24px;border-top:1px solid #1a1a1a}
         @media(max-width:768px){
-          .le-nav{padding:16px 20px}
-          .le-nav-links{display:none}
-          .le-section{padding:80px 20px}
+          .le-nav{padding:12px 16px}
+          .le-nav-center{position:static;transform:none}
+          .le-nav-menu-btn span{display:none}
+          .le-announce{font-size:9px;letter-spacing:2px;padding:8px 12px}
+          .le-brand-statement{padding:60px 20px}
+          .le-cat-section{padding:60px 20px}
+          .le-shop-section{padding:60px 20px}
           .le-split{grid-template-columns:1fr}
           .le-split-content{padding:48px 24px}
-          .le-features{grid-template-columns:1fr}
+          .le-products-grid{grid-template-columns:1fr 1fr}
           .le-footer-grid{grid-template-columns:1fr 1fr}
+          .le-newsletter{padding:60px 20px}
+          .le-newsletter-form{flex-direction:column}
+          .le-newsletter-input{border-right:1px solid #333}
+          .le-test-section{padding:60px 20px}
+          .le-promo-banner{height:350px}
+        }
+        @media(max-width:480px){
           .le-products-grid{grid-template-columns:1fr}
-          .le-input-wrap{flex-direction:column}
-          .le-input{border-right:1px solid #222}
+          .le-footer-grid{grid-template-columns:1fr}
         }
       `
         }), re && (0, $.jsxs)($.Fragment, {
@@ -24551,8 +24536,7 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                     className: `le-cart-header`,
                     children: [(0, $.jsxs)(`span`, {
                         style: {
-                            fontFamily: `'Outfit',sans-serif`,
-                            fontSize: 12,
+                            fontSize: 11,
                             letterSpacing: 3,
                             textTransform: `uppercase`
                         },
@@ -24567,9 +24551,8 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                     children: [S.length === 0 && (0, $.jsx)(`div`, {
                         style: {
                             textAlign: `center`,
-                            color: `#444`,
+                            color: `#555`,
                             paddingTop: 60,
-                            fontFamily: `'Outfit',sans-serif`,
                             fontSize: 13
                         },
                         children: `Your cart is empty`
@@ -24593,14 +24576,15 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                             },
                             children: [(0, $.jsx)(`div`, {
                                 style: {
-                                    fontSize: 14,
-                                    fontWeight: 400,
+                                    fontSize: 12,
+                                    fontWeight: 600,
+                                    letterSpacing: 1,
+                                    textTransform: `uppercase`,
                                     marginBottom: 4
                                 },
                                 children: e.name
                             }), e.selectedColor && (0, $.jsxs)(`div`, {
                                 style: {
-                                    fontFamily: `'Outfit',sans-serif`,
                                     fontSize: 11,
                                     color: `#888`,
                                     display: `flex`,
@@ -24620,16 +24604,15 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                                 }), e.selectedColor.name]
                             }), (0, $.jsxs)(`div`, {
                                 style: {
-                                    fontFamily: `'Outfit',sans-serif`,
-                                    fontSize: 12,
+                                    fontSize: 11,
                                     color: `#666`
                                 },
                                 children: [`Qty: `, e.qty]
                             }), (0, $.jsxs)(`div`, {
                                 style: {
-                                    fontFamily: `'Outfit',sans-serif`,
                                     fontSize: 14,
-                                    color: `#C4788A`,
+                                    color: `#E8503A`,
+                                    fontWeight: 600,
                                     marginTop: 4
                                 },
                                 children: [`₦`, Qm(e.price * e.qty)]
@@ -24653,78 +24636,133 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                         style: {
                             display: `flex`,
                             justifyContent: `space-between`,
-                            marginBottom: 16,
-                            fontFamily: `'Outfit',sans-serif`
+                            marginBottom: 16
                         },
                         children: [(0, $.jsx)(`span`, {
                             style: {
-                                fontSize: 13,
+                                fontSize: 11,
                                 color: `#888`,
-                                letterSpacing: 2,
+                                letterSpacing: 3,
                                 textTransform: `uppercase`
                             },
                             children: `Total`
                         }), (0, $.jsxs)(`span`, {
                             style: {
                                 fontSize: 18,
-                                color: `#C4788A`,
-                                fontWeight: 500
+                                color: `#E8503A`,
+                                fontWeight: 600
                             },
                             children: [`₦`, Qm(ce)]
                         })]
                     }), (0, $.jsx)(`button`, {
-                        className: `le-cta`,
                         onClick: ue,
                         style: {
                             width: `100%`,
-                            justifyContent: `center`,
-                            animation: `none`,
-                            opacity: 1,
-                            transform: `none`
+                            background: `#E8503A`,
+                            border: `none`,
+                            color: `#fff`,
+                            padding: `16px`,
+                            fontSize: 11,
+                            letterSpacing: 3,
+                            textTransform: `uppercase`,
+                            cursor: `pointer`,
+                            fontWeight: 600,
+                            fontFamily: `'Inter','DM Sans',sans-serif`,
+                            transition: `all .3s`
                         },
-                        children: `Pay with Paystack →`
+                        children: `Checkout with Paystack`
                     })]
                 })]
             })]
+        }), mobileMenu && (0, $.jsxs)(`div`, {
+            className: `le-mobile-menu`,
+            children: [(0, $.jsx)(`button`, {
+                className: `le-mobile-menu-close`,
+                onClick: () => setMobileMenu(!1),
+                children: `×`
+            }), (0, $.jsx)(`a`, {
+                href: `#hero`,
+                onClick: () => setMobileMenu(!1),
+                children: `home`
+            }), (0, $.jsx)(`a`, {
+                href: `#shop`,
+                onClick: () => setMobileMenu(!1),
+                children: `shop`
+            }), (0, $.jsx)(`a`, {
+                href: `#about`,
+                onClick: () => setMobileMenu(!1),
+                children: `about`
+            }), (0, $.jsx)(`a`, {
+                href: `#contact`,
+                onClick: () => setMobileMenu(!1),
+                children: `contact`
+            }), (0, $.jsx)(`button`, {
+                onClick: () => { setMobileMenu(!1); C(!0) },
+                children: `cart (${v})`
+            })]
+        }), (0, $.jsx)(`div`, {
+            className: `le-announce`,
+            children: `Free shipping on orders over ₦50,000`
         }), (0, $.jsxs)(`nav`, {
             className: `le-nav`,
-            children: [(0, $.jsx)(`a`, {
-                href: `#hero`,
-                style: {
-                    textDecoration: `none`
-                },
-                children: (0, $.jsx)(zm, {
-                    size: `small`
-                })
-            }), (0, $.jsxs)(`ul`, {
-                className: `le-nav-links`,
-                children: [(0, $.jsx)(`li`, {
-                    children: (0, $.jsx)(`a`, {
-                        href: `#hero`,
-                        children: `Home`
-                    })
-                }), (0, $.jsx)(`li`, {
-                    children: (0, $.jsx)(`a`, {
-                        href: `#shop`,
-                        children: `Shop`
-                    })
-                }), (0, $.jsx)(`li`, {
-                    children: (0, $.jsx)(`a`, {
-                        href: `#about`,
-                        children: `About`
-                    })
-                }), (0, $.jsx)(`li`, {
-                    children: (0, $.jsx)(`a`, {
-                        href: `#contact`,
-                        children: `Contact`
-                    })
+            children: [(0, $.jsxs)(`div`, {
+                className: `le-nav-left`,
+                children: [(0, $.jsxs)(`button`, {
+                    className: `le-nav-menu-btn`,
+                    onClick: () => setMobileMenu(!0),
+                    children: [(0, $.jsx)(`svg`, {
+                        viewBox: `0 0 24 24`,
+                        fill: `none`,
+                        stroke: `currentColor`,
+                        strokeWidth: `1.5`,
+                        children: [(0, $.jsx)(`line`, {x1:`3`,y1:`6`,x2:`21`,y2:`6`}), (0, $.jsx)(`line`, {x1:`3`,y1:`12`,x2:`21`,y2:`12`}), (0, $.jsx)(`line`, {x1:`3`,y1:`18`,x2:`21`,y2:`18`})]
+                    }), (0, $.jsx)(`span`, {
+                        children: `Menu`
+                    })]
                 })]
-            }), (0, $.jsxs)(`button`, {
-                className: `le-cart-btn`,
-                onClick: () => C(!0),
-                children: [`Cart `, v > 0 && (0, $.jsx)(`span`, {
-                    className: `le-badge`,
-                    children: v
+            }), (0, $.jsx)(`div`, {
+                className: `le-nav-center`,
+                children: (0, $.jsx)(`a`, {
+                    href: `#hero`,
+                    style: {textDecoration:`none`},
+                    children: (0, $.jsx)(zm, {size:`small`})
+                })
+            }), (0, $.jsxs)(`div`, {
+                className: `le-nav-right`,
+                children: [(0, $.jsx)(`button`, {
+                    className: `le-nav-icon`,
+                    title: `Search`,
+                    children: (0, $.jsx)(`svg`, {
+                        viewBox: `0 0 24 24`,
+                        fill: `none`,
+                        stroke: `currentColor`,
+                        strokeWidth: `1.5`,
+                        children: [(0, $.jsx)(`circle`, {cx:`11`,cy:`11`,r:`8`}), (0, $.jsx)(`line`, {x1:`21`,y1:`21`,x2:`16.65`,y2:`16.65`})]
+                    })
+                }), (0, $.jsx)(`button`, {
+                    className: `le-nav-icon`,
+                    title: `Account`,
+                    children: (0, $.jsx)(`svg`, {
+                        viewBox: `0 0 24 24`,
+                        fill: `none`,
+                        stroke: `currentColor`,
+                        strokeWidth: `1.5`,
+                        children: [(0, $.jsx)(`path`, {d:`M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2`}), (0, $.jsx)(`circle`, {cx:`12`,cy:`7`,r:`4`})]
+                    })
+                }), (0, $.jsxs)(`button`, {
+                    className: `le-nav-icon`,
+                    onClick: () => C(!0),
+                    title: `Cart`,
+                    children: [(0, $.jsx)(`svg`, {
+                        viewBox: `0 0 24 24`,
+                        fill: `none`,
+                        stroke: `currentColor`,
+                        strokeWidth: `1.5`,
+                        children: [(0, $.jsx)(`path`, {d:`M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z`}), (0, $.jsx)(`line`, {x1:`3`,y1:`6`,x2:`21`,y2:`6`}), (0, $.jsx)(`path`, {d:`M16 10a4 4 0 0 1-8 0`})]
+                    }), v > 0 && (0, $.jsx)(`span`, {
+                        className: `le-badge`,
+                        children: v
+                    })]
                 })]
             })]
         }), (0, $.jsxs)(`section`, {
@@ -24738,142 +24776,137 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                 })
             }), (0, $.jsx)(`div`, {
                 className: `le-hero-overlay`
-            }), (0, $.jsx)(`div`, {
-                className: `le-hero-grain`
-            }), (0, $.jsx)(`div`, {
-                className: `le-orb`,
-                style: {
-                    background: `#C4788A`,
-                    top: `10%`,
-                    left: `20%`
-                }
-            }), (0, $.jsx)(`div`, {
-                className: `le-orb`,
-                style: {
-                    background: `#8A78C4`,
-                    bottom: `10%`,
-                    right: `15%`,
-                    animationDelay: `-7s`
-                }
             }), (0, $.jsxs)(`div`, {
                 className: `le-hero-content`,
-                children: [(0, $.jsx)(`p`, {
-                    className: `le-eyebrow`,
-                    children: `Redefining Intimacy`
-                }), (0, $.jsxs)(`h1`, {
+                children: [(0, $.jsxs)(`h1`, {
                     className: `le-hero-title`,
-                    children: [`Elevate Your`, (0, $.jsx)(`br`, {}), (0, $.jsx)(`em`, {
-                        children: `Pleasure`
+                    children: [`elevate your `, (0, $.jsx)(`strong`, {
+                        children: `pleasure`
                     })]
                 }), (0, $.jsx)(`p`, {
                     className: `le-hero-sub`,
-                    children: `Meticulously curated pleasure products designed to awaken your senses. Discover why LE by Lami is setting new standards in intimate luxury.`
+                    children: `Meticulously curated pleasure products designed to awaken your senses. Premium intimate luxury, delivered with discretion.`
                 }), (0, $.jsx)(`a`, {
                     href: `#shop`,
-                    children: (0, $.jsxs)(`button`, {
-                        className: `le-cta le-cta-anim`,
-                        children: [`Explore Collection `, (0, $.jsx)(`span`, {
-                            style: {
-                                fontSize: 16
-                            },
-                            children: `→`
-                        })]
+                    children: (0, $.jsx)(`button`, {
+                        className: `le-discover-btn`,
+                        children: `Discover`
                     })
                 })]
-            }), (0, $.jsxs)(`div`, {
-                className: `le-scroll-ind`,
-                children: [`Scroll`, (0, $.jsx)(`div`, {
-                    className: `le-scroll-line`
-                })]
             })]
-        }), (0, $.jsx)(`div`, {
-            className: `le-marquee-wrap`,
-            children: (0, $.jsx)(`div`, {
-                className: `le-marquee`,
-                children: [0, 1].map(e => (0, $.jsxs)(`div`, {
-                    style: {
-                        display: `flex`,
-                        gap: 64
+        }), (0, $.jsx)(`section`, {
+            className: `le-brand-statement`,
+            children: (0, $.jsx)(Rm, {
+                children: (0, $.jsx)(`p`, {
+                    children: `Luxury Essentials by Lami is dedicated to breaking taboos and empowering individuals and couples to explore their desires with confidence. Every product is meticulously curated to meet the highest standards of safety, innovation, and design.`
+                })
+            })
+        }), (0, $.jsxs)(`section`, {
+            className: `le-cat-section`,
+            children: [(0, $.jsx)(Rm, {
+                children: (0, $.jsx)(`h2`, {
+                    className: `le-cat-section-title`,
+                    children: `Popular Categories`
+                })
+            }), (0, $.jsx)(`div`, {
+                className: `le-cat-scroll`,
+                children: i.map((cat, idx) => (0, $.jsxs)(`div`, {
+                    className: `le-cat-card`,
+                    onClick: () => {
+                        x(cat.id);
+                        document.getElementById(`shop`)?.scrollIntoView({behavior:`smooth`})
                     },
-                    children: [(0, $.jsxs)(`span`, {
-                        className: `le-marquee-item`,
-                        children: [`Luxury `, (0, $.jsx)(`em`, {
-                            children: `Essentials`
-                        }), ` `, (0, $.jsx)(`span`, {
-                            className: `le-mq-dot`,
-                            children: `✦`
-                        })]
-                    }), (0, $.jsxs)(`span`, {
-                        className: `le-marquee-item`,
-                        children: [`Passion `, (0, $.jsx)(`em`, {
-                            children: `Ignited`
-                        }), ` `, (0, $.jsx)(`span`, {
-                            className: `le-mq-dot`,
-                            children: `✦`
-                        })]
-                    }), (0, $.jsxs)(`span`, {
-                        className: `le-marquee-item`,
-                        children: [`Pleasure `, (0, $.jsx)(`em`, {
-                            children: `Redefined`
-                        }), ` `, (0, $.jsx)(`span`, {
-                            className: `le-mq-dot`,
-                            children: `✦`
-                        })]
-                    }), (0, $.jsxs)(`span`, {
-                        className: `le-marquee-item`,
-                        children: [`Intimacy `, (0, $.jsx)(`em`, {
-                            children: `by Lami`
-                        }), ` `, (0, $.jsx)(`span`, {
-                            className: `le-mq-dot`,
-                            children: `✦`
+                    children: [(0, $.jsx)(`div`, {
+                        style: {
+                            position: `absolute`,
+                            inset: 0,
+                            background: `linear-gradient(135deg, #1a1a1a, #111)`,
+                            display: `flex`,
+                            alignItems: `center`,
+                            justifyContent: `center`,
+                            fontSize: 80,
+                            opacity: .15
+                        },
+                        children: cat.icon
+                    }), (0, $.jsx)(`div`, {
+                        className: `le-cat-card-overlay`
+                    }), (0, $.jsxs)(`div`, {
+                        className: `le-cat-card-content`,
+                        children: [(0, $.jsx)(`div`, {
+                            className: `le-cat-card-name`,
+                            children: cat.name
+                        }), (0, $.jsx)(`button`, {
+                            className: `le-cat-card-btn`,
+                            children: `Discover`
                         })]
                     })]
-                }, e))
+                }, cat.id))
+            })]
+        }), (0, $.jsx)(`section`, {
+            className: `le-promo-banner`,
+            children: (0, $.jsxs)(`div`, {
+                style: {position:`relative`,height:`100%`},
+                children: [(0, $.jsx)(`img`, {
+                    src: Nm[1],
+                    alt: ``,
+                    style: {position:`absolute`,inset:0,width:`100%`,height:`100%`,objectFit:`cover`,opacity:.4}
+                }), (0, $.jsxs)(`div`, {
+                    className: `le-promo-overlay`,
+                    children: [(0, $.jsxs)(`h2`, {
+                        className: `le-promo-title`,
+                        children: [`passion `, (0, $.jsx)(`strong`, {children:`ignited`})]
+                    }), (0, $.jsx)(`a`, {
+                        href: `#shop`,
+                        children: (0, $.jsx)(`button`, {
+                            className: `le-discover-btn`,
+                            style: {opacity:1,transform:`none`,animation:`none`},
+                            children: `Discover`
+                        })
+                    })]
+                })]
             })
         }), (0, $.jsxs)(`section`, {
             id: `shop`,
-            className: `le-section`,
-            children: [(0, $.jsxs)(Rm, {
-                children: [(0, $.jsx)(`p`, {
-                    className: `le-section-label`,
-                    children: `Explore`
-                }), (0, $.jsxs)(`h2`, {
-                    className: `le-section-title`,
-                    children: [`Shop the `, (0, $.jsx)(`em`, {
-                        children: `Collection`
-                    })]
-                })]
+            className: `le-shop-section`,
+            children: [(0, $.jsx)(Rm, {
+                children: (0, $.jsx)(`h2`, {
+                    className: `le-shop-label`,
+                    children: `Bestsellers`
+                })
             }), (0, $.jsxs)(`div`, {
-                className: `le-cat-row`,
+                className: `le-cat-filters`,
                 children: [(0, $.jsx)(`button`, {
-                    className: `le-cat-pill ${b===`all`?`active`:``}`,
+                    className: `le-cat-filter ${b===`all`?`active`:``}`,
                     onClick: () => x(`all`),
                     children: `All`
-                }), i.map(e => (0, $.jsxs)(`button`, {
-                    className: `le-cat-pill ${b===e.id?`active`:``}`,
+                }), i.map(e => (0, $.jsx)(`button`, {
+                    className: `le-cat-filter ${b===e.id?`active`:``}`,
                     onClick: () => x(e.id),
-                    children: [e.icon, ` `, e.name]
+                    children: e.name
                 }, e.id))]
             }), (0, $.jsxs)(`div`, {
                 className: `le-products-grid`,
                 children: [le.map((e, t) => (0, $.jsx)(Rm, {
-                    delay: t * .08,
+                    delay: t * .06,
                     children: (0, $.jsxs)(`div`, {
                         className: `le-pcard`,
                         children: [(0, $.jsxs)(`div`, {
                             className: `le-pcard-img`,
-                            style: {
-                                background: e.image ? `#111` : e.color + `15`
-                            },
                             children: [e.image ? (0, $.jsx)(`img`, {
                                 src: e.image,
                                 alt: e.name
                             }) : (0, $.jsx)(`div`, {
                                 className: `le-pcard-no-img`,
-                                style: {
-                                    color: e.color
-                                },
                                 children: `✦`
+                            }), (0, $.jsx)(`button`, {
+                                className: `le-pcard-wishlist`,
+                                onClick: (ev) => ev.stopPropagation(),
+                                children: (0, $.jsx)(`svg`, {
+                                    viewBox: `0 0 24 24`,
+                                    children: (0, $.jsx)(`path`, {
+                                        d: `M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z`
+                                    })
+                                })
                             }), e.badge && (0, $.jsx)(`span`, {
                                 className: `le-pcard-badge`,
                                 children: e.badge
@@ -24891,13 +24924,7 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                                 className: `le-pcard-sub`,
                                 children: e.subtitle
                             }), e.description && (0, $.jsx)(`p`, {
-                                style: {
-                                    fontFamily: `'Outfit',sans-serif`,
-                                    fontSize: 12,
-                                    color: `#777`,
-                                    lineHeight: 1.6,
-                                    marginBottom: 12
-                                },
+                                className: `le-pcard-desc`,
                                 children: e.description
                             }), e.colors?.length > 0 && (0, $.jsx)(`div`, {
                                 className: `le-color-swatches`,
@@ -24915,12 +24942,19 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                                     }
                                 }, n))
                             }), (0, $.jsxs)(`div`, {
-                                children: [(0, $.jsxs)(`span`, {
-                                    className: `le-pcard-price`,
-                                    children: [`₦`, Qm(e.price), ` / $`, Qm(e.priceDollar || e.price / 1600)]
-                                }), e.oldPrice && (0, $.jsxs)(`span`, {
+                                className: `le-pcard-price-row`,
+                                children: [e.oldPrice && (0, $.jsxs)(`span`, {
                                     className: `le-pcard-old`,
                                     children: [`₦`, Qm(e.oldPrice)]
+                                }), (0, $.jsxs)(`span`, {
+                                    className: `le-pcard-price`,
+                                    children: [`₦`, Qm(e.price)]
+                                }), (0, $.jsxs)(`span`, {
+                                    style: {fontSize:11,color:`#888`,marginLeft:4},
+                                    children: [`($`, Qm(e.priceDollar || e.price / 1600), `)`]
+                                }), e.oldPrice && (0, $.jsxs)(`span`, {
+                                    className: `le-pcard-save`,
+                                    children: [`Save ₦`, Qm(e.oldPrice - e.price)]
                                 })]
                             })]
                         })]
@@ -24930,9 +24964,8 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                         gridColumn: `1/-1`,
                         textAlign: `center`,
                         padding: 80,
-                        fontFamily: `'Outfit',sans-serif`,
-                        color: `#444`,
-                        fontSize: 14
+                        color: `#555`,
+                        fontSize: 13
                     },
                     children: `No products in this category yet.`
                 })]
@@ -24942,97 +24975,51 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
             className: `le-split`,
             children: [(0, $.jsx)(`div`, {
                 className: `le-split-visual`,
-                style: {
-                    background: `#0e0e0e`
-                },
                 children: (0, $.jsx)(`img`, {
-                    src: `/images/hero_background_1773603416692.png`,
+                    src: Nm[1],
                     alt: ``,
-                    style: {
-                        opacity: .7
-                    }
+                    style: {opacity:.8}
                 })
             }), (0, $.jsx)(`div`, {
                 className: `le-split-content`,
                 children: (0, $.jsxs)(Rm, {
                     children: [(0, $.jsx)(`p`, {
-                        className: `le-section-label`,
-                        children: `Featured`
+                        className: `le-split-label`,
+                        children: `Iconic`
                     }), (0, $.jsxs)(`h2`, {
-                        className: `le-section-title`,
-                        style: {
-                            marginBottom: 24
-                        },
-                        children: [`Hot `, (0, $.jsx)(`em`, {
-                            children: `Lover`
+                        className: `le-split-title`,
+                        children: [`rose `, (0, $.jsx)(`strong`, {
+                            children: `romeo™`
                         })]
                     }), (0, $.jsx)(`p`, {
-                        children: `The ergonomically curved shaft and clitoral stimulator work in harmony, targeting both the G-spot and clitoris simultaneously. Precision-engineered for intense, blended pleasure.`
+                        className: `le-split-text`,
+                        children: `Our cutting-edge double-action tongue lick shaker and clitoral stimulator. This is the toy that completely changes the way you think about blended orgasms. Experience pleasure, elevated by Lami.`
                     }), (0, $.jsx)(`a`, {
                         href: `#shop`,
-                        children: (0, $.jsxs)(`button`, {
-                            className: `le-cta`,
+                        children: (0, $.jsx)(`button`, {
+                            className: `le-discover-btn`,
                             style: {
-                                animation: `none`,
                                 opacity: 1,
                                 transform: `none`,
-                                alignSelf: `flex-start`
+                                animation: `none`
                             },
-                            children: [`Discover `, (0, $.jsx)(`span`, {
-                                style: {
-                                    fontSize: 16
-                                },
-                                children: `→`
-                            })]
+                            children: `Discover`
                         })
                     })]
                 })
             })]
-        }), (0, $.jsx)(`div`, {
-            className: `le-features`,
-            children: [{
-                icon: `↺`,
-                title: `48hrs Return`,
-                desc: `Hassle-free returns within 48 hours`
-            }, {
-                icon: `◇`,
-                title: `6-Month Warranty`,
-                desc: `Full coverage on all products`
-            }, {
-                icon: `✓`,
-                title: `FDA Approved`,
-                desc: `Certified safe & FDA approved`
-            }].map((e, t) => (0, $.jsx)(Rm, {
-                delay: t * .1,
-                children: (0, $.jsxs)(`div`, {
-                    className: `le-feature`,
-                    children: [(0, $.jsx)(`div`, {
-                        className: `le-feat-icon`,
-                        children: e.icon
-                    }), (0, $.jsx)(`div`, {
-                        className: `le-feat-title`,
-                        children: e.title
-                    }), (0, $.jsx)(`div`, {
-                        className: `le-feat-desc`,
-                        children: e.desc
-                    })]
-                })
-            }, t))
         }), (0, $.jsx)(`section`, {
             className: `le-test-section`,
             children: (0, $.jsxs)(Rm, {
                 children: [(0, $.jsx)(`p`, {
-                    className: `le-section-label`,
-                    style: {
-                        textAlign: `center`
-                    },
-                    children: `Voices`
+                    className: `le-test-label`,
+                    children: `What our customers say`
                 }), (0, $.jsx)(`div`, {
                     className: `le-test-stars`,
                     children: `★`.repeat(Pm[ee].rating)
                 }), (0, $.jsxs)(`p`, {
                     className: `le-test-text`,
-                    children: [`"`, Pm[ee].text, `"`]
+                    children: [`“`, Pm[ee].text, `”`]
                 }), (0, $.jsxs)(`p`, {
                     className: `le-test-author`,
                     children: [`— `, Pm[ee].author]
@@ -25045,111 +25032,33 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                 })]
             })
         }), (0, $.jsxs)(`section`, {
-            className: `le-split`,
-            style: {
-                direction: `rtl`
-            },
-            children: [(0, $.jsx)(`div`, {
-                className: `le-split-visual`,
-                style: {
-                    direction: `ltr`,
-                    background: `#0e0e0e`
-                },
-                children: (0, $.jsx)(`img`, {
-                    src: `/images/featured_lifestyle_1773603430232.png`,
-                    alt: ``,
-                    style: {
-                        opacity: .7
-                    }
-                })
-            }), (0, $.jsx)(`div`, {
-                className: `le-split-content`,
-                style: {
-                    direction: `ltr`
-                },
-                children: (0, $.jsxs)(Rm, {
-                    children: [(0, $.jsx)(`p`, {
-                        className: `le-section-label`,
-                        children: `Iconic`
-                    }), (0, $.jsxs)(`h2`, {
-                        className: `le-section-title`,
-                        style: {
-                            marginBottom: 24
-                        },
-                        children: [`Rose `, (0, $.jsx)(`em`, {
-                            children: `Romeo™`
-                        })]
-                    }), (0, $.jsx)(`p`, {
-                        children: `Our cutting-edge double-action tongue lick shaker and clitoral stimulator. This is the toy that completely changes the way you think about blended orgasms. Experience pleasure, elevated by Lami.`
-                    }), (0, $.jsx)(`a`, {
-                        href: `#shop`,
-                        children: (0, $.jsxs)(`button`, {
-                            className: `le-cta`,
-                            style: {
-                                animation: `none`,
-                                opacity: 1,
-                                transform: `none`,
-                                alignSelf: `flex-start`
-                            },
-                            children: [`Shop Now `, (0, $.jsx)(`span`, {
-                                style: {
-                                    fontSize: 16
-                                },
-                                children: `→`
-                            })]
-                        })
-                    })]
-                })
-            })]
-        }), (0, $.jsx)(`section`, {
             id: `contact`,
-            className: `le-cta-section`,
-            children: (0, $.jsxs)(Rm, {
-                children: [(0, $.jsx)(`p`, {
-                    className: `le-section-label`,
-                    style: {
-                        textAlign: `center`
-                    },
-                    children: `Support`
-                }), (0, $.jsxs)(`h2`, {
-                    className: `le-section-title`,
-                    style: {
-                        textAlign: `center`
-                    },
-                    children: [`Reach `, (0, $.jsx)(`em`, {
-                        children: `Out`
-                    })]
+            className: `le-newsletter`,
+            children: [(0, $.jsxs)(Rm, {
+                children: [(0, $.jsx)(`h2`, {
+                    className: `le-newsletter-title`,
+                    children: `Stay Connected`
                 }), (0, $.jsx)(`p`, {
-                    style: {
-                        fontFamily: `'Outfit',sans-serif`,
-                        fontSize: 14,
-                        color: `#666`,
-                        textAlign: `center`,
-                        maxWidth: 400,
-                        margin: `16px auto 0`,
-                        lineHeight: 1.7
-                    },
+                    className: `le-newsletter-sub`,
                     children: `Have questions or need assistance? Connect with our dedicated support team on WhatsApp.`
                 }), (0, $.jsx)(`div`, {
                     style: {
                         display: `flex`,
-                        justifyContent: `center`,
-                        marginTop: 40
+                        justifyContent: `center`
                     },
                     children: (0, $.jsx)(`a`, {
                         href: `https://wa.me/2347060408151`,
                         target: `_blank`,
                         rel: `noopener noreferrer`,
-                        style: {
-                            textDecoration: `none`
-                        },
+                        style: {textDecoration:`none`},
                         children: (0, $.jsx)(`button`, {
-                            className: `le-submit`,
+                            className: `le-discover-btn`,
+                            style: {opacity:1,transform:`none`,animation:`none`,borderColor:`#E8503A`,color:`#E8503A`},
                             children: `Chat on WhatsApp`
                         })
                     })
                 })]
-            })
+            })]
         }), (0, $.jsxs)(`footer`, {
             className: `le-footer`,
             children: [(0, $.jsxs)(`div`, {
@@ -25164,7 +25073,7 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                 }), (0, $.jsxs)(`div`, {
                     children: [(0, $.jsx)(`h4`, {
                         className: `le-footer-title`,
-                        children: `Help`
+                        children: `help`
                     }), (0, $.jsxs)(`ul`, {
                         className: `le-footer-links`,
                         children: [(0, $.jsx)(`li`, {
@@ -25207,7 +25116,7 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                 }), (0, $.jsxs)(`div`, {
                     children: [(0, $.jsx)(`h4`, {
                         className: `le-footer-title`,
-                        children: `Discover`
+                        children: `discover`
                     }), (0, $.jsxs)(`ul`, {
                         className: `le-footer-links`,
                         children: [(0, $.jsx)(`li`, {
@@ -25250,7 +25159,7 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                 }), (0, $.jsxs)(`div`, {
                     children: [(0, $.jsx)(`h4`, {
                         className: `le-footer-title`,
-                        children: `Shop`
+                        children: `shop`
                     }), (0, $.jsx)(`ul`, {
                         className: `le-footer-links`,
                         children: i.slice(0, 5).map(e => (0, $.jsx)(`li`, {
@@ -25281,6 +25190,11 @@ Your changes were NOT saved. Check Firestore rules and try again.`)
                         onClick: () => t(`admin-login`),
                         children: `Admin`
                     })]
+                }), (0, $.jsxs)(`div`, {
+                    className: `le-footer-payments`,
+                    children: [(0, $.jsx)(`div`, {className:`le-footer-payment`,children:`VISA`}),
+                    (0, $.jsx)(`div`, {className:`le-footer-payment`,children:`MC`}),
+                    (0, $.jsx)(`div`, {className:`le-footer-payment`,children:`VERVE`})]
                 }), (0, $.jsxs)(`div`, {
                     className: `le-footer-socials`,
                     children: [(0, $.jsx)(`a`, {
