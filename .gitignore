@@ -1,2 +1,4 @@
 _preview.html
 *.tmp
+node_modules/
+.claude/
