@@ -22788,27 +22788,33 @@ function Am(e) {
 var jm = [{
         id: `cat_1`,
         name: `Vibrators`,
-        icon: `✦`
+        icon: `✦`,
+        image: `/images/cat_vibrators.jpg`
     }, {
         id: `cat_2`,
         name: `For Her`,
-        icon: `◈`
+        icon: `◈`,
+        image: `/images/cat_forher.jpg`
     }, {
         id: `cat_3`,
         name: `For Him`,
-        icon: `◆`
+        icon: `◆`,
+        image: `/images/cat_forhim.jpg`
     }, {
         id: `cat_4`,
         name: `Couple Toys`,
-        icon: `❖`
+        icon: `❖`,
+        image: `/images/cat_couples.jpg`
     }, {
         id: `cat_5`,
         name: `Massagers`,
-        icon: `◎`
+        icon: `◎`,
+        image: `/images/cat_massagers.jpg`
     }, {
         id: `cat_6`,
         name: `Accessories`,
-        icon: `⬥`
+        icon: `⬥`,
+        image: `/images/cat_accessories.jpg`
     }],
     Mm = [{
         id: `prod_1`,
@@ -24812,18 +24818,16 @@ function Hm() {
                         x(cat.id);
                         document.getElementById(`shop`)?.scrollIntoView({behavior:`smooth`})
                     },
-                    children: [(0, $.jsx)(`div`, {
+                    children: [(0, $.jsx)(`img`, {
+                        src: cat.image,
+                        alt: cat.name,
                         style: {
                             position: `absolute`,
                             inset: 0,
-                            background: `linear-gradient(135deg, #1a1a1a, #111)`,
-                            display: `flex`,
-                            alignItems: `center`,
-                            justifyContent: `center`,
-                            fontSize: 80,
-                            opacity: .15
-                        },
-                        children: cat.icon
+                            width: `100%`,
+                            height: `100%`,
+                            objectFit: `cover`
+                        }
                     }), (0, $.jsx)(`div`, {
                         className: `le-cat-card-overlay`
                     }), (0, $.jsxs)(`div`, {
