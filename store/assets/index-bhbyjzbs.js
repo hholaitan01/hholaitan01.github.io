@@ -22937,7 +22937,7 @@ var jm = [{
         description: `Travel-friendly with USB magnetic charging.`,
         inStock: !0
     }],
-    Nm = [`/images/hero_background_1773603416692.png`, `/images/featured_lifestyle_1773603430232.png`],
+    Nm = [`/images/lifestyle_4.webp`, `/images/lifestyle_3.webp`, `/images/lifestyle_1.png`, `/images/lifestyle_2.webp`, `/images/lifestyle_5.webp`],
     Pm = [{
         text: `Completely changed my understanding of pleasure. The quality is unmatched.`,
         author: `Sarah K.`,
@@ -24972,7 +24972,7 @@ function Hm() {
             children: [(0, $.jsx)(`div`, {
                 className: `le-split-visual`,
                 children: (0, $.jsx)(`img`, {
-                    src: Nm[1],
+                    src: Nm[2],
                     alt: ``,
                     style: {opacity:.8}
                 })
