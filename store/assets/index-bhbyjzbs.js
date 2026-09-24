@@ -22944,7 +22944,7 @@ var jm = [{
         inStock: !0
     }],
     Nm = [`/images/lifestyle_4.webp`, `/images/lifestyle_3.webp`, `/images/lifestyle_1.png`, `/images/lifestyle_2.webp`, `/images/lifestyle_5.webp`],
-    catImageMap = {vibrators:`/images/cat_vibrators.jpg`,["for her"]:`/images/cat_forher.jpg`,["for him"]:`/images/cat_forhim.jpg`,["couple toys"]:`/images/cat_couples.jpg`,couples:`/images/cat_couples.jpg`,massagers:`/images/cat_massagers.jpg`,massage:`/images/cat_massagers.jpg`,accessories:`/images/cat_accessories.jpg`,lingerie:`/images/cat_forher.jpg`,lubricants:`/images/cat_massagers.jpg`,bondage:`/images/cat_accessories.jpg`,wellness:`/images/cat_massagers.jpg`,toys:`/images/cat_vibrators.jpg`},
+    catImageMap = {vibrators:`/images/cat_vibrators.jpg`,["for her"]:`/images/cat_forher.jpg`,["for him"]:`/images/cat_forhim.jpg`,["couple toys"]:`/images/cat_couples.jpg`,couples:`/images/cat_couples.jpg`,massagers:`/images/cat_massagers.jpg`,massage:`/images/cat_massagers.jpg`,["accessories"]:`/images/cat_accessories.jpg`,["accessories "]:`/images/cat_accessories.jpg`,lingerie:`/images/cat_lingerie.jpg`,games:`/images/cat_games.jpg`,["chinese snacks"]:`/images/cat_snacks.jpg`,chargers:`/images/cat_chargers.jpg`,["lubricant and cleaner"]:`/images/cat_lubricant.jpg`,lubricants:`/images/cat_lubricant.jpg`,lubricant:`/images/cat_lubricant.jpg`,dildo:`/images/cat_dildo.jpg`,dildos:`/images/cat_dildo.jpg`,bondage:`/images/cat_accessories.jpg`,wellness:`/images/cat_massagers.jpg`,toys:`/images/cat_vibrators.jpg`},
     getCatImage = (cat) => cat.image || catImageMap[(cat.name||``).toLowerCase()] || null,
     Pm = [{
         text: `Completely changed my understanding of pleasure. The quality is unmatched.`,
