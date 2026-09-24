@@ -24373,8 +24373,8 @@ function Hm() {
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
         *{margin:0;padding:0;box-sizing:border-box}
         ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:#000} ::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
-        .le-announce{position:fixed;top:0;left:0;right:0;z-index:150;background:#E8503A;padding:10px 20px;text-align:center;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#fff;font-weight:500}
-        .le-nav{position:fixed;top:36px;left:0;right:0;z-index:100;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;background:transparent;transition:background .3s}
+        .le-announce{display:none}
+        .le-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;background:transparent;transition:background .3s}
         .le-nav.scrolled{background:rgba(0,0,0,.95);backdrop-filter:blur(10px)}
         .le-nav-left{display:flex;align-items:center;gap:16px}
         .le-nav-menu-btn{background:none;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Inter','DM Sans',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:0}
@@ -24507,7 +24507,6 @@ function Hm() {
           .le-nav{padding:12px 16px}
           .le-nav-center{position:static;transform:none}
           .le-nav-menu-btn span{display:none}
-          .le-announce{font-size:9px;letter-spacing:2px;padding:8px 12px}
           .le-brand-statement{padding:60px 20px}
           .le-cat-section{padding:60px 20px}
           .le-shop-section{padding:60px 20px}
@@ -24700,9 +24699,6 @@ function Hm() {
                 onClick: () => { setMobileMenu(!1); C(!0) },
                 children: `cart (${v})`
             })]
-        }), (0, $.jsx)(`div`, {
-            className: `le-announce`,
-            children: `Free shipping on orders over ₦50,000`
         }), (0, $.jsxs)(`nav`, {
             className: `le-nav`,
             children: [(0, $.jsxs)(`div`, {
