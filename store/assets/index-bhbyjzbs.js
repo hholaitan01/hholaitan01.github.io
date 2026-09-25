@@ -24622,8 +24622,9 @@ function Hm() {
         .le-footer-links a:hover{color:#E8503A}
         .le-footer-bottom{border-top:1px solid #1a1a1a;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
         .le-footer-copy{font-size:11px;color:#444}
-        .le-footer-payments{display:flex;gap:8px;align-items:center}
-        .le-footer-payment{width:40px;height:26px;background:#1a1a1a;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#666;letter-spacing:1px;font-weight:600}
+        .le-footer-payments{display:flex;gap:10px;align-items:center}
+        .le-footer-payment{height:28px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;padding:3px 6px}
+        .le-footer-payment svg{height:20px;width:auto}
         .le-footer-socials{display:flex;gap:12px}
         .le-footer-social{width:36px;height:36px;border:1px solid #1a1a1a;display:flex;align-items:center;justify-content:center;color:#5B9A8B;font-size:14px;text-decoration:none;transition:all .3s;cursor:pointer}
         .le-footer-social:hover{border-color:#E8503A;color:#E8503A}
@@ -24851,6 +24852,11 @@ function Hm() {
                                 marginTop: 8
                             },
                             children: `Pay ₦${Qm(ce)} with Paystack`
+                        }), (0, $.jsxs)(`div`, {
+                            style: {display:`flex`,gap:8,justifyContent:`center`,alignItems:`center`,marginTop:10},
+                            children: [(0, $.jsx)(`svg`, {viewBox:`0 0 780 500`,style:{height:20,width:`auto`},xmlns:`http://www.w3.org/2000/svg`,children:[(0, $.jsx)(`rect`, {width:780,height:500,rx:40,fill:`#1a1f71`}),(0, $.jsx)(`path`, {d:`M293.2 348.7l33.4-195.7h53.4L346.6 348.7zM540.7 157.3c-10.6-4-27.2-8.3-47.9-8.3-52.8 0-90 26.6-90.2 64.7-.3 28.2 26.5 43.9 46.8 53.3 20.8 9.6 27.8 15.8 27.7 24.4-.1 13.2-16.6 19.2-32 19.2-21.4 0-32.7-3-50.3-10.2l-6.9-3.1-7.5 43.8c12.5 5.5 35.6 10.2 59.6 10.5 56.2 0 92.6-26.3 93-67.2.2-22.4-14.1-39.4-45-53.4-18.7-9.1-30.2-15.2-30.1-24.4 0-8.2 9.7-16.9 30.7-16.9 17.5-.3 30.2 3.5 40.1 7.5l4.8 2.3 7.2-42.2zM676.3 153h-41.3c-12.8 0-22.4 3.5-28 16.3l-79.3 179.4h56.1s9.2-24.1 11.2-29.4c6.1 0 60.8.1 68.6.1 1.6 6.9 6.5 29.3 6.5 29.3h49.6L676.3 153zm-65.9 153.6c4.4-11.3 21.4-54.8 21.4-54.8-.3.5 4.4-11.4 7.1-18.8l3.6 17s10.3 47 12.5 56.6h-44.6zM232.8 153l-52.3 133.5-5.6-27c-9.7-31.2-39.9-65-73.7-81.9l47.8 171h56.5l84.1-195.6h-56.8`,fill:`#fff`})]}),
+                            (0, $.jsx)(`svg`, {viewBox:`0 0 780 500`,style:{height:20,width:`auto`},xmlns:`http://www.w3.org/2000/svg`,children:[(0, $.jsx)(`rect`, {width:780,height:500,rx:40,fill:`#fff`}),(0, $.jsx)(`circle`, {cx:310,cy:250,r:170,fill:`#eb001b`}),(0, $.jsx)(`circle`, {cx:470,cy:250,r:170,fill:`#f79e1b`}),(0, $.jsx)(`path`, {d:`M390 113.4A169.7 169.7 0 0 0 310 250a169.7 169.7 0 0 0 80 136.6A169.7 169.7 0 0 0 470 250a169.7 169.7 0 0 0-80-136.6z`,fill:`#ff5f00`})]}),
+                            (0, $.jsxs)(`svg`, {viewBox:`0 0 780 500`,style:{height:20,width:`auto`},xmlns:`http://www.w3.org/2000/svg`,children:[(0, $.jsx)(`rect`, {width:780,height:500,rx:40,fill:`#00425f`}),(0, $.jsx)(`path`, {d:`M230 150h320c30 0 55 25 55 55v90c0 30-25 55-55 55H230c-30 0-55-25-55-55v-90c0-30 25-55 55-55z`,fill:`none`,stroke:`#e31837`,strokeWidth:12}),(0, $.jsx)(`text`, {x:390,y:275,textAnchor:`middle`,fill:`#fff`,fontSize:100,fontWeight:700,fontFamily:`Arial,sans-serif`,children:`VERVE`})]})]
                         }), (0, $.jsx)(`button`, {
                             onClick: () => setShowCheckoutForm(!1),
                             style: {
@@ -25396,9 +25402,9 @@ function Hm() {
                     })]
                 }), (0, $.jsxs)(`div`, {
                     className: `le-footer-payments`,
-                    children: [(0, $.jsx)(`div`, {className:`le-footer-payment`,children:`VISA`}),
-                    (0, $.jsx)(`div`, {className:`le-footer-payment`,children:`MC`}),
-                    (0, $.jsx)(`div`, {className:`le-footer-payment`,children:`VERVE`})]
+                    children: [(0, $.jsx)(`div`, {className:`le-footer-payment`,children:(0, $.jsx)(`svg`, {viewBox:`0 0 780 500`,xmlns:`http://www.w3.org/2000/svg`,children:[(0, $.jsx)(`rect`, {width:780,height:500,rx:40,fill:`#1a1f71`}),(0, $.jsx)(`path`, {d:`M293.2 348.7l33.4-195.7h53.4L346.6 348.7zM540.7 157.3c-10.6-4-27.2-8.3-47.9-8.3-52.8 0-90 26.6-90.2 64.7-.3 28.2 26.5 43.9 46.8 53.3 20.8 9.6 27.8 15.8 27.7 24.4-.1 13.2-16.6 19.2-32 19.2-21.4 0-32.7-3-50.3-10.2l-6.9-3.1-7.5 43.8c12.5 5.5 35.6 10.2 59.6 10.5 56.2 0 92.6-26.3 93-67.2.2-22.4-14.1-39.4-45-53.4-18.7-9.1-30.2-15.2-30.1-24.4 0-8.2 9.7-16.9 30.7-16.9 17.5-.3 30.2 3.5 40.1 7.5l4.8 2.3 7.2-42.2zM676.3 153h-41.3c-12.8 0-22.4 3.5-28 16.3l-79.3 179.4h56.1s9.2-24.1 11.2-29.4c6.1 0 60.8.1 68.6.1 1.6 6.9 6.5 29.3 6.5 29.3h49.6L676.3 153zm-65.9 153.6c4.4-11.3 21.4-54.8 21.4-54.8-.3.5 4.4-11.4 7.1-18.8l3.6 17s10.3 47 12.5 56.6h-44.6zM232.8 153l-52.3 133.5-5.6-27c-9.7-31.2-39.9-65-73.7-81.9l47.8 171h56.5l84.1-195.6h-56.8`, fill:`#fff`})]})})
+                    ,(0, $.jsx)(`div`, {className:`le-footer-payment`,children:(0, $.jsx)(`svg`, {viewBox:`0 0 780 500`,xmlns:`http://www.w3.org/2000/svg`,children:[(0, $.jsx)(`rect`, {width:780,height:500,rx:40,fill:`#fff`}),(0, $.jsx)(`circle`, {cx:310,cy:250,r:170,fill:`#eb001b`}),(0, $.jsx)(`circle`, {cx:470,cy:250,r:170,fill:`#f79e1b`}),(0, $.jsx)(`path`, {d:`M390 113.4A169.7 169.7 0 0 0 310 250a169.7 169.7 0 0 0 80 136.6A169.7 169.7 0 0 0 470 250a169.7 169.7 0 0 0-80-136.6z`,fill:`#ff5f00`})]})})
+                    ,(0, $.jsx)(`div`, {className:`le-footer-payment`,children:(0, $.jsxs)(`svg`, {viewBox:`0 0 780 500`,xmlns:`http://www.w3.org/2000/svg`,children:[(0, $.jsx)(`rect`, {width:780,height:500,rx:40,fill:`#00425f`}),(0, $.jsx)(`path`, {d:`M230 150h320c30 0 55 25 55 55v90c0 30-25 55-55 55H230c-30 0-55-25-55-55v-90c0-30 25-55 55-55z`,fill:`none`,stroke:`#e31837`,strokeWidth:12}),(0, $.jsx)(`text`, {x:390,y:275,textAnchor:`middle`,fill:`#fff`,fontSize:100,fontWeight:700,fontFamily:`Arial,sans-serif`,children:`VERVE`})]})})]
                 }), (0, $.jsxs)(`div`, {
                     className: `le-footer-socials`,
                     children: [(0, $.jsx)(`a`, {
