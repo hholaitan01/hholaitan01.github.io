@@ -23101,7 +23101,53 @@ function Bm({
     let [a, o] = (0, D.useState)(e), [s, c] = (0, D.useState)(t), [l, u] = (0, D.useState)(null), [d, f] = (0, D.useState)(`products`), [p, m] = (0, D.useState)(!1), [h, g] = (0, D.useState)(!1), [_, v] = (0, D.useState)({
         name: ``,
         icon: `✦`
-    }), [y, b] = (0, D.useState)(`upload`), [x, ee] = (0, D.useState)(!1), [te, S] = (0, D.useState)(null), ne = (0, D.useRef)(null), re = [`✦`, `◈`, `◆`, `❖`, `◎`, `⬥`, `◇`, `★`, `♦`, `●`], C = {
+    }), [y, b] = (0, D.useState)(`upload`), [x, ee] = (0, D.useState)(!1), [te, S] = (0, D.useState)(null), [admNewEmail, setAdmNewEmail] = (0, D.useState)(``), [admNewPass, setAdmNewPass] = (0, D.useState)(``), [admNewName, setAdmNewName] = (0, D.useState)(``), [admCreating, setAdmCreating] = (0, D.useState)(!1), [admMsg, setAdmMsg] = (0, D.useState)(``), [admMsgType, setAdmMsgType] = (0, D.useState)(``), [admList, setAdmList] = (0, D.useState)([]), ne = (0, D.useRef)(null), re = [`✦`, `◈`, `◆`, `❖`, `◎`, `⬥`, `◇`, `★`, `♦`, `●`];
+    (0, D.useEffect)(() => {
+        (async () => {
+            try {
+                let doc = await jl(Lc(Tm, `store`, `admins`));
+                if (doc.exists() && doc.data().list) setAdmList(doc.data().list);
+            } catch(e) { console.warn(`Could not load admins list`, e); }
+        })();
+    }, []);
+    let saveAdminList = async (list) => {
+        await Nl(Lc(Tm, `store`, `admins`), {list: list});
+    };
+    let createAdmin = async () => {
+        if (!admNewEmail || !admNewPass) return;
+        if (admNewPass.length < 6) { setAdmMsg(`Password must be at least 6 characters.`); setAdmMsgType(`error`); return; }
+        setAdmCreating(!0); setAdmMsg(``);
+        try {
+            let resp = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA2dj2DIIOjCaIl0x-IQcZ5dhfZ170QgBY`, {
+                method: `POST`, headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email: admNewEmail, password: admNewPass, returnSecureToken: !1})
+            });
+            let data = await resp.json();
+            if (!resp.ok) throw new Error(data.error?.message || `Failed to create account`);
+            let adminEntry = {email: admNewEmail, name: admNewName || admNewEmail.split(`@`)[0], createdAt: new Date().toISOString(), uid: data.localId};
+            let newList = [...admList, adminEntry];
+            await saveAdminList(newList);
+            setAdmList(newList);
+            setAdmNewEmail(``); setAdmNewPass(``); setAdmNewName(``);
+            setAdmMsg(`Admin account created successfully!`); setAdmMsgType(`success`);
+        } catch(e) {
+            let msg = e.message;
+            if (msg.includes(`EMAIL_EXISTS`)) msg = `An account with this email already exists.`;
+            else if (msg.includes(`WEAK_PASSWORD`)) msg = `Password is too weak. Use at least 6 characters.`;
+            else if (msg.includes(`INVALID_EMAIL`)) msg = `Invalid email format.`;
+            setAdmMsg(msg); setAdmMsgType(`error`);
+        } finally { setAdmCreating(!1); }
+    };
+    let deleteAdmin = async (adminUid) => {
+        if (!confirm(`Remove this admin from the list?`)) return;
+        try {
+            let newList = admList.filter(a => a.uid !== adminUid);
+            await saveAdminList(newList);
+            setAdmList(newList);
+            setAdmMsg(`Admin removed from list.`); setAdmMsgType(`success`);
+        } catch(e) { setAdmMsg(`Failed to remove: ` + e.message); setAdmMsgType(`error`); }
+    };
+    let C = {
         id: ``,
         name: ``,
         subtitle: ``,
@@ -23272,6 +23318,10 @@ function Bm({
                 className: `adm-tab ${d===`categories`?`active`:``}`,
                 onClick: () => f(`categories`),
                 children: [`Categories (`, s.length, `)`]
+            }), (0, $.jsx)(`button`, {
+                className: `adm-tab ${d===`admins`?`active`:``}`,
+                onClick: () => f(`admins`),
+                children: `Admins`
             })]
         }), (0, $.jsxs)(`div`, {
             style: {
@@ -23957,6 +24007,61 @@ function Bm({
                         disabled: !_.name.trim(),
                         children: `Add`
                     })]
+                })]
+            }), d === `admins` && (0, $.jsxs)(`div`, {
+                children: [(0, $.jsx)(`h2`, {
+                    style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 28, fontWeight: 300, marginBottom: 24},
+                    children: `Admin Management`
+                }), admMsg && (0, $.jsx)(`div`, {
+                    style: {padding: `12px 16px`, marginBottom: 20, fontSize: 13, borderRadius: 4, background: admMsgType === `success` ? `#1a3a1a` : `#3a1a1a`, color: admMsgType === `success` ? `#4ade80` : `#ff6666`, border: `1px solid ${admMsgType === `success` ? `#2d5a2d` : `#5a2d2d`}`},
+                    children: admMsg
+                }), (0, $.jsx)(`h3`, {
+                    style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 20, fontWeight: 300, marginBottom: 16},
+                    children: `Create New Admin`
+                }), (0, $.jsxs)(`div`, {
+                    style: {display: `grid`, gap: 12, marginBottom: 32, maxWidth: 500},
+                    children: [(0, $.jsxs)(`div`, {
+                        children: [(0, $.jsx)(`label`, {className: `adm-label`, children: `Display Name`}), (0, $.jsx)(`input`, {
+                            className: `adm-input`, value: admNewName, onChange: e => setAdmNewName(e.target.value), placeholder: `e.g. Lami`
+                        })]
+                    }), (0, $.jsxs)(`div`, {
+                        children: [(0, $.jsx)(`label`, {className: `adm-label`, children: `Email *`}), (0, $.jsx)(`input`, {
+                            className: `adm-input`, type: `email`, value: admNewEmail, onChange: e => setAdmNewEmail(e.target.value), placeholder: `admin@example.com`
+                        })]
+                    }), (0, $.jsxs)(`div`, {
+                        children: [(0, $.jsx)(`label`, {className: `adm-label`, children: `Password *`}), (0, $.jsx)(`input`, {
+                            className: `adm-input`, type: `password`, value: admNewPass, onChange: e => setAdmNewPass(e.target.value), placeholder: `Min 6 characters`
+                        })]
+                    }), (0, $.jsx)(`button`, {
+                        className: `adm-btn`, onClick: createAdmin, disabled: admCreating || !admNewEmail || !admNewPass,
+                        style: {justifySelf: `start`},
+                        children: admCreating ? `Creating...` : `Create Admin Account`
+                    })]
+                }), (0, $.jsx)(`h3`, {
+                    style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 20, fontWeight: 300, marginBottom: 16, marginTop: 16},
+                    children: `Existing Admins`
+                }), admList.length === 0 ? (0, $.jsx)(`p`, {
+                    style: {color: `#555`, fontSize: 13},
+                    children: `No admins registered yet. Create your first admin account above.`
+                }) : (0, $.jsx)(`div`, {
+                    style: {display: `grid`, gap: 8},
+                    children: admList.map((adm, idx) => (0, $.jsxs)(`div`, {
+                        className: `adm-card`,
+                        style: {display: `flex`, justifyContent: `space-between`, alignItems: `center`},
+                        children: [(0, $.jsxs)(`div`, {
+                            style: {display: `flex`, alignItems: `center`, gap: 16},
+                            children: [(0, $.jsx)(`div`, {
+                                style: {width: 36, height: 36, borderRadius: `50%`, background: `#1a1a2e`, display: `flex`, alignItems: `center`, justifyContent: `center`, fontSize: 14, color: `#E8503A`, fontWeight: 600},
+                                children: (adm.name || adm.email)[0].toUpperCase()
+                            }), (0, $.jsxs)(`div`, {
+                                children: [(0, $.jsx)(`div`, {style: {fontSize: 14, fontWeight: 500}, children: adm.name || `Admin`}), (0, $.jsx)(`div`, {style: {fontSize: 12, color: `#666`}, children: adm.email}), adm.createdAt && (0, $.jsx)(`div`, {style: {fontSize: 11, color: `#444`}, children: `Added ${new Date(adm.createdAt).toLocaleDateString()}`})]
+                            })]
+                        }), (0, $.jsx)(`button`, {
+                            className: `adm-btn-outline adm-btn-sm adm-btn-danger`,
+                            onClick: () => deleteAdmin(adm.uid),
+                            children: `Remove`
+                        })]
+                    }, idx))
                 })]
             })]
         })]
