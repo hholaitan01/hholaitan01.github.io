@@ -23101,7 +23101,7 @@ function Bm({
     let [a, o] = (0, D.useState)(e), [s, c] = (0, D.useState)(t), [l, u] = (0, D.useState)(null), [d, f] = (0, D.useState)(`products`), [p, m] = (0, D.useState)(!1), [h, g] = (0, D.useState)(!1), [_, v] = (0, D.useState)({
         name: ``,
         icon: `✦`
-    }), [y, b] = (0, D.useState)(`upload`), [x, ee] = (0, D.useState)(!1), [te, S] = (0, D.useState)(null), [admNewEmail, setAdmNewEmail] = (0, D.useState)(``), [admNewPass, setAdmNewPass] = (0, D.useState)(``), [admNewName, setAdmNewName] = (0, D.useState)(``), [admCreating, setAdmCreating] = (0, D.useState)(!1), [admMsg, setAdmMsg] = (0, D.useState)(``), [admMsgType, setAdmMsgType] = (0, D.useState)(``), [admList, setAdmList] = (0, D.useState)([]), ne = (0, D.useRef)(null), re = [`✦`, `◈`, `◆`, `❖`, `◎`, `⬥`, `◇`, `★`, `♦`, `●`];
+    }), [y, b] = (0, D.useState)(`upload`), [x, ee] = (0, D.useState)(!1), [te, S] = (0, D.useState)(null), [admNewEmail, setAdmNewEmail] = (0, D.useState)(``), [admNewPass, setAdmNewPass] = (0, D.useState)(``), [admNewName, setAdmNewName] = (0, D.useState)(``), [admCreating, setAdmCreating] = (0, D.useState)(!1), [admMsg, setAdmMsg] = (0, D.useState)(``), [admMsgType, setAdmMsgType] = (0, D.useState)(``), [admList, setAdmList] = (0, D.useState)([]), [admOrders, setAdmOrders] = (0, D.useState)([]), [admOrdersLoaded, setAdmOrdersLoaded] = (0, D.useState)(!1), ne = (0, D.useRef)(null), re = [`✦`, `◈`, `◆`, `❖`, `◎`, `⬥`, `◇`, `★`, `♦`, `●`];
     (0, D.useEffect)(() => {
         (async () => {
             try {
@@ -23110,6 +23110,17 @@ function Bm({
             } catch(e) { console.warn(`Could not load admins list`, e); }
         })();
     }, []);
+    let loadOrders = async () => {
+        if (admOrdersLoaded) return;
+        try {
+            let snap = await Ml(Ic(Tm, `store`, `data`, `orders`));
+            let list = [];
+            snap.forEach(doc => list.push({id: doc.id, ...doc.data()}));
+            list.sort((a, b) => (b.createdAt || ``).localeCompare(a.createdAt || ``));
+            setAdmOrders(list);
+            setAdmOrdersLoaded(!0);
+        } catch(e) { console.warn(`Could not load orders`, e); }
+    };
     let saveAdminList = async (list) => {
         await Nl(Lc(Tm, `store`, `admins`), {list: list});
     };
@@ -23318,6 +23329,10 @@ function Bm({
                 className: `adm-tab ${d===`categories`?`active`:``}`,
                 onClick: () => f(`categories`),
                 children: [`Categories (`, s.length, `)`]
+            }), (0, $.jsxs)(`button`, {
+                className: `adm-tab ${d===`orders`?`active`:``}`,
+                onClick: () => { f(`orders`); loadOrders(); },
+                children: [`Orders`, admOrders.length > 0 ? ` (${admOrders.length})` : ``]
             }), (0, $.jsx)(`button`, {
                 className: `adm-tab ${d===`admins`?`active`:``}`,
                 onClick: () => f(`admins`),
@@ -24008,6 +24023,44 @@ function Bm({
                         children: `Add`
                     })]
                 })]
+            }), d === `orders` && (0, $.jsxs)(`div`, {
+                children: [(0, $.jsx)(`h2`, {
+                    style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 28, fontWeight: 300, marginBottom: 24},
+                    children: `Order History`
+                }), !admOrdersLoaded ? (0, $.jsx)(`p`, {style: {color: `#666`, fontSize: 13}, children: `Loading orders...`}) : admOrders.length === 0 ? (0, $.jsx)(`p`, {style: {color: `#555`, fontSize: 13}, children: `No orders yet.`}) : (0, $.jsx)(`div`, {
+                    style: {display: `grid`, gap: 16},
+                    children: admOrders.map((ord, idx) => (0, $.jsxs)(`div`, {
+                        className: `adm-card`,
+                        style: {padding: 20},
+                        children: [(0, $.jsxs)(`div`, {
+                            style: {display: `flex`, justifyContent: `space-between`, alignItems: `flex-start`, marginBottom: 12, flexWrap: `wrap`, gap: 8},
+                            children: [(0, $.jsxs)(`div`, {
+                                children: [(0, $.jsxs)(`div`, {style: {fontSize: 14, fontWeight: 600, color: `#E8503A`}, children: [`Order #`, ord.ref]}), (0, $.jsx)(`div`, {style: {fontSize: 11, color: `#555`, marginTop: 4}, children: ord.createdAt ? new Date(ord.createdAt).toLocaleString() : `N/A`})]
+                            }), (0, $.jsx)(`span`, {
+                                style: {fontSize: 11, padding: `4px 12px`, borderRadius: 20, background: ord.status === `paid` ? `#1a3a1a` : `#3a3a1a`, color: ord.status === `paid` ? `#4ade80` : `#fbbf24`, fontWeight: 600, textTransform: `uppercase`, letterSpacing: 1},
+                                children: ord.status || `paid`
+                            })]
+                        }), (0, $.jsxs)(`div`, {
+                            style: {display: `grid`, gridTemplateColumns: `1fr 1fr`, gap: 16, fontSize: 13, marginBottom: 12},
+                            children: [(0, $.jsxs)(`div`, {
+                                children: [(0, $.jsx)(`div`, {style: {color: `#E8503A`, fontSize: 10, letterSpacing: 2, textTransform: `uppercase`, marginBottom: 4}, children: `Customer`}), (0, $.jsx)(`div`, {style: {fontWeight: 500}, children: ord.customer?.name || `N/A`}), (0, $.jsx)(`div`, {style: {color: `#888`}, children: ord.customer?.phone || ``}), ord.customer?.email && (0, $.jsx)(`div`, {style: {color: `#888`}, children: ord.customer.email})]
+                            }), (0, $.jsxs)(`div`, {
+                                children: [(0, $.jsx)(`div`, {style: {color: `#E8503A`, fontSize: 10, letterSpacing: 2, textTransform: `uppercase`, marginBottom: 4}, children: `Delivery Address`}), (0, $.jsxs)(`div`, {children: [ord.customer?.address || ``, ord.customer?.city ? `, ${ord.customer.city}` : ``, ord.customer?.state ? `, ${ord.customer.state}` : ``]}), ord.customer?.note && (0, $.jsxs)(`div`, {style: {color: `#888`, fontStyle: `italic`, marginTop: 4}, children: [`Note: `, ord.customer.note]})]
+                            })]
+                        }), (0, $.jsxs)(`div`, {
+                            children: [(0, $.jsx)(`div`, {style: {color: `#E8503A`, fontSize: 10, letterSpacing: 2, textTransform: `uppercase`, marginBottom: 8}, children: `Items`}), (0, $.jsx)(`div`, {
+                                style: {display: `grid`, gap: 4},
+                                children: (ord.items || []).map((item, i) => (0, $.jsxs)(`div`, {
+                                    style: {display: `flex`, justifyContent: `space-between`, fontSize: 13, padding: `4px 0`, borderBottom: `1px solid #151515`},
+                                    children: [(0, $.jsxs)(`span`, {children: [item.name, item.color ? ` (${item.color})` : ``, ` × ${item.qty}`]}), (0, $.jsx)(`span`, {style: {color: `#E8503A`, fontWeight: 500}, children: `₦${Qm(item.price * item.qty)}`})]
+                                }, i))
+                            }), (0, $.jsxs)(`div`, {
+                                style: {display: `flex`, justifyContent: `space-between`, marginTop: 8, paddingTop: 8, borderTop: `1px solid #333`, fontWeight: 600, fontSize: 14},
+                                children: [(0, $.jsx)(`span`, {children: `Total`}), (0, $.jsx)(`span`, {style: {color: `#E8503A`}, children: `₦${Qm(ord.total || 0)}`})]
+                            })]
+                        })]
+                    }, idx))
+                })]
             }), d === `admins` && (0, $.jsxs)(`div`, {
                 children: [(0, $.jsx)(`h2`, {
                     style: {fontFamily: `'Cormorant Garamond',serif`, fontSize: 28, fontWeight: 300, marginBottom: 24},
@@ -24100,7 +24153,7 @@ function Vm({
                         children: `Lagos Store`
                     }), (0, $.jsx)(`p`, {
                         style: {marginBottom: 8},
-                        children: `Lagos, Nigeria`
+                        children: `Dd23 Second Floor, Dubai Mall, Balogun, Lagos Island`
                     }), (0, $.jsx)(`p`, {
                         style: {marginBottom: 8},
                         children: `Mon — Sat: 10am — 8pm`
@@ -24133,11 +24186,19 @@ function Vm({
                     children: `@lebylami`
                 })]
             }), (0, $.jsxs)(`div`, {
+                style: {marginBottom: 20},
                 children: [(0, $.jsx)(`p`, {
                     style: {marginBottom: 8, color: `#E8503A`, fontFamily: `'Inter','DM Sans',sans-serif`, fontSize: 13, letterSpacing: 2, textTransform: `uppercase`},
                     children: `TikTok`
                 }), (0, $.jsx)(`p`, {
                     children: `@lami_hammed`
+                })]
+            }), (0, $.jsxs)(`div`, {
+                children: [(0, $.jsx)(`p`, {
+                    style: {marginBottom: 8, color: `#E8503A`, fontFamily: `'Inter','DM Sans',sans-serif`, fontSize: 13, letterSpacing: 2, textTransform: `uppercase`},
+                    children: `Store Address`
+                }), (0, $.jsx)(`p`, {
+                    children: `Dd23 Second Floor, Dubai Mall, Balogun, Lagos Island`
                 })]
             })]
         })],
@@ -24327,7 +24388,16 @@ function Hm() {
                     value: custNote || `N/A`
                 }]
             },
-            onSuccess: (transaction) => {
+            onSuccess: async (transaction) => {
+                let orderData = {
+                    ref: transaction.reference,
+                    items: S.map(t => ({name: t.name, qty: t.qty, price: t.price, color: t.selectedColor?.name || null})),
+                    total: ce,
+                    customer: {name: custName, email: custEmail || null, phone: custPhone, address: custAddress, city: custCity, state: custState, note: custNote || null},
+                    status: `paid`,
+                    createdAt: new Date().toISOString()
+                };
+                try { let ordCol = Ic(Tm, `store`, `data`, `orders`); await Nl(Lc(ordCol, transaction.reference), orderData); } catch(err) { console.warn(`Failed to save order:`, err); }
                 let e = `🛍️ *New PAID Order — Luxury Essentials by Lami*\n*Ref: ` + transaction.reference + `*\n\n`;
                 S.forEach(t => {
                     let n = t.selectedColor ? ` (${t.selectedColor.name})` : ``;
@@ -24336,6 +24406,7 @@ function Hm() {
                 e += `\n*Total: ₦${Qm(ce)}*\n*Payment: Confirmed ✅*`;
                 e += `\n\n📦 *Delivery Details*\n*Name:* ${custName}\n*Phone:* ${custPhone}\n*Address:* ${custAddress}, ${custCity}, ${custState}`;
                 if (custNote.trim()) e += `\n*Note:* ${custNote}`;
+                if (custEmail.trim()) e += `\n*Email:* ${custEmail}`;
                 let t = `https://wa.me/2347060408151?text=` + encodeURIComponent(e);
                 window.open(t, `_blank`);
                 ne([]);
@@ -25279,6 +25350,9 @@ function Hm() {
                         size: `small`
                     }), (0, $.jsx)(`p`, {
                         children: `Curating premium intimate luxury with cutting-edge technology and innovative, body-safe design. Your trusted partner in elevated pleasure.`
+                    }), (0, $.jsx)(`p`, {
+                        style: {marginTop: 12, fontSize: 12, color: `#555`, lineHeight: 1.6},
+                        children: `📍 Dd23 Second Floor, Dubai Mall, Balogun, Lagos Island`
                     })]
                 }), (0, $.jsxs)(`div`, {
                     children: [(0, $.jsx)(`h4`, {
