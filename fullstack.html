@@ -4,229 +4,422 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fullstack Developer — Olaitan Hammed</title>
-<meta name="description" content="Custom web applications, engineering software, and data-driven tools. Creator of StructSolve (52/52 verification checks passed). Python, React, Flask, Django, FastAPI.">
+<meta name="description" content="Fullstack developer building production-grade web applications, engineering software, and data tools in Python, React, and Node.js. Creator of StructSolve — 52/52 verification checks passed.">
+<meta name="theme-color" content="#0a0a0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#09090b;--bg-card:#111113;--border:rgba(255,255,255,.06);--green:#3dffc0;--green-dim:#1a7a56;--green-glow:rgba(61,255,192,.08);--text:#a1a1aa;--text-bright:#fafafa;--text-dim:#52525b;--font-mono:'JetBrains Mono',monospace;--font-sans:'Outfit',sans-serif}
+:root{
+  --bg:#0a0a0b;
+  --bg-2:#131315;
+  --bg-3:#181819;
+  --line:rgba(233,230,223,.09);
+  --line-strong:rgba(233,230,223,.16);
+  --cream:#e9e6df;
+  --sand:#b4b1a8;
+  --faint:#6b6862;
+  --gold:#d9a441;
+  --gold-soft:#e7c27d;
+  --gold-glow:rgba(217,164,65,.10);
+  --display:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;
+  --body:'General Sans','Archivo',system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(9,9,11,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-logo{font-family:var(--font-mono);font-weight:700;font-size:1.1rem;color:var(--green);text-decoration:none;letter-spacing:.08em}
+body{font-family:var(--body);background:var(--bg);color:var(--sand);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px}
+::selection{background:var(--gold);color:var(--bg)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--gold);color:var(--bg);padding:.6rem 1rem;font-family:var(--display);font-weight:600;z-index:200}
+.skip:focus{left:1rem;top:1rem}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(1.4rem,5vw,3rem)}
+.eyebrow{font-family:var(--display);font-size:.72rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:.7rem}
+.eyebrow::before{content:'';width:1.8rem;height:1px;background:var(--gold);opacity:.6}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,11,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:1.05rem clamp(1.4rem,5vw,3rem);display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--display);font-weight:800;font-size:1.05rem;color:var(--cream);letter-spacing:-.01em}
+.nav-logo span{color:var(--gold)}
 .nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
-.nav-links a{font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .25s cubic-bezier(0.4,0,0.2,1)}
-.nav-links a:hover,.nav-links a.active{color:var(--green)}
-.nav-cta{font-family:var(--font-mono);font-size:.72rem;color:var(--bg)!important;background:var(--green);padding:.5rem 1.2rem;border-radius:6px;text-decoration:none;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:all .25s cubic-bezier(0.4,0,0.2,1)}
-.nav-cta:hover{background:#5cffcf}
+.nav-links a{font-family:var(--display);font-size:.82rem;font-weight:500;color:var(--sand);letter-spacing:.01em;transition:color .25s var(--ease)}
+.nav-links a:hover,.nav-links a.active{color:var(--cream)}
+.nav-links a.active{color:var(--gold)}
+.nav-resume{font-family:var(--display);font-size:.8rem;font-weight:600;color:var(--cream)!important;border:1px solid var(--line-strong);padding:.5rem 1.1rem;border-radius:999px;transition:all .25s var(--ease)}
+.nav-resume:hover{border-color:var(--gold);color:var(--gold)!important}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-.hamburger span{display:block;width:22px;height:2px;background:var(--text);transition:.3s}
+.hamburger span{display:block;width:22px;height:2px;background:var(--sand);transition:.3s}
 
-/* Page Hero */
-.page-hero{padding:10rem 8vw 4rem;position:relative}
-.page-hero::before{content:'';position:absolute;top:0;right:0;width:500px;height:500px;background:radial-gradient(circle,rgba(61,255,192,.04),transparent 70%);pointer-events:none}
-.breadcrumb{font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);margin-bottom:1.5rem;letter-spacing:.1em}
-.breadcrumb a{color:var(--text-dim);text-decoration:none;transition:color .25s cubic-bezier(0.4,0,0.2,1)}
-.breadcrumb a:hover{color:var(--green)}
-.breadcrumb .sep{margin:0 .5rem;color:var(--text-dim)}
-.page-hero h1{font-size:clamp(2.4rem,5vw,3.8rem);font-weight:800;color:var(--text-bright);line-height:1.1;margin-bottom:1rem;letter-spacing:-.02em}
-.page-hero h1 .accent{color:var(--green)}
-.page-hero p{font-size:1.1rem;color:var(--text);max-width:600px}
-.hero-cta{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.82rem;color:var(--bg);background:var(--green);padding:.7rem 1.6rem;border-radius:6px;text-decoration:none;font-weight:600;transition:all .25s cubic-bezier(0.4,0,0.2,1);margin-top:1.5rem}
-.hero-cta:hover{background:#5cffcf}
+/* Hero */
+.hero{padding:11rem 0 5rem;position:relative}
+.hero::before{content:'';position:absolute;top:4rem;right:-6rem;width:640px;height:640px;background:radial-gradient(circle,var(--gold-glow),transparent 68%);pointer-events:none;z-index:0}
+.hero .wrap{position:relative;z-index:1}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,7vw,5rem);line-height:1.02;letter-spacing:-.03em;color:var(--cream);margin-bottom:1.6rem;max-width:16ch}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero-lede{font-size:clamp(1.05rem,2.2vw,1.28rem);color:var(--sand);max-width:54ch;line-height:1.6}
+.hero-lede strong{color:var(--cream);font-weight:600}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.6rem 2rem;margin-top:1.6rem;font-family:var(--display);font-size:.82rem;color:var(--faint)}
+.hero-meta b{color:var(--cream);font-weight:600}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.6rem}
+.btn{font-family:var(--display);font-size:.9rem;font-weight:600;padding:.85rem 1.7rem;border-radius:999px;transition:all .25s var(--ease);display:inline-flex;align-items:center;gap:.5rem}
+.btn-primary{background:var(--gold);color:var(--bg)}
+.btn-primary:hover{background:var(--gold-soft);transform:translateY(-2px)}
+.btn-ghost{color:var(--cream);border:1px solid var(--line-strong)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
 
-section{padding:4rem 8vw}
-.section-label{font-family:var(--font-mono);font-size:.72rem;color:var(--green);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.5rem}
-.section-title{font-size:2rem;font-weight:700;color:var(--text-bright);margin-bottom:2.5rem;letter-spacing:-.02em}
+/* Proof strip */
+.proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.proof .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;padding:0}
+.proof-item{padding:2.4rem clamp(1.4rem,5vw,3rem);position:relative}
+.proof-item + .proof-item::before{content:'';position:absolute;left:0;top:1.6rem;bottom:1.6rem;width:1px;background:var(--line)}
+.proof-num{font-family:var(--display);font-weight:800;font-size:clamp(2rem,4vw,2.8rem);color:var(--gold);letter-spacing:-.02em;line-height:1}
+.proof-label{font-size:.86rem;color:var(--sand);margin-top:.5rem}
 
-/* Projects */
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.5rem}
-.project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:2rem;transition:all .35s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden}
-.project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--green-dim));transform:scaleX(0);transform-origin:left;transition:transform .4s}
-.project-card:hover{border-color:rgba(61,255,192,.12);transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
-.project-card:hover::before{transform:scaleX(1)}
-.project-num{font-family:var(--font-mono);font-size:.7rem;color:var(--green-dim);margin-bottom:1rem}
-.project-card h3{font-size:1.3rem;color:var(--text-bright);margin-bottom:.4rem}
-.project-result{font-family:var(--font-mono);font-size:.72rem;color:var(--green);margin-bottom:.7rem;display:block}
-.project-card p{font-size:.9rem;color:var(--text);margin-bottom:1.4rem;line-height:1.65}
-.project-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.4rem}
-.project-tags span{font-family:var(--font-mono);font-size:.66rem;color:var(--green);background:rgba(61,255,192,.06);padding:.28rem .65rem;border-radius:4px}
-.project-link{font-family:var(--font-mono);font-size:.78rem;color:var(--green);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:gap .25s cubic-bezier(0.4,0,0.2,1)}
-.project-link:hover{gap:.8rem}
+/* Section scaffold */
+.section{padding:5.5rem 0}
+.section-head{margin-bottom:3rem;max-width:60ch}
+.section-head h2{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,4vw,2.7rem);color:var(--cream);letter-spacing:-.02em;margin:.9rem 0 .8rem;line-height:1.08}
+.section-head p{font-size:1.02rem;color:var(--sand);max-width:52ch}
 
-/* Skills */
-.skills-wrap{display:flex;flex-wrap:wrap;gap:.6rem}
-.skill-tag{font-family:var(--font-mono);font-size:.76rem;padding:.5rem 1.1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:50px;color:var(--text);transition:all .25s cubic-bezier(0.4,0,0.2,1)}
-.skill-tag:hover{border-color:var(--green);color:var(--green);background:var(--green-glow)}
+/* About */
+.about-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:clamp(2rem,6vw,5rem);align-items:start}
+.about-grid .eyebrow{margin-bottom:1.4rem}
+.about-body p{font-size:clamp(1.05rem,2vw,1.2rem);color:var(--cream);line-height:1.62;margin-bottom:1.2rem;font-weight:400}
+.about-body p.muted{color:var(--sand);font-size:1rem;line-height:1.7}
+.about-body a.inline{color:var(--gold);border-bottom:1px solid rgba(217,164,65,.35);transition:border-color .2s}
+.about-body a.inline:hover{border-color:var(--gold)}
 
-/* CTA Section */
-.hire-section{text-align:center;padding:5rem 8vw;border-top:1px solid var(--border)}
-.hire-section h2{font-size:2rem;font-weight:700;color:var(--text-bright);margin-bottom:.8rem}
-.hire-section p{font-size:1rem;color:var(--text);max-width:500px;margin:0 auto 1.5rem}
-.hire-cta{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.85rem;color:var(--bg);background:var(--green);padding:.85rem 2rem;border-radius:6px;text-decoration:none;font-weight:600;transition:all .25s cubic-bezier(0.4,0,0.2,1)}
-.hire-cta:hover{background:#5cffcf}
-.pricing-hint{font-family:var(--font-mono);font-size:.76rem;color:var(--text-dim);margin-top:1rem}
-.pricing-hint span{color:var(--green)}
+/* Work index */
+.work-list{border-top:1px solid var(--line)}
+.work-row{display:block;border-bottom:1px solid var(--line);padding:2.2rem 0;position:relative;transition:background .3s var(--ease)}
+.work-row:hover{background:linear-gradient(90deg,var(--gold-glow),transparent 60%)}
+.work-row .row-inner{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(1rem,4vw,2.6rem);align-items:baseline;padding:0 clamp(.4rem,2vw,1.2rem)}
+.work-num{font-family:var(--display);font-weight:600;font-size:.85rem;color:var(--faint);letter-spacing:.05em;padding-top:.35rem}
+.work-main h3{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,3.4vw,2.1rem);color:var(--cream);letter-spacing:-.02em;line-height:1.1;transition:color .25s var(--ease);display:inline-flex;align-items:center;gap:.7rem}
+.work-row:hover .work-main h3{color:var(--gold)}
+.work-arrow{font-size:1rem;opacity:0;transform:translateX(-6px);transition:all .3s var(--ease);color:var(--gold)}
+.work-row:hover .work-arrow{opacity:1;transform:translateX(0)}
+.work-result{font-size:.86rem;color:var(--gold-soft);margin-top:.7rem;display:flex;align-items:center;gap:.5rem}
+.work-result::before{content:'✓';font-size:.8rem;color:var(--gold)}
+.work-desc{font-size:.98rem;color:var(--sand);margin-top:.8rem;max-width:62ch;line-height:1.6}
+.work-tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.1rem}
+.work-tags span{font-family:var(--display);font-size:.72rem;font-weight:500;color:var(--sand);border:1px solid var(--line);padding:.28rem .7rem;border-radius:999px}
+.work-cta{font-family:var(--display);font-size:.82rem;font-weight:600;color:var(--sand);white-space:nowrap;padding-top:.4rem;transition:color .25s var(--ease)}
+.work-row:hover .work-cta{color:var(--gold)}
 
-/* JSON Terminal */
-.json-terminal{max-width:480px;margin:3rem 0 0}
-.json-window{background:#0d1210;border:1px solid rgba(61,255,192,.12);border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
-.json-titlebar{display:flex;align-items:center;gap:7px;padding:.75rem 1rem;background:rgba(61,255,192,.03);border-bottom:1px solid rgba(61,255,192,.08)}
-.json-dot{width:10px;height:10px;border-radius:50%}
-.json-dot.red{background:#ff5f57}.json-dot.yellow{background:#febc2e}.json-dot.green{background:#28c840}
-.json-titlebar span{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim);margin-left:.8rem}
-.json-body{padding:1.2rem 1.4rem;font-family:var(--font-mono);font-size:.76rem;line-height:1.85}
-.json-body .key{color:#79c0ff}.json-body .string{color:#a5d6ff}.json-body .number{color:#ffa657}.json-body .bool{color:#ff7b72}.json-body .brace,.json-body .bracket{color:var(--text-dim)}.json-body .arr-string{color:#a5d6ff}
-.json-line{opacity:0;transform:translateX(-6px);white-space:nowrap}
-.json-line.visible{opacity:1;transform:translateX(0);transition:opacity .25s,transform .25s}
-.json-cursor{display:inline-block;width:8px;height:15px;background:var(--green);vertical-align:middle;margin-left:2px;animation:cursorBlink .8s step-end infinite}
-@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+/* Approach / process */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.step{background:var(--bg);padding:2rem 1.7rem;transition:background .3s var(--ease)}
+.step:hover{background:var(--bg-2)}
+.step-num{font-family:var(--display);font-weight:700;font-size:.78rem;color:var(--gold);letter-spacing:.1em;margin-bottom:1.1rem}
+.step h3{font-family:var(--display);font-weight:600;font-size:1.12rem;color:var(--cream);margin-bottom:.5rem}
+.step p{font-size:.9rem;color:var(--sand);line-height:1.6}
 
-.footer-link{color:var(--text-dim);text-decoration:none;transition:color .25s cubic-bezier(0.4,0,0.2,1)}.footer-link:hover{color:var(--green)}footer{text-align:center;padding:2rem 8vw;font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim);border-top:1px solid var(--border)}
+/* Stack */
+.stack-tier{margin-bottom:2.4rem}
+.stack-tier:last-child{margin-bottom:0}
+.tier-label{font-family:var(--display);font-size:.74rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:1.1rem}
+.tier-chips{display:flex;flex-wrap:wrap;gap:.6rem}
+.chip{font-family:var(--display);font-weight:500;border-radius:999px;transition:all .25s var(--ease);cursor:default}
+.chip-primary{font-size:1rem;color:var(--cream);background:var(--bg-2);border:1px solid var(--line-strong);padding:.6rem 1.25rem}
+.chip-primary:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+.chip-secondary{font-size:.85rem;color:var(--sand);border:1px solid var(--line);padding:.45rem 1rem}
+.chip-secondary:hover{border-color:var(--line-strong);color:var(--cream)}
 
-@media(max-width:768px){
-  nav{padding:1rem 1.5rem}
-  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(9,9,11,.96);padding:1.5rem 2rem;gap:1.2rem;border-bottom:1px solid var(--border)}
+/* Contact */
+.contact{padding:6rem 0 5rem;border-top:1px solid var(--line);text-align:center;position:relative}
+.contact::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:520px;height:340px;background:radial-gradient(circle,var(--gold-glow),transparent 70%);pointer-events:none}
+.contact .wrap{position:relative;z-index:1}
+.contact h2{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,6vw,3.6rem);color:var(--cream);letter-spacing:-.03em;line-height:1.05;margin:1.2rem auto 1rem;max-width:16ch}
+.contact h2 em{font-style:normal;color:var(--gold)}
+.contact p{font-size:1.05rem;color:var(--sand);max-width:46ch;margin:0 auto 2.2rem}
+.contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem}
+.contact-links a{font-family:var(--display);font-size:.9rem;font-weight:500;color:var(--cream);border:1px solid var(--line-strong);padding:.75rem 1.5rem;border-radius:999px;transition:all .25s var(--ease)}
+.contact-links a:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+.contact-links a.primary{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.contact-links a.primary:hover{background:var(--gold-soft)}
+.pricing{font-family:var(--display);font-size:.84rem;color:var(--faint);margin-top:1.6rem}
+.pricing b{color:var(--gold-soft);font-weight:600}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:2.4rem 0}
+.foot-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem}
+.foot-links{display:flex;gap:1.4rem;flex-wrap:wrap}
+.foot-links a{font-family:var(--display);font-size:.82rem;color:var(--sand);transition:color .2s}
+.foot-links a:hover{color:var(--gold)}
+.foot-copy{font-family:var(--display);font-size:.78rem;color:var(--faint)}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:860px){
+  .about-grid{grid-template-columns:1fr;gap:1.4rem}
+  .steps{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:720px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(10,10,11,.97);padding:1.4rem 2rem;gap:1.2rem;border-bottom:1px solid var(--line)}
   .nav-links.open{display:flex}
   .hamburger{display:flex}
-  .nav-cta{display:none}
-  section{padding:3rem 6vw}
-  .page-hero{padding:8rem 6vw 3rem}
-  .projects-grid{grid-template-columns:1fr}
+  .nav-resume{display:none}
+  .hero{padding:9rem 0 3.5rem}
+  .proof .wrap{grid-template-columns:1fr}
+  .proof-item + .proof-item::before{display:none}
+  .proof-item{border-top:1px solid var(--line)}
+  .proof .wrap .proof-item:first-child{border-top:0}
+  .work-row .row-inner{grid-template-columns:auto 1fr}
+  .work-cta{grid-column:2;padding-top:1rem}
+  .steps{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  .reveal{opacity:1;transform:none;transition:none}
 }
 </style>
 </head>
 <body>
+<a href="#work" class="skip">Skip to work</a>
 
 <nav>
-  <a href="index.html" class="nav-logo">OH.</a>
-  <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="fullstack.html" class="active">Fullstack</a></li>
-    <li><a href="automation.html">Automation</a></li>
-    <li><a href="email-design.html">Email Design</a></li>
-    <li><a href="blog.html">Blog</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="mailto:hammedolaitan5@gmail.com" class="nav-cta">Hire Me</a></li>
-  </ul>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Olaitan<span>.</span></a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fullstack.html" class="active">Fullstack</a></li>
+      <li><a href="automation.html">Automation</a></li>
+      <li><a href="email-design.html">Email</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="Olaitan_Hammed_Resume.pdf" class="nav-resume">Résumé</a></li>
+    </ul>
+  </div>
 </nav>
 
-<div class="page-hero">
-  <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span>Fullstack Developer</div>
-  <h1><span class="accent">Fullstack</span> Developer</h1>
-  <p>Custom web applications, engineering software, and data-driven tools. I build production-grade systems in Python, React, and Node.js that solve real problems — not just demos.</p>
-  <a href="mailto:hammedolaitan5@gmail.com" class="hero-cta">Discuss Your Project &rarr;</a>
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:1.6rem">Fullstack Developer</p>
+    <h1>I build software that <em>holds up</em> under real load.</h1>
+    <p class="hero-lede"><strong>Custom web applications, engineering software, and data-driven tools</strong> in Python, React, and Node.js. I ship production systems that solve real problems — verified, deployed, and running, not demos.</p>
+    <div class="hero-meta">
+      <span>Based in <b>Lagos, Nigeria</b></span>
+      <span>Working <b>remote, worldwide</b></span>
+      <span>Replies within <b>24 hours</b></span>
+    </div>
+    <div class="hero-cta">
+      <a href="mailto:hammedolaitan5@gmail.com?subject=Project%20enquiry" class="btn btn-primary">Start a project →</a>
+      <a href="#work" class="btn btn-ghost">See selected work</a>
+    </div>
+  </div>
+</header>
 
-  <div class="json-terminal">
-    <div class="json-window">
-      <div class="json-titlebar">
-        <div class="json-dot red"></div><div class="json-dot yellow"></div><div class="json-dot green"></div>
-        <span>olaitan.json</span>
+<!-- Proof strip -->
+<div class="proof">
+  <div class="wrap">
+    <div class="proof-item"><div class="proof-num">52/52</div><div class="proof-label">Textbook verification checks passed by StructSolve</div></div>
+    <div class="proof-item"><div class="proof-num">4+</div><div class="proof-label">Production apps shipped end-to-end</div></div>
+    <div class="proof-item"><div class="proof-num">100%</div><div class="proof-label">Deploy-ready delivery — source, tests, and docs</div></div>
+  </div>
+</div>
+
+<!-- About -->
+<section class="section" id="about">
+  <div class="wrap about-grid reveal">
+    <div>
+      <p class="eyebrow">Who's building</p>
+    </div>
+    <div class="about-body">
+      <p>I'm Olaitan — a fullstack developer who treats every build like an engineering problem: deconstruct it, design the solution, then ship with precision.</p>
+      <p class="muted">My flagship, <a href="https://structsolve.streamlit.app" target="_blank" rel="noopener" class="inline">StructSolve</a>, performs structural beam and frame analysis with SFD/BMD diagrams and PDF export — and passes every one of the 52 test problems in Kassimali's textbook. That's the bar I hold my software to: not "it runs," but "it's correct."</p>
+      <p class="muted">I work end-to-end — backend APIs in Flask, Django, and FastAPI, polished React and Streamlit frontends, ML pipelines with XGBoost and scikit-learn, and automation glue with n8n. If it needs to be architected, built, tested, and deployed, that's the whole loop I run.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- Selected Work -->
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Selected work</p>
+      <h2>Things I've built and shipped.</h2>
+      <p>A few systems that went to production — each solving a specific, real problem.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="work-list">
+
+      <a href="https://structsolve.streamlit.app" target="_blank" rel="noopener" class="work-row reveal">
+        <div class="row-inner">
+          <div class="work-num">01</div>
+          <div class="work-main">
+            <h3>StructSolve <span class="work-arrow">↗</span></h3>
+            <div class="work-result">52/52 verification checks passed against Kassimali's textbook</div>
+            <p class="work-desc">Professional structural analysis &amp; RC design web app. Continuous beam analysis by the Slope-Deflection Method, a general plane-frame solver with automatic sway detection, and BS 8110-1:1997 RC beam design — complete with shear/bending diagrams and PDF export.</p>
+            <div class="work-tags"><span>Python</span><span>Streamlit</span><span>NumPy</span><span>Matplotlib</span><span>ReportLab</span></div>
+          </div>
+          <div class="work-cta">Live demo →</div>
+        </div>
+      </a>
+
+      <a href="https://rainforecastml.streamlit.app" target="_blank" rel="noopener" class="work-row reveal">
+        <div class="row-inner">
+          <div class="work-num">02</div>
+          <div class="work-main">
+            <h3>Rainfall–Runoff Forecasting <span class="work-arrow">↗</span></h3>
+            <div class="work-result">Calibrated for Ikeja, Nigeria with real weather data</div>
+            <p class="work-desc">An ML system for rainfall and runoff prediction combining XGBoost with Manning's Equation, built for hydrological engineering. Interactive visualisations, model comparisons, and a workflow tuned for real catchment data.</p>
+            <div class="work-tags"><span>Python</span><span>Streamlit</span><span>XGBoost</span><span>scikit-learn</span><span>Pandas</span></div>
+          </div>
+          <div class="work-cta">Live demo →</div>
+        </div>
+      </a>
+
+      <a href="https://github.com/hholaitan01/quranshazam" target="_blank" rel="noopener" class="work-row reveal">
+        <div class="row-inner">
+          <div class="work-num">03</div>
+          <div class="work-main">
+            <h3>QuranShazam <span class="work-arrow">↗</span></h3>
+            <div class="work-result">Identifies surah, ayah, and reciter from seconds of audio</div>
+            <p class="work-desc">An AI-powered app that recognises any Qur'an recitation from a few seconds of audio — returning the exact surah, ayah, reciter, and timestamp. Audio fingerprinting meets Islamic tech.</p>
+            <div class="work-tags"><span>Python</span><span>Audio Recognition</span><span>AI / ML</span><span>Mobile</span></div>
+          </div>
+          <div class="work-cta">GitHub →</div>
+        </div>
+      </a>
+
+      <a href="https://github.com/hholaitan01" target="_blank" rel="noopener" class="work-row reveal">
+        <div class="row-inner">
+          <div class="work-num">04</div>
+          <div class="work-main">
+            <h3>JobPilot <span class="work-arrow">↗</span></h3>
+            <div class="work-result">Scrapes 8 job boards and generates tailored cover letters</div>
+            <p class="work-desc">A multi-component job-application system: a React dashboard, a Python CLI cover-letter generator on the Anthropic API, and an n8n workflow scraping RemoteOK, Arbeitnow, Himalayas, Jobicy, Wellfound, LinkedIn, Indeed, and Glassdoor.</p>
+            <div class="work-tags"><span>React</span><span>Python</span><span>n8n</span><span>Anthropic API</span><span>Web Scraping</span></div>
+          </div>
+          <div class="work-cta">GitHub →</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- Approach -->
+<section class="section" id="approach">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">How I build</p>
+      <h2>A loop I run on every project.</h2>
+      <p>Same discipline whether it's a one-page tool or a full application.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><div class="step-num">01 / AUDIT</div><h3>Understand</h3><p>Map the problem and the constraints before touching code. Scope agreed in writing, usually within 24 hours.</p></div>
+      <div class="step"><div class="step-num">02 / ARCHITECT</div><h3>Design</h3><p>Decide the data model, the boundaries, and the stack. The solution is designed before it's written.</p></div>
+      <div class="step"><div class="step-num">03 / BUILD</div><h3>Build &amp; test</h3><p>Implement with real edge-case handling and verification — my software is validated, not assumed to work.</p></div>
+      <div class="step"><div class="step-num">04 / DEPLOY</div><h3>Ship</h3><p>Deploy, hand over source and docs, and iterate. You get a working system, not a mockup.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- Stack -->
+<section class="section" id="stack">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Stack</p>
+      <h2>The tools I build with.</h2>
+      <p>Grouped by how often I reach for them.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="stack-tier">
+        <div class="tier-label">Reach for first</div>
+        <div class="tier-chips">
+          <span class="chip chip-primary">Python</span>
+          <span class="chip chip-primary">JavaScript</span>
+          <span class="chip chip-primary">React</span>
+          <span class="chip chip-primary">Node.js</span>
+          <span class="chip chip-primary">Flask</span>
+          <span class="chip chip-primary">Django</span>
+          <span class="chip chip-primary">FastAPI</span>
+          <span class="chip chip-primary">Streamlit</span>
+        </div>
       </div>
-      <div class="json-body" id="jsonBody"></div>
-    </div>
-  </div>
-</div>
-
-<section id="projects">
-  <div class="section-label">// featured projects</div>
-  <h2 class="section-title">What I've Built</h2>
-
-  <div class="projects-grid">
-    <div class="project-card">
-      <div class="project-num">01</div>
-      <h3>StructSolve</h3>
-      <span class="project-result">✓ 52/52 verification checks passed against Kassimali's textbook</span>
-      <p>Professional structural analysis & RC design web app. Continuous beam analysis (Slope Deflection Method), general plane frame solver with auto sway detection, and BS 8110-1:1997 RC beam design — with SFD/BMD diagrams and PDF export.</p>
-      <div class="project-tags"><span>Python</span><span>Streamlit</span><span>NumPy</span><span>Matplotlib</span><span>ReportLab</span></div>
-      <a href="https://structsolve.streamlit.app" target="_blank" class="project-link">Live Demo &rarr;</a>
-    </div>
-
-    <div class="project-card">
-      <div class="project-num">02</div>
-      <h3>Rainfall–Runoff Forecasting</h3>
-      <span class="project-result">✓ Calibrated for Ikeja, Nigeria with real weather data</span>
-      <p>ML-powered system for rainfall and runoff prediction using XGBoost and Manning's Equation. Built for hydrological engineering applications with interactive visualisations and model comparisons.</p>
-      <div class="project-tags"><span>Python</span><span>Streamlit</span><span>XGBoost</span><span>Scikit-learn</span><span>Pandas</span></div>
-      <a href="https://rainforecastml.streamlit.app" target="_blank" class="project-link">Live Demo &rarr;</a>
-    </div>
-
-    <div class="project-card">
-      <div class="project-num">03</div>
-      <h3>QuranShazam</h3>
-      <span class="project-result">✓ Identifies surah, ayah, and reciter from seconds of audio</span>
-      <p>An AI-powered app that identifies any Qur'an recitation from a few seconds of audio — returning the exact surah, ayah, reciter, and timestamp. Audio fingerprinting meets Islamic tech.</p>
-      <div class="project-tags"><span>Python</span><span>Audio Recognition</span><span>AI/ML</span><span>Mobile</span></div>
-      <a href="https://github.com/hholaitan01/quranshazam" target="_blank" class="project-link">GitHub &rarr;</a>
-    </div>
-
-    <div class="project-card">
-      <div class="project-num">04</div>
-      <h3>JobPilot</h3>
-      <span class="project-result">✓ Scrapes 8 job boards + generates custom cover letters via AI</span>
-      <p>Multi-component job application automation system: React dashboard, Python CLI cover letter generator (Anthropic API), and n8n workflow scraping RemoteOK, Arbeitnow, Himalayas, Jobicy, Wellfound, LinkedIn, Indeed, and Glassdoor.</p>
-      <div class="project-tags"><span>React</span><span>Python</span><span>n8n</span><span>Anthropic API</span><span>Web Scraping</span></div>
-      <a href="https://github.com/hholaitan01" target="_blank" class="project-link">GitHub &rarr;</a>
+      <div class="stack-tier">
+        <div class="tier-label">Data &amp; ML</div>
+        <div class="tier-chips">
+          <span class="chip chip-secondary">NumPy</span>
+          <span class="chip chip-secondary">Pandas</span>
+          <span class="chip chip-secondary">Matplotlib</span>
+          <span class="chip chip-secondary">scikit-learn</span>
+          <span class="chip chip-secondary">XGBoost</span>
+          <span class="chip chip-secondary">ReportLab</span>
+        </div>
+      </div>
+      <div class="stack-tier">
+        <div class="tier-label">Also in the toolkit</div>
+        <div class="tier-chips">
+          <span class="chip chip-secondary">HTML / CSS</span>
+          <span class="chip chip-secondary">REST APIs</span>
+          <span class="chip chip-secondary">SQL</span>
+          <span class="chip chip-secondary">Git / GitHub</span>
+          <span class="chip chip-secondary">n8n</span>
+          <span class="chip chip-secondary">Anthropic API</span>
+          <span class="chip chip-secondary">Web Scraping</span>
+          <span class="chip chip-secondary">Structural Analysis</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="skills">
-  <div class="section-label">// tech stack</div>
-  <h2 class="section-title">Skills & Technologies</h2>
-  <div class="skills-wrap">
-    <span class="skill-tag">Python</span><span class="skill-tag">JavaScript</span><span class="skill-tag">HTML / CSS</span>
-    <span class="skill-tag">React</span><span class="skill-tag">Node.js</span><span class="skill-tag">Streamlit</span>
-    <span class="skill-tag">Flask</span><span class="skill-tag">Django</span><span class="skill-tag">FastAPI</span>
-    <span class="skill-tag">NumPy</span><span class="skill-tag">Pandas</span><span class="skill-tag">Matplotlib</span>
-    <span class="skill-tag">Scikit-learn</span><span class="skill-tag">XGBoost</span><span class="skill-tag">Git / GitHub</span>
-    <span class="skill-tag">REST APIs</span><span class="skill-tag">SQL</span><span class="skill-tag">n8n</span>
-    <span class="skill-tag">ReportLab</span><span class="skill-tag">Structural Analysis</span>
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="wrap reveal">
+    <p class="eyebrow" style="justify-content:center">Contact</p>
+    <h2>Let's build something that <em>ships</em>.</h2>
+    <p>Tell me what you need built. I'll scope it within 24 hours and deliver a working system — source, tests, and docs included.</p>
+    <div class="contact-links">
+      <a href="mailto:hammedolaitan5@gmail.com?subject=Project%20enquiry" class="primary">hammedolaitan5@gmail.com →</a>
+      <a href="Olaitan_Hammed_Resume.pdf">Résumé (PDF)</a>
+      <a href="https://github.com/hholaitan01" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://wa.me/2349039616768" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <p class="pricing">Projects starting from <b>$150</b></p>
   </div>
 </section>
-
-<div class="hire-section">
-  <h2>Need a Web Application Built?</h2>
-  <p>Tell me what you need — I'll scope it within 24 hours and deliver a working system, not a mockup.</p>
-  <a href="mailto:hammedolaitan5@gmail.com" class="hire-cta">Start a Project &rarr;</a>
-  <p class="pricing-hint">Projects starting from <span>$150</span></p>
-</div>
 
 <footer>
-  <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">
-    <a href="https://github.com/hholaitan01" target="_blank" class="footer-link">GitHub</a>
-    <a href="https://www.linkedin.com/in/olaitan-hammed" target="_blank" class="footer-link">LinkedIn</a>
-    <a href="https://wa.me/2349039616768" target="_blank" class="footer-link">WhatsApp</a>
-    <a href="mailto:hammedolaitan5@gmail.com" class="footer-link">Email</a>
+  <div class="wrap foot-inner">
+    <div class="foot-copy">© 2026 Olaitan Hammed — built with purpose.</div>
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="automation.html">Automation</a>
+      <a href="email-design.html">Email</a>
+      <a href="https://github.com/hholaitan01" target="_blank" rel="noopener">GitHub</a>
+    </div>
   </div>
-  &copy; 2026 Olaitan Hammed. Built with purpose.
 </footer>
 
 <script>
-const jsonLines=[
-  {text:'<span class="brace">{</span>'},
-  {text:'  <span class="key">"name"</span>: <span class="string">"Olaitan Hammed"</span>,'},
-  {text:'  <span class="key">"role"</span>: <span class="string">"Fullstack Developer"</span>,'},
-  {text:'  <span class="key">"available"</span>: <span class="bool">true</span>,'},
-  {text:'  <span class="key">"stack"</span>: <span class="bracket">[</span>'},
-  {text:'    <span class="arr-string">"Python"</span>, <span class="arr-string">"React"</span>, <span class="arr-string">"Node.js"</span>,'},
-  {text:'    <span class="arr-string">"Flask"</span>, <span class="arr-string">"Django"</span>, <span class="arr-string">"FastAPI"</span>'},
-  {text:'  <span class="bracket">]</span>,'},
-  {text:'  <span class="key">"ships_production_code"</span>: <span class="bool">true</span>'},
-  {text:'<span class="brace">}</span>'},
-];
-const body=document.getElementById('jsonBody');
-body.innerHTML='';
-jsonLines.forEach(l=>{const d=document.createElement('div');d.className='json-line';d.innerHTML=l.text;body.appendChild(d)});
-const cursor=document.createElement('span');cursor.className='json-cursor';
-const lines=body.querySelectorAll('.json-line');
-let i=0;
-function reveal(){if(i>0&&lines[i-1].contains(cursor))lines[i-1].removeChild(cursor);if(i<lines.length){lines[i].classList.add('visible');lines[i].appendChild(cursor);i++;setTimeout(reveal,120+Math.random()*80)}}
-setTimeout(reveal,400);
-const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.style.opacity='1';en.target.style.transform='translateY(0)'}})},{threshold:.1});
-document.querySelectorAll('section,.hire-section').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(30px)';s.style.transition='opacity .6s cubic-bezier(0.4,0,0.2,1),transform .6s cubic-bezier(0.4,0,0.2,1)';obs.observe(s)});
+// scroll reveal
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+// close mobile menu on link tap
+document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){document.querySelector('.nav-links').classList.remove('open');});});
 </script>
 </body>
 </html>
