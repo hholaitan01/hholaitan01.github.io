@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Japa or Stay">
+<meta property="og:description" content="One year in Lagos. Swipe through the hustle and decide: japa or stay?">
+<title>Japa or Stay</title>
+<meta name="description" content="One year in Lagos. Swipe through the hustle, keep your life balanced, and decide: japa or stay?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: one narrow column on night asphalt. A danfo-yellow decision card sits between the life meters and the japa file. */
+:root{
+  --asphalt:#141518; --tar:#1f2126; --lane:#2b2e35;
+  --danfo:#f7b500; --danfo-deep:#d99a00; --ink:#121212;
+  --chalk:#efe9da; --muted:#8d909a;
+  --bad:#ef5a47; --good:#46c38a;
+  --f-display:"Bungee", "Arial Black", Impact, sans-serif;
+  --f-body:"Bricolage Grotesque", "Segoe UI", Roboto, system-ui, sans-serif;
+  --f-mono:"DM Mono", ui-monospace, Menlo, monospace;
+  color-scheme:dark;
+}
+html,body{height:100%;margin:0}
+body{
+  background:var(--asphalt);
+  background-image:repeating-linear-gradient(180deg,transparent 0 46px,var(--lane) 46px 78px);
+  background-size:6px 124px;background-repeat:repeat-y;background-position:center top;
+  color:var(--chalk);font-family:var(--f-body);font-size:16px;
+  padding-inline:16px;box-sizing:border-box;overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--danfo);outline-offset:3px}
+
+.app{max-width:440px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:14px;padding-block:14px 20px;background:var(--asphalt)}
+
+/* meters */
+.meters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.meter{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar{position:relative;width:100%;height:44px;border-radius:8px;background:var(--tar);overflow:hidden;border:1px solid var(--lane)}
+.fill{position:absolute;left:0;right:0;bottom:0;background:var(--chalk);transition:height .45s cubic-bezier(.3,1.4,.5,1),background .3s}
+.meter.warn .fill{background:var(--bad)}
+.meter.flash-up .bar{box-shadow:0 0 0 2px var(--good)}
+.meter.flash-down .bar{box-shadow:0 0 0 2px var(--bad)}
+.mlabel{font-family:var(--f-display);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--chalk);opacity:0;transform:scale(.4);transition:opacity .15s,transform .15s}
+.dot.on{opacity:1;transform:scale(1)}
+.dot.big{width:14px;height:14px}
+.dotrow{height:14px;display:flex;align-items:center}
+
+.when{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.when b{color:var(--chalk);font-weight:500}
+
+/* card */
+.stage{position:relative;min-height:380px;display:flex;justify-content:center;touch-action:none}
+.card{
+  position:relative;width:100%;background:var(--danfo);color:var(--ink);border-radius:18px;
+  padding:26px 22px 22px;display:flex;flex-direction:column;gap:14px;cursor:grab;user-select:none;
+  box-shadow:0 18px 40px rgba(0,0,0,.45);transform-origin:50% 120%;
+  will-change:transform;
+}
+.card:active{cursor:grabbing}
+.card::before,.card::after{content:"";position:absolute;left:0;right:0;height:7px;background:var(--ink)}
+.card::before{top:12px}
+.card::after{bottom:12px}
+.card.enter{animation:enter .35s cubic-bezier(.2,1.2,.4,1)}
+@keyframes enter{from{transform:translateY(40px) scale(.94);opacity:0}to{transform:none;opacity:1}}
+.who{display:flex;align-items:center;gap:12px;margin-top:6px}
+.av{width:64px;height:64px;border-radius:50%;background:var(--ink);display:grid;place-items:center;font-size:36px;flex:none}
+.name{font-family:var(--f-display);font-size:18px;line-height:1.1}
+.role{font-size:13px;opacity:.75;font-weight:600}
+.text{font-size:clamp(19px,5vw,22px);line-height:1.35;font-weight:600;text-wrap:pretty;flex:1}
+.hint{font-family:var(--f-mono);font-size:12px;opacity:.6;text-align:center;margin-bottom:6px}
+.sticker{
+  position:absolute;top:96px;padding:8px 12px;border:3px solid var(--ink);border-radius:8px;
+  font-family:var(--f-display);font-size:15px;line-height:1.15;max-width:62%;background:var(--chalk);
+  opacity:0;pointer-events:none;transition:opacity .1s
+}
+.sticker.l{left:14px;transform:rotate(-8deg)}
+.sticker.r{right:14px;transform:rotate(8deg);text-align:right}
+
+/* choices */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{
+  min-height:58px;padding:10px 12px;border-radius:12px;border:2px solid var(--lane);background:var(--tar);
+  font-weight:600;font-size:15px;line-height:1.25;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px
+}
+.choice.r{justify-content:flex-end;text-align:right}
+.choice:hover{border-color:var(--danfo)}
+.choice .arr{font-family:var(--f-display);color:var(--danfo);flex:none}
+
+/* japa file */
+.file{border:1px dashed var(--lane);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.file h2{margin:0;font-family:var(--f-display);font-size:13px;letter-spacing:.06em;font-weight:400;display:flex;justify-content:space-between;color:var(--muted)}
+.stamps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.stamp{font-family:var(--f-mono);font-size:11px;text-align:center;padding:7px 2px;border-radius:6px;border:1.5px solid var(--lane);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.stamp.done{border-color:var(--good);color:var(--good);transform:rotate(-3deg)}
+
+/* overlays */
+.screen{display:flex;flex-direction:column;gap:18px;padding-block:28px 10px}
+.logo{font-family:var(--f-display);font-size:clamp(46px,15vw,72px);line-height:.92;margin:0;color:var(--danfo);text-wrap:balance}
+.logo span{display:block;color:var(--chalk);font-size:.42em;margin:.25em 0}
+.lede{font-size:18px;line-height:1.45;margin:0;max-width:36ch}
+.rules{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.4;color:var(--chalk)}
+.rules li{display:flex;gap:10px}
+.rules b{font-family:var(--f-display);font-weight:400;font-size:12px;color:var(--danfo);min-width:62px;padding-top:2px;letter-spacing:.04em}
+.btn{
+  appearance:none;border:none;background:var(--danfo);color:var(--ink);font-family:var(--f-display);font-size:18px;
+  padding:16px 20px;border-radius:12px;cursor:pointer;box-shadow:0 5px 0 var(--danfo-deep)
+}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--danfo-deep)}
+.btn.ghost{background:transparent;color:var(--chalk);border:2px solid var(--lane);box-shadow:none;font-size:15px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row .btn{flex:1 1 160px}
+.kicker{font-family:var(--f-mono);font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.end-title{font-family:var(--f-display);font-size:clamp(32px,10vw,44px);line-height:1;margin:0;color:var(--danfo);text-wrap:balance}
+.statline{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted);text-align:center}
+.statline div b{display:block;font-size:20px;color:var(--chalk);font-weight:500;font-variant-numeric:tabular-nums}
+.collect{font-size:14px;color:var(--muted)}
+.collect strong{color:var(--chalk)}
+.endings{display:flex;flex-wrap:wrap;gap:6px}
+.endings span{font-family:var(--f-mono);font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--lane);color:var(--muted)}
+.endings span.got{border-color:var(--danfo);color:var(--danfo)}
+.toast{font-family:var(--f-mono);font-size:13px;color:var(--good);min-height:1em}
+
+@media (prefers-reduced-motion:reduce){
+  .card.enter{animation:none}
+  .fill{transition:none}
+}
+</style>
+</head>
+<body>
+
+<main class="app" id="app"></main>
+
+<script>
+(() => {
+const STAT = ["OWO","PEACE","FAMILY","CLOUT"];
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+/* card: who, avatar, role, text, left [label, [owo,peace,family,clout], opts], right [...], card opts
+   opts: set (flag), next [cardId, weeksLater]
+   card opts: req [flags], not [flags], w weight, chain (only appears when queued), min/max week */
+const C = {};
+const card = (id, who, av, role, text, l, r, o={}) => { C[id] = {id, who, av, role, text, l, r, ...o}; };
+
+card("intro","Mummy","👩🏾","Your number one fan",
+ "NYSC is over. You have a job in Victoria Island, a room in Yaba, and ₦40k in your account. Make me proud, my child.",
+ ["I go try, Ma",[0,0,0,0]],["Watch me run Lagos",[0,0,0,0]],{chain:true});
+
+// --- Japa chain ---
+card("femi","Uncle Femi","🧔🏾","Calling from Toronto",
+ "\"This Lagos no go favour you. Start your japa process now, before your mates leave you behind.\"",
+ ["Lagos is home",[0,5,5,0]],["Start the process",[-5,0,0,0],{set:"start",next:["passport",3]}],{chain:true});
+card("kemi","Kemi","👩🏾‍🦱","Your secondary school friend",
+ "Kemi just landed in Toronto. Her IG story is snow, a 24-hour supermarket, and the caption \"God did.\"",
+ ["Mute her story",[0,5,0,0]],["DM her for tips",[0,-5,0,0],{set:"start",next:["passport",3]}],{w:2,min:8,not:["start"]});
+card("passport","Immigration Officer","🛂","Ikoyi passport office",
+ "\"Your passport will be ready in six weeks. Or tomorrow, if you understand what I'm saying.\"",
+ ["Wait six weeks",[0,-10,0,0],{set:"passport",next:["ielts",5]}],["Pay for \"express\"",[-12,5,0,0],{set:"passport",next:["ielts",2]}],{chain:true});
+card("ielts","IELTS Centre","📝","Registration desk",
+ "IELTS costs ₦380,000. Your English is fine. Your bank balance is the one that needs to pass.",
+ ["Not now",[0,0,0,0],{next:["ielts",6]}],["Register",[-15,-5,0,0],{next:["ielts_result",4]}],{chain:true});
+card("ielts_result","IELTS Results","📬","British Council email",
+ "Band 8.0. Your secondary school English teacher would cry tears of joy.",
+ ["Post it on LinkedIn",[0,5,0,10],{set:"ielts",next:["funds",3]}],["Tell only Mummy",[0,5,10,0],{set:"ielts",next:["funds",3]}],{chain:true});
+card("funds","Visa Agent","🗂️","Proof of funds",
+ "The embassy wants to see ₦25 million sitting in your account for six months. The agent says \"everybody borrows.\"",
+ ["Borrow from Uncle Femi",[0,-5,-15,0],{set:"funds",next:["interview",4]}],["Empty your savings",[-25,0,0,0],{set:"funds",next:["interview",4]}],{chain:true});
+card("interview","Visa Officer","🧑🏼‍💼","Embassy window 4",
+ "\"Why do you want to leave Nigeria?\" Your palms are sweating. The queue behind you is listening.",
+ ["Light, fuel, security",[0,5,0,0],{next:["visa",2]}],["I'll come back, I promise",[0,-5,0,0],{next:["visa",2]}],{chain:true});
+card("visa","DHL Rider","📦","Your passport is back",
+ "You open the envelope. There it is. A visa. Shiny, stamped, real.",
+ ["Scream and dance",[0,15,5,5],{set:"visa"}],["Tell nobody (village people)",[0,5,-5,0],{set:"visa"}],{chain:true});
+
+// --- Bae chain ---
+card("simi","Simi","👩🏾‍🦰","Met her at a friend's birthday",
+ "Simi wants to go to a rooftop lounge in VI this weekend. The cocktails cost more than your transport for the month.",
+ ["Suya at my place?",[5,0,-8,0]],["Let's go!",[-15,10,8,5],{set:"simi",next:["simi2",6]}],{w:2,not:["simi"]});
+card("simi2","Simi","👩🏾‍🦰","Your person",
+ "\"So where is this relationship going?\"",
+ ["Let's take it slow",[0,-5,-10,0]],["Let's get serious",[-5,5,12,0],{set:"serious"}],{chain:true});
+card("simi3","Simi","👩🏾‍🦰","Your person",
+ "\"I heard about your visa. If you japa, am I coming with you?\"",
+ ["Long distance can work",[0,-10,-8,0]],["We go together",[-15,10,10,0],{set:"together"}],{req:["serious","visa"],w:20});
+
+// --- Remote job chain ---
+card("recruiter","Recruiter","💼","LinkedIn DM",
+ "\"Remote role, USD salary. Just six rounds of interviews and a take-home test.\"",
+ ["Ignore it",[0,5,0,0]],["Do all six rounds",[0,-15,0,0],{next:["offer",5]}],{w:2,not:["dollar"]});
+card("offer","Recruiter","💼","Email: Offer letter",
+ "You got it! $2,500 a month. Somehow your landlord already senses it.",
+ ["Keep it lowkey",[25,5,0,0],{set:"dollar"}],["Announce on LinkedIn",[25,0,0,15],{set:"dollar",next:["blacktax",2]}],{chain:true});
+card("blacktax","Family WhatsApp","📱","14 unread messages",
+ "The extended family heard you earn dollars now. Cousin Bayo needs a laptop. Aunty needs \"small something.\"",
+ ["Seen. No reply.",[0,5,-15,0]],["Send everyone something",[-20,0,15,0]],{chain:true});
+
+// --- Startup chain ---
+card("startup","Dayo","🧑🏾‍💻","Friend from UNILAG",
+ "Dayo is building a logistics startup and wants you as co-founder. No salary for six months.",
+ ["Keep my 9-to-5",[5,0,0,0]],["Jump in",[-15,-5,0,15],{next:["funded",8]}],{w:2,min:4,not:["startupwin"]});
+card("funded","TechCabal","📰","Interview request",
+ "Your startup just raised a pre-seed round from a Silicon Valley fund. TechCabal wants to interview you.",
+ ["Stay humble",[20,5,0,5],{set:"startupwin"}],["Do the interview",[15,0,0,20],{set:"startupwin"}],{chain:true});
+
+// --- Small chops chain ---
+card("chops","Bimpe","👩🏾‍🍳","Your cousin",
+ "Bimpe says you should sell small chops on Instagram. Puff-puff, samosa, spring rolls. \"Owambe season never ends.\"",
+ ["I'm too tired",[0,5,0,0]],["Let's do it",[5,-10,0,5],{next:["chops2",6]}],{w:2,not:["chops"]});
+card("chops2","Instagram","🍢","Notifications going crazy",
+ "A Nollywood actress ordered your small chops and tagged you. Orders are pouring in.",
+ ["Hire two helpers",[15,5,0,10],{set:"chops"}],["Do everything myself",[20,-15,0,10],{set:"chops"}],{chain:true});
+
+// --- Scams ---
+card("forex","Tunde","🧑🏾","Your guy since primary school",
+ "\"Guy, I have a sure forex signal. Double your money in seven days. Trust me.\"",
+ ["Run",[0,5,0,0]],["Invest ₦200k",[-15,0,0,0],{next:["forex2",3]}],{w:1});
+card("forex2","Tunde","🧑🏾","Your guy since primary school",
+ "Tunde's signal guy has blocked everybody. The Telegram group has been deleted.",
+ ["Cry quietly",[0,-15,0,0]],["Drag him on X",[0,-5,0,10]],{chain:true});
+card("coin","Crypto Bro","🤑","Lamborghini keychain, no Lamborghini",
+ "\"Bro, let me put you on. $NAIJA coin. We're early.\"",
+ ["Pass",[0,3,0,0]],["Put in ₦100k",[-10,0,0,0],{next:["coin2",4]}],{w:1});
+card("coin2","Crypto Bro","🤑","Voice note, 3 minutes",
+ "$NAIJA went up 50x! Also, the founder just deleted his X account.",
+ ["Sell everything now",[22,5,0,0]],["HODL",[-5,-12,0,5]],{chain:true});
+
+// --- Everyday Lagos ---
+card("rent","Baba Landlord","👴🏾","Owns your building and your peace",
+ "Rent is due. Two years upfront, as is the custom.",
+ ["Beg for more time",[0,-10,-3,0]],["Pay it all",[-20,10,0,0]]);
+card("nepa","NEPA","💡","Power Holding, allegedly",
+ "Light has been gone for three days. Your fridge smells like betrayal.",
+ ["Buy fuel for the gen",[-10,10,0,0]],["Suffer it",[0,-12,0,0]]);
+card("saturday","Mr. Adebayo","👨🏾‍💼","Your Oga at work",
+ "\"I need you in the office this Saturday. It's for the team.\"",
+ ["No, Saturday is mine",[0,8,0,-10]],["Yes sir",[8,-10,-5,8]]);
+card("mummy_wed","Mummy","👩🏾","Your number one fan",
+ "\"When will you bring someone home? Your mates are carrying twins.\"",
+ ["Change the topic",[0,0,-10,0]],["Promise next year",[0,-8,10,0]]);
+card("conductor","Danfo Conductor","🚌","Ojuelegba–Obalende",
+ "\"Owa! Change no dey!\" The conductor has your ₦500 and no plans to return it.",
+ ["Fight for your change",[3,-10,0,5]],["Let it go",[-3,5,0,0]]);
+card("agbero","Agbero","💪🏾","Collects money for reasons",
+ "An agbero stops your Bolt for \"owo ticket.\" The driver looks at you.",
+ ["Pay it",[-5,5,0,0]],["Refuse",[0,-10,0,5]]);
+card("pastor","Pastor","🙏🏾","Sunday service",
+ "\"We are building a new auditorium. Sow a seed and reap a harvest!\"",
+ ["Sow ₦50k",[-10,10,5,0]],["Hide behind a pillar",[0,-5,-5,0]]);
+card("asoebi","Aunty Bisi","👗","Turning 50 in style",
+ "\"Aso-ebi for my 50th is ₦85,000. Lace and gele. Don't disgrace me.\"",
+ ["Buy the aso-ebi",[-12,0,10,8],{set:"asoebi_done"}],["Wear your old agbada",[0,0,-10,-5]]);
+card("viral","X (Twitter)","📲","Your notifications",
+ "Your tweet about Lagos traffic is going viral. 40,000 likes and counting.",
+ ["Go private",[0,5,0,-10]],["Drop your business link",[10,-5,0,12]]);
+card("fuel","Filling Station","⛽","Fuel scarcity, again",
+ "The queue at the filling station is two kilometres long.",
+ ["Black market, ₦1,800/litre",[-12,5,0,0]],["Queue for five hours",[0,-15,0,0]]);
+card("flood","Lagos Rain","🌧️","Two hours of rain",
+ "It rained for two hours. Lekki is now Venice.",
+ ["Wade to work",[5,-15,0,5]],["Stay home",[-5,10,0,-3]]);
+card("brother","Tobi","🧒🏾","Your younger brother at UNILAG",
+ "\"Bro, school fees is ₦150k. Daddy said I should call you.\"",
+ ["Tell him to hustle",[0,-5,-15,0]],["Send it",[-15,0,15,0]]);
+card("mamaput","Mama Put","🍲","Best rice in Yaba",
+ "Rice price has gone up again. Your usual plate is now ₦3,500.",
+ ["Cook at home",[5,-5,0,0]],["Pay. I'm hungry.",[-5,8,0,0]]);
+card("police","Police Checkpoint","👮🏾","Third Mainland Bridge",
+ "\"Oga, open your laptop. Are you a Yahoo boy?\"",
+ ["Argue your rights",[0,-15,0,5]],["\"Find something for the boys\"",[-8,-5,0,0]]);
+card("okada","Okada Rider","🏍️","Okada is banned. He doesn't care.",
+ "You're late for work. An okada man winks at you from the junction.",
+ ["Take the danfo",[0,-8,0,0]],["Hop on",[-3,5,0,0]]);
+card("detty","Detty December","🎉","The IJGBs have landed",
+ "It's Detty December. Everybody from abroad is in town and everything costs triple.",
+ ["Stay indoors",[5,-5,0,-10]],["Go to every concert",[-20,15,0,15]],{min:46,w:6});
+card("wedding","Tunde","🧑🏾","Getting married!",
+ "Tunde is getting married and wants you in the wedding party. Matching outfits not included.",
+ ["Make an excuse",[0,0,-12,0]],["Accept with joy",[-10,5,10,8]]);
+card("gym","HR","🏋🏾","Company perks",
+ "The company gives you free gym access in Ikoyi. It's two hours away in traffic.",
+ ["Skip it",[0,0,0,-3]],["Go anyway",[0,8,0,3]]);
+card("bridge","LASG","🌉","Traffic advisory",
+ "Third Mainland Bridge is closed for repairs. Your 30-minute commute is now three hours.",
+ ["Work from home (secretly)",[0,8,0,-8]],["Leave the house at 4:30am",[5,-12,0,3]]);
+card("land","Uncle Kunle","👴🏿","Calling from the village",
+ "\"There's land for sale in the village. Buy it before outsiders take it.\"",
+ ["I don't have money",[0,0,-8,0]],["Buy the land",[-20,0,10,0]]);
+card("gen","Neighbour","🔊","Generator owner, no muffler",
+ "Your neighbour's \"I better pass my neighbour\" generator runs all night beside your window.",
+ ["Buy earplugs",[-3,5,0,0]],["Confront him",[0,-8,0,5]]);
+card("matchmaker","Church Aunty","👵🏾","Everybody's matchmaker",
+ "\"I want you to meet someone from a good family. Very responsible.\"",
+ ["Politely decline",[0,5,-8,0]],["Go on the date",[-5,0,10,0]]);
+card("promotion","Mr. Adebayo","👨🏾‍💼","Your Oga at work",
+ "\"We're promoting you to Senior Associate. No salary increase. Think of the exposure!\"",
+ ["Demand a raise",[10,-10,0,-5]],["Accept the title",[0,-5,5,10]],{min:10});
+card("malaria","Doctor","🩺","General hospital, Yaba",
+ "Malaria again. \"Rest for one week,\" the doctor says.",
+ ["Rest properly",[-5,10,0,-5]],["Work through it",[5,-15,0,0]]);
+card("agent","House Agent","🏠","Has the \"perfect room\"",
+ "Agency fee, legal fee, caution fee, agreement fee. You haven't even seen the room yet.",
+ ["Walk away",[0,-5,0,0]],["Pay all the fees",[-14,8,0,0]]);
+card("burna","Ticket Seller","🎤","Eko Hotel, Saturday night",
+ "Burna Boy is performing in Lagos. Tickets are ₦150,000.",
+ ["Watch on IG Live",[0,-5,0,0]],["Buy the ticket",[-15,12,0,8]]);
+card("rail","Blue Line","🚆","Marina to Mile 2",
+ "The new Blue Line train is clean, fast, and air-conditioned. You don't trust it.",
+ ["Try it",[3,8,0,0]],["Stick with danfo",[0,-5,0,3]]);
+card("politician","Honourable","🎩","Running for local government",
+ "\"Run my social media for the campaign. Plenty money, small work.\"",
+ ["No, I value my name",[0,5,0,5]],["Take the deal",[20,-10,0,-12]]);
+card("owambe","Caterer","🍛","Owambe at Muson Centre",
+ "The jollof is out, but the caterers skipped your table. Again.",
+ ["Hunt down the caterer",[0,5,0,3]],["Leave hungry",[0,-8,0,0]]);
+card("visit","Mummy","👩🏾","Your number one fan",
+ "\"I'm coming to stay with you for one week. Clean that room.\"",
+ ["Find excuses",[0,5,-12,0]],["Welcome her",[-8,-5,15,0]]);
+card("traffic","Hawker","🛒","Ojuelegba traffic, hour two",
+ "You've been in traffic for two hours. A hawker is selling gala, pure water, and wall clocks.",
+ ["Buy gala and pure water",[-2,8,0,0]],["Buy a wall clock",[-5,3,0,3]]);
+card("tea","Brand Manager","🧴","\"Influencer partnership\"",
+ "A brand wants you to promote their flat tummy tea to your followers.",
+ ["Decline",[0,5,0,-5]],["Promote it",[12,-5,0,5]]);
+card("bank","Your Bank","🏦","Debit alert",
+ "₦50,000 gone for \"SMS charges\" and \"card maintenance.\"",
+ ["File a complaint",[0,-10,0,0],{next:["bank2",6]}],["Switch to a fintech app",[5,3,0,0]]);
+card("bank2","Your Bank","🏦","Credit alert",
+ "\"Your complaint has been resolved.\" The refund actually landed. Miracles happen.",
+ ["Screenshot it",[8,5,0,0]],["Tweet about it",[8,0,0,5]],{chain:true});
+card("spray","Cousin Wale","🤵🏾","Wedding reception",
+ "Everyone is dancing and spraying money on the couple. All eyes turn to you.",
+ ["Spray crisp ₦500 notes",[-10,0,8,8]],["Dance, don't spray",[0,0,-5,-5]]);
+card("wrong","Unknown Caller","📞","Ringing nonstop",
+ "Someone mistakenly sent ₦300,000 to your account. They're calling, crying.",
+ ["Return it",[0,8,0,5]],["Ignore the calls",[15,-15,0,-5]]);
+card("grandma","Grandma","👵🏿","Ibadan",
+ "\"I had a dream about you. Come and see me this weekend.\"",
+ ["Next time, Mama",[0,0,-10,0]],["Visit for the weekend",[-5,10,10,0]]);
+card("bbn","Big Brother Naija","📺","Audition call",
+ "Your friends dared you to audition for Big Brother Naija.",
+ ["Absolutely not",[0,5,0,-5]],["Audition",[0,-10,-5,15]],{w:1});
+card("football","Barbing Salon","💈","Arsenal vs Chelsea",
+ "The barbing salon is arguing football. Someone just said Messi can't play in the Premier League.",
+ ["Argue for an hour",[0,5,0,5]],["Get your haircut and go",[0,0,0,0]]);
+
+card("payday","Your Bank","🏦","Credit alert",
+ "Salary don land! For one beautiful hour, you feel rich.",
+ ["Save half of it",[12,-3,0,0]],["Treat yourself to Shiro",[6,8,0,3]],{w:4});
+card("freelance","Old Client","🧑🏽‍💼","WhatsApp message",
+ "\"Can you do a quick weekend project? I'll pay ₦250k.\"",
+ ["Rest this weekend",[0,6,0,0]],["Take the gig",[14,-8,0,3]]);
+card("mc","Aunty Bisi","👗","Turning 50 in style",
+ "Her MC cancelled last minute. \"You talk too much anyway. Come and MC my party.\"",
+ ["Hide in the toilet",[0,0,-6,-4]],["Grab the mic",[10,-4,5,10]],{req:["asoebi_done"]});
+card("thrift","Mummy","👩🏾","Your number one fan",
+ "\"Join my ajo. Contribute monthly and collect in one lump sum.\"",
+ ["I don't trust ajo",[0,0,-6,0]],["Join the ajo",[-6,0,6,0],{next:["ajo2",8]}]);
+card("ajo2","Mummy","👩🏾","Ajo collection day",
+ "It's your turn to collect the ajo money. Mummy hands you a fat envelope.",
+ ["Save it",[18,5,0,0]],["Fix Mummy's roof with it",[6,0,15,0]],{chain:true});
+
+// ----- endings -----
+const E = {
+  owo0:["Back to Mummy's House","You ran out of money. At 26 you're back in your childhood bedroom, and Mummy controls the TV remote again."],
+  owo1:["EFCC Is at the Door","Your money grew too fast. The neighbours talked. EFCC showed up with questions you can't answer."],
+  peace0:["Lagos Won","Traffic, NEPA and your landlord broke you. You moved to a quiet village to rear snails."],
+  peace1:["Lagos Monk","You found perfect peace. You stopped replying messages and stopped going out. Lagos moved on without you."],
+  family0:["Removed From the Group Chat","You missed too many birthdays and calls. The family WhatsApp group removed you. Grandma still prays for you."],
+  family1:["Black Tax Champion","The whole family depends on you now. School fees, Uncle's car, Aunty's shop. Your salary has a waiting list."],
+  clout0:["Nobody Knows Your Name","You became invisible. Even your bank sent your alert to someone else."],
+  clout1:["Cancelled on X","You got too famous. An old tweet from 2016 resurfaced, and Nigerian Twitter dragged you for three weeks straight."],
+  j_love:["Japa Lovebirds","You and Simi landed in Toronto together. It's −20°C, but you share one big jacket."],
+  j_broke:["Three Jobs in Toronto","You made it abroad, then found out Canada also has rent. You now work at a warehouse, a café, and Uber Eats."],
+  j_fam:["Diaspora Breadwinner","You settled in Toronto and send money home every month. Mummy shows everyone your photos in the snow."],
+  j_snow:["Fresh in the Snow","You landed. The air is quiet, the light never goes off, and you miss suya every single day."],
+  s_tech:["Yaba Tech Founder","Your startup is the talk of Yaba. Investors call you now. You still sit in traffic, but you own a piece of the city."],
+  s_dollar:["Dollar Earner in Lagos","Remote job, dollar salary, Lagos rent. You found the cheat code. Just never tell anyone how much you earn."],
+  s_chops:["Small Chops Empire","Your small chops business now caters owambes across Lagos. Aunty Bisi calls you first."],
+  s_rich:["Lagos Big Shot","You stayed and you won. Lekki apartment, a driver, and a reserved table at every owambe."],
+  s_peace:["Peace in the Chaos","Lagos is still Lagos, but you found your rhythm. Suya on Friday, church on Sunday, traffic in between."],
+  s_hustle:["Still Hustling","Another year in Lagos. You survived it. That alone deserves a trophy."],
+  pending:["Still Processing","Your japa file is still processing. Meanwhile, Lagos keeps happening to you."]
+};
+
+// ----- persistence -----
+const KEY = "japa-or-stay-v1";
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { return {}; } };
+const save = d => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e) {} };
+let meta = load(); meta.got = meta.got || []; meta.best = meta.best || 0;
+
+// ----- state -----
+let S;
+const fresh = () => ({ m:[50,50,50,50], week:1, flags:[], queue:[["intro",1],["femi",3]], seen:[], cur:null, over:null, screen:"title" });
+const has = f => S.flags.includes(f);
+
+const app = document.getElementById("app");
+const h = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+
+function eligible(c){
+  if (c.chain) return false;
+  if (S.seen.includes(c.id)) return false;
+  if (c.min && S.week < c.min) return false;
+  if (c.max && S.week > c.max) return false;
+  if (c.req && !c.req.every(has)) return false;
+  if (c.not && c.not.some(has)) return false;
+  return true;
+}
+function draw(){
+  if (S.week > 52) return "final";
+  S.queue.sort((a,b)=>a[1]-b[1]);
+  const i = S.queue.findIndex(q => q[1] <= S.week);
+  if (i >= 0) return S.queue.splice(i,1)[0][0];
+  let pool = Object.values(C).filter(eligible);
+  if (!pool.length) { S.seen = S.seen.filter(id => C[id].min >= 46); pool = Object.values(C).filter(eligible); }
+  let tot = pool.reduce((a,c)=>a+(c.w||3),0), r = Math.random()*tot;
+  for (const c of pool) { r -= (c.w||3); if (r <= 0) return c.id; }
+  return pool[0].id;
+}
+
+function finalCard(){
+  if (has("visa")) return {id:"final",who:"You",av:"🧳",role:"Week 52 · Murtala Muhammed Airport",
+    text:"Your flight to Toronto leaves on Friday. One year of Lagos is behind you. The bag is packed. The choice is yours.",
+    l:["Stay in Lagos",[0,0,0,0]], r:["Japa",[0,0,0,0]]};
+  return {id:"final",who:"You",av:"🌇",role:"Week 52 · Carter Bridge at sunset",
+    text:"One full year in Lagos. You never got a visa this time. Uncle Femi asks if you'll try again next year.",
+    l:["Lagos is home",[0,0,0,0]], r:["Try japa again",[0,0,0,0]]};
+}
+
+function endingFor(side){
+  const [o,p,f] = S.m;
+  if (has("visa")) {
+    if (side === "r") return has("together") ? "j_love" : o < 35 ? "j_broke" : f >= 60 ? "j_fam" : "j_snow";
+  } else if (side === "r") return "pending";
+  if (has("startupwin")) return "s_tech";
+  if (has("dollar")) return "s_dollar";
+  if (has("chops")) return "s_chops";
+  if (o >= 65) return "s_rich";
+  if (p >= 60) return "s_peace";
+  return "s_hustle";
+}
+
+function choose(side){
+  if (!S || S.over || busy) return;
+  const c = S.cur, opt = c[side], eff = opt[1], o = opt[2] || {};
+  if (c.id === "final") { return finish(endingFor(side)); }
+  S.seen.push(c.id);
+  const before = S.m.slice();
+  S.m = S.m.map((v,i)=>Math.max(0,Math.min(100,v+eff[i])));
+  if (o.set && !has(o.set)) S.flags.push(o.set);
+  if (o.next) S.queue.push([o.next[0], S.week + o.next[1]]);
+  S.week++;
+  flash(before);
+  const dead = S.m.findIndex(v => v <= 0 || v >= 100);
+  if (dead >= 0) return fly(side, () => finish(STAT[dead].toLowerCase() + (S.m[dead] >= 100 ? "1" : "0")));
+  fly(side, next);
+}
+
+function finish(id){
+  S.over = id; S.screen = "end";
+  const weeks = Math.min(S.week - 1, 52);
+  if (!meta.got.includes(id)) meta.got.push(id);
+  meta.best = Math.max(meta.best, weeks);
+  save(meta);
+  render();
+}
+
+function next(){
+  const id = draw();
+  S.cur = id === "final" ? finalCard() : C[id];
+  renderGame(true);
+}
+
+// ----- rendering -----
+let busy = false, cardEl = null;
+
+function render(){
+  app.innerHTML = "";
+  if (S.screen === "title") return renderTitle();
+  if (S.screen === "end") return renderEnd();
+  renderGame(true);
+}
+
+function renderTitle(){
+  const s = h("section","screen");
+  s.append(h("p","kicker","A Lagos card game"));
+  s.append(h("h1","logo",'Japa<span>or</span>Stay'));
+  s.append(h("p","lede","You have one year in Lagos. Every week, someone wants something from you. Swipe to decide, keep your life in balance, and choose: leave or build here?"));
+  const ul = h("ul","rules");
+  ul.innerHTML = `
+    <li><b>OWO</b><span>Money. Hit zero and you're back in Mummy's house. Too much and EFCC starts asking questions.</span></li>
+    <li><b>PEACE</b><span>Your sanity. NEPA, traffic and landlords will test it.</span></li>
+    <li><b>FAMILY</b><span>Ignore them and you're removed from the group chat. Spoil them and you're paying everyone's bills.</span></li>
+    <li><b>CLOUT</b><span>Your name in the streets and on X. Too little or too much will end you.</span></li>`;
+  s.append(ul);
+  const row = h("div","row");
+  const b = h("button","btn","Start week 1"); b.id = "start";
+  b.onclick = () => { S = fresh(); S.screen = "game"; app.innerHTML = ""; next(); };
+  row.append(b); s.append(row);
+  s.append(h("p","collect",`Endings found: <strong>${meta.got.length} / ${Object.keys(E).length}</strong>${meta.best ? ` · Longest run: <strong>${meta.best} weeks</strong>` : ""}`));
+  app.append(s);
+}
+
+function meterHTML(){
+  return `<div class="meters">${STAT.map((n,i)=>`
+    <div class="meter${S.m[i]<=20||S.m[i]>=80?" warn":""}" data-i="${i}">
+      <div class="dotrow"><span class="dot"></span></div>
+      <div class="bar"><div class="fill" style="height:${S.m[i]}%"></div></div>
+      <span class="mlabel">${n}</span>
+    </div>`).join("")}</div>`;
+}
+
+function renderGame(animate){
+  const c = S.cur; if (!c) return;
+  const wk = Math.min(S.week,52), month = MONTHS[Math.min(11, Math.floor((wk-1)/4.34))];
+  app.innerHTML = `
+    ${meterHTML()}
+    <div class="when"><span>Week <b>${wk}</b> of 52</span><span><b>${month}</b> · Lagos</span></div>
+    <div class="stage" id="stage">
+      <article class="card${animate?" enter":""}" id="card" tabindex="0" aria-label="${esc(c.who)}: ${esc(c.text)}">
+        <div class="who"><div class="av" aria-hidden="true">${c.av}</div><div><div class="name">${esc(c.who)}</div><div class="role">${esc(c.role)}</div></div></div>
+        <p class="text">${esc(c.text)}</p>
+        <div class="hint">swipe or use ← →</div>
+        <div class="sticker l" id="stL">${esc(c.l[0])}</div>
+        <div class="sticker r" id="stR">${esc(c.r[0])}</div>
+      </article>
+    </div>
+    <div class="choices">
+      <button class="choice" id="btnL"><span class="arr">←</span><span>${esc(c.l[0])}</span></button>
+      <button class="choice r" id="btnR"><span>${esc(c.r[0])}</span><span class="arr">→</span></button>
+    </div>
+    <section class="file" aria-label="Japa file">
+      <h2><span>JAPA FILE</span><span>${has("visa")?"APPROVED":has("start")?"IN PROGRESS":"NOT STARTED"}</span></h2>
+      <div class="stamps">${[["passport","Passport"],["ielts","IELTS"],["funds","Funds"],["visa","Visa"]].map(([f,l])=>`<div class="stamp${has(f)?" done":""}">${l}</div>`).join("")}</div>
+    </section>`;
+  cardEl = document.getElementById("card");
+  document.getElementById("btnL").onclick = () => choose("l");
+  document.getElementById("btnR").onclick = () => choose("r");
+  ["btnL","btnR"].forEach((id,k)=>{
+    const b = document.getElementById(id), side = k ? "r" : "l";
+    b.onmouseenter = b.onfocus = () => preview(side);
+    b.onmouseleave = b.onblur = () => preview(null);
+  });
+  bindDrag();
+  busy = false;
+}
+
+function preview(side){
+  document.querySelectorAll(".meter").forEach((m,i)=>{
+    const d = m.querySelector(".dot");
+    const v = side && S.cur ? S.cur[side][1][i] : 0;
+    d.classList.toggle("on", !!v);
+    d.classList.toggle("big", Math.abs(v) >= 10);
+  });
+}
+
+function flash(before){
+  document.querySelectorAll(".meter").forEach((m,i)=>{
+    const diff = S.m[i]-before[i];
+    m.querySelector(".fill").style.height = S.m[i]+"%";
+    m.classList.toggle("warn", S.m[i]<=20||S.m[i]>=80);
+    if (diff) { m.classList.add(diff>0?"flash-up":"flash-down"); }
+  });
+}
+
+function fly(side, then){
+  busy = true; preview(null);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!cardEl || reduce) { setTimeout(then, reduce ? 250 : 0); return; }
+  const dir = side === "r" ? 1 : -1;
+  cardEl.style.transition = "transform .35s ease-in, opacity .35s";
+  cardEl.style.transform = `translateX(${dir*130}%) rotate(${dir*25}deg)`;
+  cardEl.style.opacity = "0";
+  setTimeout(then, 380);
+}
+
+function bindDrag(){
+  let x0 = null, dx = 0, id = null;
+  const stL = document.getElementById("stL"), stR = document.getElementById("stR");
+  const set = () => {
+    cardEl.style.transform = `translateX(${dx}px) rotate(${dx/18}deg)`;
+    stL.style.opacity = dx < -25 ? Math.min(1,(-dx-25)/50) : 0;
+    stR.style.opacity = dx > 25 ? Math.min(1,(dx-25)/50) : 0;
+    preview(dx < -25 ? "l" : dx > 25 ? "r" : null);
+  };
+  cardEl.addEventListener("pointerdown", e => {
+    if (busy) return;
+    x0 = e.clientX; dx = 0; id = e.pointerId; cardEl.setPointerCapture(id);
+    cardEl.style.transition = "none"; cardEl.classList.remove("enter");
+  });
+  cardEl.addEventListener("pointermove", e => { if (x0 === null) return; dx = e.clientX - x0; set(); });
+  const up = () => {
+    if (x0 === null) return;
+    x0 = null;
+    if (Math.abs(dx) > 90) return choose(dx > 0 ? "r" : "l");
+    cardEl.style.transition = "transform .25s cubic-bezier(.3,1.5,.5,1)"; dx = 0; set();
+  };
+  cardEl.addEventListener("pointerup", up);
+  cardEl.addEventListener("pointercancel", up);
+}
+
+function renderEnd(){
+  const [title, text] = E[S.over];
+  const weeks = Math.min(S.week-1,52);
+  const s = h("section","screen");
+  s.append(h("p","kicker", !/^(owo|peace|family|clout)[01]$/.test(S.over) ? `Ending · survived all 52 weeks` : `Game over · week ${weeks}`));
+  s.append(h("h1","end-title", esc(title)));
+  s.append(h("p","lede", esc(text)));
+  s.append(h("div","statline", STAT.map((n,i)=>`<div><b>${S.m[i]}</b>${n}</div>`).join("")));
+  const row = h("div","row");
+  const again = h("button","btn","Play another year"); again.id = "again";
+  again.onclick = () => { S = fresh(); S.screen = "game"; app.innerHTML = ""; next(); };
+  const share = h("button","btn ghost","Copy my result"); share.id = "share";
+  const toast = h("p","toast","");
+  share.onclick = () => {
+    const msg = `Japa or Stay: I got "${title}" after ${weeks} weeks in Lagos. ${meta.got.length}/${Object.keys(E).length} endings found. Can you do better?`;
+    const done = () => toast.textContent = "Copied. Paste it in the group chat.";
+    try { navigator.clipboard.writeText(msg).then(done, () => toast.textContent = msg); } catch(e) { toast.textContent = msg; }
+  };
+  row.append(again, share); s.append(row, toast);
+  s.append(h("p","collect",`Endings found: <strong>${meta.got.length} / ${Object.keys(E).length}</strong> · Longest run: <strong>${meta.best} weeks</strong>`));
+  s.append(h("div","endings", Object.entries(E).map(([k,[t]])=>`<span class="${meta.got.includes(k)?"got":""}">${meta.got.includes(k)?esc(t):"? ? ?"}</span>`).join("")));
+  app.append(s);
+}
+
+document.addEventListener("keydown", e => {
+  if (!S || S.screen !== "game") return;
+  if (e.key === "ArrowLeft") choose("l");
+  if (e.key === "ArrowRight") choose("r");
+});
+
+// ----- boot -----
+const start = data => {
+  S = data && data.S ? data.S : fresh();
+  if (S.screen === "game" && S.cur && S.cur.id !== "final" && C[S.cur.id]) S.cur = C[S.cur.id];
+  render();
+};
+window.claude?.hot?.snapshot?.(() => ({ S }));
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+})();
+</script>
+
+</body>
+</html>
