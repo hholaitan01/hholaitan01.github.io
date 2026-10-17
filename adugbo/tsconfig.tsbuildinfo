@@ -1,1 +1,0 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/assets/loader.ts","./src/game/PlayerPrefab.ts","./src/game/teams.ts","./src/game/anim/clips.ts","./src/game/anim/locomotion.ts","./src/render/LabScene.ts","./src/render/kit.ts","./src/ui/PlayerLab.tsx","./tests/locomotion.test.ts","./tests/manifest.test.ts"],"version":"5.9.3"}

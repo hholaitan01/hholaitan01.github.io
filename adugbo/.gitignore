@@ -5,3 +5,4 @@ raw-sources/
 *.fbx
 .DS_Store
 test-results/
+*.tsbuildinfo
