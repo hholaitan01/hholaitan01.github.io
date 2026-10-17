@@ -132,7 +132,8 @@ export class PracticeSim extends GameSim {
       this.resetAt = this.time + 1.6;
     }
     // ball dead: behind the goal, stopped far away or gone over the boards
-    if (this.resetAt < 0 && (b.x > L + this.pitch.goalDepth + 0.5 || Math.abs(b.z) > this.pitch.width / 2 + 2 || b.x < -L - 2)) this.resetAt = this.time + 1.0;
+    const behindLine = b.x > L + 0.3 && Math.abs(b.z) > this.pitch.goalWidth / 2 + 0.2;
+    if (this.resetAt < 0 && (behindLine || Math.abs(b.z) > this.pitch.width / 2 + 0.5 || b.x < -L - 0.5)) this.resetAt = this.time + 1.0;
   }
 
   /** Counts drill stats from the event stream; call once per frame after update(). */

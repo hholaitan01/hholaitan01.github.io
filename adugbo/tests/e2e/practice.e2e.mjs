@@ -14,6 +14,8 @@ const check = (name, ok, detail = "") => {
 };
 try {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+  // gameplay/input test: low graphics keeps software rendering fast enough (visuals are covered by venue.e2e.mjs)
+  await ctx.addInitScript(() => localStorage.setItem("adugbo.settings.v1", JSON.stringify({ quality: "low", timeOfDay: "day" })));
   const page = await ctx.newPage();
   collectErrors(page, errs, "practice");
   await page.goto("http://127.0.0.1:4173/");
@@ -62,7 +64,7 @@ try {
 
   // drill switch: target shooting shows a timer and lit target
   await page.getByRole("button", { name: "Target shooting" }).click();
-  await page.waitForTimeout(600);
+  await page.waitForFunction(() => /Target shooting/i.test(document.querySelector("[data-testid=practice-hud]")?.textContent ?? ""), null, { timeout: 40000 }).catch(() => {});
   const hud = await page.textContent("[data-testid=practice-hud]");
   check("target drill starts with a 60 s timer", /Target shooting/i.test(hud) && /(59|60)s/.test(hud), hud);
   await page.screenshot({ path: `${out}/practice-targets.png` });

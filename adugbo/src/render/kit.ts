@@ -31,7 +31,7 @@ function fitFont(g: CanvasRenderingContext2D, text: string, maxW: number, size: 
 }
 
 /** Front (left half) and back (right half) of the shirt: pattern, badge, name and number. */
-export function drawShirt(g: CanvasRenderingContext2D, kit: Kit, name: string, number: number) {
+export function drawShirt(g: CanvasRenderingContext2D, kit: Kit, name: string, number: number, plain = false) {
   const h = 256;
   for (const half of [0, 1]) {
     const x0 = half * 256;
@@ -77,6 +77,7 @@ export function drawShirt(g: CanvasRenderingContext2D, kit: Kit, name: string, n
     g.fillRect(x0, 0, 256, 12);
     g.restore();
   }
+  if (plain) return;
   const light = luminance(kit.shirt) > 0.45;
   g.textAlign = "center";
   g.textBaseline = "middle";
@@ -104,11 +105,11 @@ export function drawShirt(g: CanvasRenderingContext2D, kit: Kit, name: string, n
   g.fillText(kit.badge, 72, 73);
 }
 
-export function shirtTexture(kit: Kit, name: string, number: number): THREE.CanvasTexture {
+export function shirtTexture(kit: Kit, name: string, number: number, plain = false): THREE.CanvasTexture {
   const c = document.createElement("canvas");
   c.width = 512;
   c.height = 256;
-  drawShirt(c.getContext("2d")!, kit, name, number);
+  drawShirt(c.getContext("2d")!, kit, name, number, plain);
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
   t.anisotropy = 4;

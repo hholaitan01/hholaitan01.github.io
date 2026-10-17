@@ -60,6 +60,23 @@ Legal workflow for original variations:
 
 Any new face must be added to `manifest.json` with its author and licence.
 
+## Environment textures (stage 3)
+
+| File set | Source | Licence | Commercial | Attribution | Redistribution | Shipped size |
+|---|---|---|---|---|---|---|
+| `textures/concrete_*` | ambientCG Concrete034 | CC0 1.0 | Yes | Not required (credited) | Yes, raw files allowed in games | 1024² colour, 512² normal/roughness |
+| `textures/asphalt_*` | ambientCG Asphalt031 | CC0 1.0 | Yes | Not required | Yes | same |
+| `textures/plaster_*` | ambientCG PaintedPlaster017 | CC0 1.0 | Yes | Not required | Yes | same |
+| `textures/zinc_*` | ambientCG CorrugatedSteel005 | CC0 1.0 | Yes | Not required | Yes | same |
+| `textures/rustmetal_*` | ambientCG Metal063 | CC0 1.0 | Yes | Not required | Yes | same |
+
+ambientCG licence page (checked 2026-10-17): "All ambientCG assets are provided under the Creative Commons CC0 1.0
+Universal License … You can include the raw files in your project, for example a video game."
+
+Everything else in the venue is generated in code and original: buildings, barred windows, shop signs with invented
+names (no real businesses, brands or phone numbers), the generic yellow minibuses (no make or logo), umbrellas,
+chairs, poles, cables, floodlights, chain-link fence and the "ADUGBO" mural. The sky uses three.js's `Sky` shader (MIT).
+
 ## Other assets
 - Ball: generated in code (`makeBall` in `src/render/LabScene.ts`), original.
 - Team names, kits, badges: invented, generated in code (`src/game/teams.ts`, `src/render/kit.ts`).

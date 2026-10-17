@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { PracticeView, type PracticeHud } from "../render/PracticeView";
 import { DRILLS, type Drill } from "../game/sim/PracticeSim";
 import { KEY_HELP } from "../controls/keyboard";
+import { loadSettings, saveSettings, type Quality, type Settings, type TimeOfDay } from "../settings/settings";
 
 declare global {
   interface Window {
@@ -16,13 +17,17 @@ export function PracticeScreen({ onExit }: { onExit: () => void }) {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [drill, setDrill] = useState<Drill>("free");
+  const [settings, setSettings] = useState<Settings>(loadSettings);
+  const drillRef = useRef<Drill>("free");
 
   useEffect(() => {
-    const v = new PracticeView(host.current!);
+    // the renderer is rebuilt when graphics settings change (antialiasing can't be toggled live)
+    setHud(null);
+    const v = new PracticeView(host.current!, settings);
     view.current = v;
     window.__practice = v;
     let alive = true;
-    v.load("free", setProgress).catch((e: unknown) => alive && setError(String(e)));
+    v.load(drillRef.current, setProgress).catch((e: unknown) => alive && setError(String(e)));
     const id = setInterval(() => v.sim && setHud({ ...v.hud }), 100);
     return () => {
       alive = false;
@@ -30,10 +35,17 @@ export function PracticeScreen({ onExit }: { onExit: () => void }) {
       v.dispose();
       delete window.__practice;
     };
-  }, []);
+  }, [settings]);
+
+  const change = (s: Partial<Settings>) => {
+    const next = { ...settings, ...s };
+    saveSettings(next);
+    setSettings(next);
+  };
 
   const choose = (d: Drill) => {
     setDrill(d);
+    drillRef.current = d;
     view.current?.setDrill(d);
   };
 
@@ -69,6 +81,23 @@ export function PracticeScreen({ onExit }: { onExit: () => void }) {
             <button onClick={() => view.current?.setDrill(drill)}>Restart</button>
             <button onClick={() => view.current && (view.current.paused = !view.current.paused)}>{hud.paused ? "Resume" : "Pause"}</button>
             <button onClick={onExit}>Menu</button>
+          </div>
+          <div className="settings">
+            <label>
+              Graphics{" "}
+              <select aria-label="Graphics quality" value={settings.quality} onChange={(e) => change({ quality: e.target.value as Quality })}>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+            <label>
+              Time{" "}
+              <select aria-label="Time of day" value={settings.timeOfDay} onChange={(e) => change({ timeOfDay: e.target.value as TimeOfDay })}>
+                <option value="day">Day</option>
+                <option value="evening">Evening</option>
+              </select>
+            </label>
           </div>
           <details className="keys">
             <summary>Keyboard</summary>

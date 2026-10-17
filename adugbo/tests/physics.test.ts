@@ -125,3 +125,14 @@ describe("ball physics (Rapier)", () => {
     w.free();
   });
 });
+
+describe("cage fence", () => {
+  it("a ball skied over the side boards is kept in the cage", async () => {
+    await initPhysics();
+    const w = new PhysicsWorld(PRACTICE_PITCH);
+    w.setBall({ x: 0, y: 1, z: 9 }, { x: 0, y: 6, z: 14 });
+    for (let i = 0; i < 4 / SIM_DT; i++) w.step();
+    expect(Math.abs(w.ballPos.z)).toBeLessThan(PRACTICE_PITCH.width / 2 + 0.3);
+    w.free();
+  });
+});

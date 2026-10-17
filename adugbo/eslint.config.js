@@ -4,7 +4,7 @@ import hooks from "eslint-plugin-react-hooks";
 
 // Browser tests run in Node but evaluate callbacks in the page, so they see both sets of globals.
 const nodeAndBrowser = Object.fromEntries(
-  ["process", "console", "URL", "setTimeout", "clearTimeout", "window", "document", "performance", "Buffer"].map((g) => [g, "readonly"]),
+  ["process", "console", "URL", "setTimeout", "clearTimeout", "window", "document", "performance", "Buffer", "localStorage"].map((g) => [g, "readonly"]),
 );
 
 export default tseslint.config(

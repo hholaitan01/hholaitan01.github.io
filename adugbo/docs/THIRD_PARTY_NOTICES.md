@@ -34,6 +34,10 @@ The database was created with funding from NSF EIA-0196217.
 ## Quaternius — Universal Animation Library (CC0 1.0)
 No attribution required; credited with thanks. https://quaternius.com
 
+## ambientCG (CC0 1.0)
+Created using Concrete034, Asphalt031, PaintedPlaster017, CorrugatedSteel005 and Metal063 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License.
+
 ## Mixamo (Adobe)
 Some animations were created with Mixamo and are used under Adobe's terms. They are embedded in the game
 and are not offered as standalone files.

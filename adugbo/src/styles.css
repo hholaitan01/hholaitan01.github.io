@@ -81,3 +81,6 @@ select, input[type="text"], input[type="number"] {
 .overlay .big { font-size: 30px; margin: 0; }
 .overlay .btns { justify-content: center; }
 .fps { position: absolute; left: 10px; top: 10px; font-family: ui-monospace, monospace; font-size: 12px; color: var(--muted); }
+.settings { position: absolute; top: 10px; left: 70px; display: flex; gap: 8px; font-size: 14px; background: rgba(10,14,12,.8); padding: 4px 8px; border-radius: 8px; }
+.settings select { padding: 1px 4px; }
+@media (max-width: 900px) { .settings { top: auto; bottom: 56px; left: 12px; } .keys { display: none; } .scorebar { font-size: 16px; gap: 8px; } .scorebar .muted { display: none; } }

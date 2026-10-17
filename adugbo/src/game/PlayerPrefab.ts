@@ -24,6 +24,8 @@ export interface PlayerLook {
   hair: HairStyle;
   /** Skin multiplier for the default m300 head and body, 1 = texture as authored. */
   skinTone: number;
+  /** Casual top without name, number or badge (spectators). */
+  plain?: boolean;
 }
 
 export interface ClipInfo {
@@ -138,6 +140,8 @@ export class PlayerPrefab {
   loco: LocoState = "idle";
   locoClipName = "idle";
   action: ActionName | null = null;
+  /** Clip used instead of "idle" when standing (e.g. "sit", "talk" for spectators). */
+  idleClip: string | null = null;
   private actionTime = 0;
   private contactFired = false;
   private current: THREE.AnimationAction;
@@ -181,7 +185,7 @@ export class PlayerPrefab {
     const tone = look.head === "m300" ? look.skinTone : 1;
     const skin = new THREE.Color(t[0] * tone, t[1] * tone, t[2] * tone);
     this.shirtTex?.dispose();
-    this.shirtTex = shirtTexture(look.kit, look.name, look.number);
+    this.shirtTex = shirtTexture(look.kit, look.name, look.number, look.plain);
     for (const sm of this.meshes) {
       const part = sm.userData.part as string;
       if (sm === this.body) {
@@ -255,7 +259,8 @@ export class PlayerPrefab {
 
   update(dt: number, inp: LocoInput) {
     const next = selectLocomotion(this.loco, inp);
-    const { clip, rate } = locoClip(next, inp, STRIDE_SPEED);
+    const lc = locoClip(next, inp, STRIDE_SPEED);
+    const clip = next === "idle" && this.idleClip ? this.idleClip : lc.clip, rate = lc.rate;
     this.loco = next;
     if (!this.action) {
       if (clip !== this.locoClipName) this.crossTo(clip, rate, 0.25);

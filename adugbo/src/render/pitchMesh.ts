@@ -142,9 +142,12 @@ function boards(p: PitchSpec): THREE.Object3D {
   return g;
 }
 
-export function buildPitch(p: PitchSpec): THREE.Group {
+export function buildPitch(p: PitchSpec, opts: { ground?: boolean } = {}): THREE.Group {
   const g = new THREE.Group();
-  g.add(ground(p));
+  const gr = ground(p);
+  // without its own ground (venue supplies one) only the painted markings are kept
+  if (opts.ground === false) gr.remove(gr.children[0]);
+  g.add(gr);
   if (p.walls) g.add(boards(p));
   if (p.goals !== "none") for (const s of p.goals === "full" ? [1, -1] : [1]) g.add(goal(p, s));
   return g;

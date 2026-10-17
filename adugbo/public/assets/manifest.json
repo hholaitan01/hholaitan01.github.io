@@ -7,11 +7,152 @@
       "description": "Game footballer: one skinned body, 8 swappable heads, 38 retargeted animation clips. Built by the project's pipeline from the sources listed.",
       "format": "glTF 2.0 binary",
       "triangles": 31514,
-      "textures": "body 1024², head 1024², hair 512², 7 extra heads 512² (JPEG/PNG)",
+      "textures": "body 1024\u00b2, head 1024\u00b2, hair 512\u00b2, 7 extra heads 512\u00b2 (JPEG/PNG)",
       "rig": "Rocketbox/3ds Max Biped-style, 80 joints (pelvis, spine_01-03, thigh/calf/foot/ball, clavicle/upperarm/lowerarm/hand, fingers, facial)",
       "downloadBytes": 3725588,
-      "sources": ["rocketbox-sports-male-03", "rocketbox-heads", "mixamo-user-clips", "quaternius-ual", "cmu-mocap"],
+      "sources": [
+        "rocketbox-sports-male-03",
+        "rocketbox-heads",
+        "mixamo-user-clips",
+        "quaternius-ual",
+        "cmu-mocap"
+      ],
       "modifications": "Textures resized and the kit areas of the body texture desaturated so the shader can recolour them; a per-vertex kit-region id stored in COLOR_0.r; heads from other Rocketbox avatars rebound to this skeleton by joint name; animations retargeted to the Rocketbox rig, made in-place and trimmed."
+    },
+    "textures/concrete_color.jpg": {
+      "description": "concrete albedo 1024\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 55938,
+      "sources": [
+        "ambientcg-Concrete034"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/concrete_normal.jpg": {
+      "description": "concrete normal (OpenGL) 512\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 37837,
+      "sources": [
+        "ambientcg-Concrete034"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/concrete_rough.jpg": {
+      "description": "concrete roughness 512\u00b2 greyscale JPEG",
+      "format": "JPEG",
+      "downloadBytes": 15178,
+      "sources": [
+        "ambientcg-Concrete034"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/asphalt_color.jpg": {
+      "description": "asphalt albedo 1024\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 233000,
+      "sources": [
+        "ambientcg-Asphalt031"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/asphalt_normal.jpg": {
+      "description": "asphalt normal (OpenGL) 512\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 36461,
+      "sources": [
+        "ambientcg-Asphalt031"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/asphalt_rough.jpg": {
+      "description": "asphalt roughness 512\u00b2 greyscale JPEG",
+      "format": "JPEG",
+      "downloadBytes": 48741,
+      "sources": [
+        "ambientcg-Asphalt031"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/plaster_color.jpg": {
+      "description": "plaster albedo 1024\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 49504,
+      "sources": [
+        "ambientcg-PaintedPlaster017"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/plaster_normal.jpg": {
+      "description": "plaster normal (OpenGL) 512\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 78052,
+      "sources": [
+        "ambientcg-PaintedPlaster017"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/plaster_rough.jpg": {
+      "description": "plaster roughness 512\u00b2 greyscale JPEG",
+      "format": "JPEG",
+      "downloadBytes": 7772,
+      "sources": [
+        "ambientcg-PaintedPlaster017"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/zinc_color.jpg": {
+      "description": "zinc albedo 1024\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 91667,
+      "sources": [
+        "ambientcg-CorrugatedSteel005"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/zinc_normal.jpg": {
+      "description": "zinc normal (OpenGL) 512\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 25165,
+      "sources": [
+        "ambientcg-CorrugatedSteel005"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/zinc_rough.jpg": {
+      "description": "zinc roughness 512\u00b2 greyscale JPEG",
+      "format": "JPEG",
+      "downloadBytes": 35934,
+      "sources": [
+        "ambientcg-CorrugatedSteel005"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/rustmetal_color.jpg": {
+      "description": "rustmetal albedo 1024\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 111576,
+      "sources": [
+        "ambientcg-Metal063"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/rustmetal_normal.jpg": {
+      "description": "rustmetal normal (OpenGL) 512\u00b2 JPEG",
+      "format": "JPEG",
+      "downloadBytes": 1095,
+      "sources": [
+        "ambientcg-Metal063"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "textures/rustmetal_rough.jpg": {
+      "description": "rustmetal roughness 512\u00b2 greyscale JPEG",
+      "format": "JPEG",
+      "downloadBytes": 28768,
+      "sources": [
+        "ambientcg-Metal063"
+      ],
+      "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
     }
   },
   "sources": {
@@ -76,6 +217,76 @@
       "redistribution": "inside the product only",
       "originalFormat": "BVH",
       "status": "accepted"
+    },
+    "ambientcg-Concrete034": {
+      "name": "ambientCG Concrete034",
+      "url": "https://ambientcg.com/view?id=Concrete034",
+      "author": "ambientCG (Lennart Demes)",
+      "licence": "CC0 1.0",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "not required (credited)",
+      "redistribution": true,
+      "originalFormat": "1K JPG PBR set",
+      "status": "accepted",
+      "verifiedOn": "2026-10-17",
+      "note": "Licence page: 'You can include the raw files in your project, for example a video game.'"
+    },
+    "ambientcg-Asphalt031": {
+      "name": "ambientCG Asphalt031",
+      "url": "https://ambientcg.com/view?id=Asphalt031",
+      "author": "ambientCG (Lennart Demes)",
+      "licence": "CC0 1.0",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "not required (credited)",
+      "redistribution": true,
+      "originalFormat": "1K JPG PBR set",
+      "status": "accepted",
+      "verifiedOn": "2026-10-17",
+      "note": "Licence page: 'You can include the raw files in your project, for example a video game.'"
+    },
+    "ambientcg-PaintedPlaster017": {
+      "name": "ambientCG PaintedPlaster017",
+      "url": "https://ambientcg.com/view?id=PaintedPlaster017",
+      "author": "ambientCG (Lennart Demes)",
+      "licence": "CC0 1.0",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "not required (credited)",
+      "redistribution": true,
+      "originalFormat": "1K JPG PBR set",
+      "status": "accepted",
+      "verifiedOn": "2026-10-17",
+      "note": "Licence page: 'You can include the raw files in your project, for example a video game.'"
+    },
+    "ambientcg-CorrugatedSteel005": {
+      "name": "ambientCG CorrugatedSteel005",
+      "url": "https://ambientcg.com/view?id=CorrugatedSteel005",
+      "author": "ambientCG (Lennart Demes)",
+      "licence": "CC0 1.0",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "not required (credited)",
+      "redistribution": true,
+      "originalFormat": "1K JPG PBR set",
+      "status": "accepted",
+      "verifiedOn": "2026-10-17",
+      "note": "Licence page: 'You can include the raw files in your project, for example a video game.'"
+    },
+    "ambientcg-Metal063": {
+      "name": "ambientCG Metal063",
+      "url": "https://ambientcg.com/view?id=Metal063",
+      "author": "ambientCG (Lennart Demes)",
+      "licence": "CC0 1.0",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "not required (credited)",
+      "redistribution": true,
+      "originalFormat": "1K JPG PBR set",
+      "status": "accepted",
+      "verifiedOn": "2026-10-17",
+      "note": "Licence page: 'You can include the raw files in your project, for example a video game.'"
     }
   },
   "rejected": {

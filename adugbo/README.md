@@ -1,8 +1,7 @@
 # ADUGBO: Street Kings
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
-Work is delivered in stages. **Current stage: 2 — core gameplay and practice mode.** Venue art, match modes, AI opponents and
-polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
+Work is delivered in stages. **Current stage: 3 — venue.** Match modes, AI opponents and polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
 
 ## Commands
 
@@ -40,6 +39,18 @@ works around it and does not change versions.
   error, air kicks when the ball has gone before the contact frame. Kicks fire on the animation's contact frame.
 - Practice (`#/practice`): free play, target shooting (60 s), passing circuit with two partners who receive and
   return passes (60 s); pause, restart, drill switch, menu.
+
+## Stage 3: what works
+- "Adugbo court" (`src/render/venue/`): fenced concrete cage pitch in a Lagos-inspired street — plastered 1–3 storey
+  blocks with barred windows and zinc roofs, ground-floor shops with invented painted signs, yellow minibuses,
+  market umbrellas, plastic chairs, power poles and cables, street lamps, floodlight masts, an original mural, and
+  animated spectators (sitting, chatting, cheering on goals).
+- Day and evening lighting (evening: low sun, floodlights, sodium street lamps, lit windows and signs).
+- The chain-link fence is a physics collider, so balls skied over the boards stay in the cage.
+- Graphics quality low / medium / high (pixel ratio, antialiasing, shadows, normal maps, environment lighting,
+  spectator and prop counts; blob shadows on low). Saved in localStorage; switchable in practice.
+- Browser test renders day and evening at each quality on desktop and phone-landscape viewports and checks that the
+  player and ball stand out from the ground (luminance contrast or CIE ΔE) and that the goal stays in shot.
 
 ## Docs
 - `docs/ASSET_MANIFEST.md` — sources, licences, decisions, face limitation and workflow

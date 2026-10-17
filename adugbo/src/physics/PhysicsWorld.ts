@@ -67,6 +67,14 @@ export class PhysicsWorld {
           this.fixed(RAPIER.ColliderDesc.cuboid(t, h, seg).setTranslation(s * (L + t), h, zs * (p.goalWidth / 2 + seg)), "wall", 0.82);
       }
     }
+    if (p.fenceHeight > p.wallHeight) {
+      // chain-link: above the side boards, and floor-to-top behind the goals (goals sit in an alcove)
+      const fh = (p.fenceHeight - p.wallHeight) / 2, t = 0.05, wt = 0.25, back = L + p.goalDepth + 0.15;
+      for (const zs of [1, -1])
+        this.fixed(RAPIER.ColliderDesc.cuboid(back, fh, t).setTranslation(0, p.wallHeight + fh, zs * (W + wt)), "wall", 0.35);
+      for (const xs of [1, -1])
+        this.fixed(RAPIER.ColliderDesc.cuboid(t, p.fenceHeight / 2, W + wt).setTranslation(xs * back, p.fenceHeight / 2, 0), "wall", 0.35);
+    }
     if (p.goals === "none") return;
     for (const s of p.goals === "full" ? [1, -1] : [1]) this.buildGoal(s);
   }
