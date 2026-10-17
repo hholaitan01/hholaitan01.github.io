@@ -1,0 +1,87 @@
+{
+  "$comment": "Source and licence record for every external asset shipped in public/assets. tests/manifest.test.ts fails if a shipped file is missing here.",
+  "project": "ADUGBO: Street Kings",
+  "verifiedOn": "2026-10-17",
+  "files": {
+    "characters/footballer.glb": {
+      "description": "Game footballer: one skinned body, 8 swappable heads, 38 retargeted animation clips. Built by the project's pipeline from the sources listed.",
+      "format": "glTF 2.0 binary",
+      "triangles": 31514,
+      "textures": "body 1024², head 1024², hair 512², 7 extra heads 512² (JPEG/PNG)",
+      "rig": "Rocketbox/3ds Max Biped-style, 80 joints (pelvis, spine_01-03, thigh/calf/foot/ball, clavicle/upperarm/lowerarm/hand, fingers, facial)",
+      "downloadBytes": 3725588,
+      "sources": ["rocketbox-sports-male-03", "rocketbox-heads", "mixamo-user-clips", "quaternius-ual", "cmu-mocap"],
+      "modifications": "Textures resized and the kit areas of the body texture desaturated so the shader can recolour them; a per-vertex kit-region id stored in COLOR_0.r; heads from other Rocketbox avatars rebound to this skeleton by joint name; animations retargeted to the Rocketbox rig, made in-place and trimmed."
+    }
+  },
+  "sources": {
+    "rocketbox-sports-male-03": {
+      "name": "Microsoft Rocketbox Avatar Library: Sports_Male_03",
+      "url": "https://github.com/microsoft/Microsoft-Rocketbox",
+      "author": "Microsoft Corporation (Rocketbox Studios)",
+      "licence": "MIT",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "MIT notice must be kept with copies (see docs/THIRD_PARTY_NOTICES.md)",
+      "redistribution": true,
+      "originalFormat": "FBX (hipoly LOD)",
+      "status": "accepted"
+    },
+    "rocketbox-heads": {
+      "name": "Microsoft Rocketbox heads: Male_Adult_04, Male_Adult_12, Construction_Male_03, Construction_Male_08, Fire_Male_06, Military_Male_04, Business_Male_05",
+      "url": "https://github.com/microsoft/Microsoft-Rocketbox",
+      "author": "Microsoft Corporation (Rocketbox Studios)",
+      "licence": "MIT",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "MIT notice",
+      "redistribution": true,
+      "originalFormat": "FBX",
+      "status": "accepted",
+      "note": "Generic stock avatars. They are NOT Nigerian-specific likenesses and carry no custom facial features."
+    },
+    "mixamo-user-clips": {
+      "name": "Mixamo animations downloaded by the project owner: Soccer dribble, pass, strike, kick, header (x2), throw-in, jog (8 directions), goalkeeper side-step / diving save / body block / scoop / pass / placing ball, soccer trip, soccer tackle (x2)",
+      "url": "https://www.mixamo.com",
+      "author": "Adobe",
+      "licence": "Adobe General Terms + Mixamo FAQ: royalty-free use in personal, commercial and non-profit projects including games; raw character/animation files may not be redistributed as standalone files; no credit required; not for AI/ML training",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "not required",
+      "redistribution": "Only embedded in the game. Raw FBX files are kept out of the repository (.gitignore *.fbx, raw-sources/).",
+      "originalFormat": "FBX (without skin)",
+      "status": "accepted with condition",
+      "note": "The official Mixamo FAQ page returned HTTP 403 to this environment; the terms were confirmed from Adobe community answers quoting the FAQ. Re-check https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html before release."
+    },
+    "quaternius-ual": {
+      "name": "Universal Animation Library (Idle, Walk, Sprint, Jump, Dance, Hit, Talk, Sit, Crouch)",
+      "url": "https://quaternius.itch.io/universal-animation-library",
+      "author": "Quaternius",
+      "licence": "CC0 1.0",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "not required (credited anyway)",
+      "redistribution": true,
+      "originalFormat": "glTF",
+      "status": "accepted"
+    },
+    "cmu-mocap": {
+      "name": "CMU Graphics Lab Motion Capture Database, subjects 10, 49, 79 (kick, hop, cheer), BVH conversion by Bruce Hahne",
+      "url": "http://mocap.cs.cmu.edu",
+      "author": "Carnegie Mellon University Graphics Lab",
+      "licence": "Free to use, including inclusion in commercial products; the raw data may not be resold; citation requested",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "requested: 'The data used in this project was obtained from mocap.cs.cmu.edu. The database was created with funding from NSF EIA-0196217.'",
+      "redistribution": "inside the product only",
+      "originalFormat": "BVH",
+      "status": "accepted"
+    }
+  },
+  "rejected": {
+    "Mixamo raw FBX in the repository": "Mixamo terms forbid redistributing raw files.",
+    "Models or kits extracted from EA FC / FIFA / eFootball / PES": "Copyrighted commercial game content.",
+    "Sketchfab 'football player' models with CC-BY-NC or no licence stated": "Non-commercial or unclear licence.",
+    "Real club kits, crests and sponsor logos": "Trademark and copyright; all teams and kits in the game are fictional and generated."
+  }
+}
