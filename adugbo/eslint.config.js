@@ -11,6 +11,13 @@ export default tseslint.config(
   { ignores: ["dist", "node_modules", "public", "test-results", "tools/pipeline"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
-  { plugins: { "react-hooks": hooks }, rules: { "react-hooks/rules-of-hooks": "error", "react-hooks/exhaustive-deps": "warn" } },
+  {
+    plugins: { "react-hooks": hooks },
+    rules: {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    },
+  },
   { files: ["tests/e2e/**/*.mjs", "tools/**/*.mjs"], languageOptions: { globals: nodeAndBrowser } },
 );

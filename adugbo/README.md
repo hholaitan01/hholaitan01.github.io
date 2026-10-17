@@ -1,8 +1,8 @@
 # ADUGBO: Street Kings
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
-Work is delivered in stages. **Current stage: 1 — character pipeline, player prefab and test scene.**
-Later stages (gameplay, venue, modes, AI, polish) are not in the build yet.
+Work is delivered in stages. **Current stage: 2 — core gameplay and practice mode.** Venue art, match modes, AI opponents and
+polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
 
 ## Commands
 
@@ -29,6 +29,17 @@ works around it and does not change versions.
   animation state machine (idle / walk / jog / sprint / dribble / turn) with one-shot actions (pass, shoot, kick,
   header, cheer) and a `contact` event on the ball-strike frame.
 - Player test scene (the page that opens now): every control drives the real prefab.
+
+## Stage 2: what works
+- Rapier ball physics (`src/physics/PhysicsWorld.ts`): 0.43 kg ball, bounce (e≈0.68), rolling resistance per surface,
+  quadratic air drag, Magnus curl from spin, posts / crossbar / net / boards as colliders, kinematic player bodies
+  that block aerial balls, whole-ball-over-the-line goal check.
+- Gameplay core (`src/game/sim/GameSim.ts`, rendering-free): acceleration and turn-rate-limited movement, close-control
+  dribbling with real touches, first touch that depends on ball speed and control rating (clean / heavy / ricochet),
+  interceptions, ground passes solved to arrive at a set pace, lofted passes, headers, shots with power-vs-accuracy
+  error, air kicks when the ball has gone before the contact frame. Kicks fire on the animation's contact frame.
+- Practice (`#/practice`): free play, target shooting (60 s), passing circuit with two partners who receive and
+  return passes (60 s); pause, restart, drill switch, menu.
 
 ## Docs
 - `docs/ASSET_MANIFEST.md` — sources, licences, decisions, face limitation and workflow

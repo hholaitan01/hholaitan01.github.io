@@ -171,7 +171,7 @@ export class LabScene {
 
   private loop = () => {
     this.raf = requestAnimationFrame(this.loop);
-    const dt = Math.min(this.clock.getDelta(), 1 / 20);
+    const real = this.clock.getDelta(), dt = Math.min(real, 1 / 20);
     if (this.player) {
       this.player.update(dt, { speed: this.speed, yawRate: this.yawRate, dribbling: this.dribbling });
       // treadmill: the floor moves under the in-place player at the commanded speed (texture repeat = 2 m)
@@ -193,7 +193,7 @@ export class LabScene {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
     this.frames++;
-    this.fpsT += dt;
+    this.fpsT += real;
     if (this.fpsT > 0.5) {
       this.stats.fps = Math.round(this.frames / this.fpsT);
       this.frames = 0;

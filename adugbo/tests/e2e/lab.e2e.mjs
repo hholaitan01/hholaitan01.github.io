@@ -17,7 +17,7 @@ try {
     const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: !!vp.mobile, hasTouch: !!vp.mobile, deviceScaleFactor: vp.mobile ? 2 : 1 });
     const page = await ctx.newPage();
     collectErrors(page, errs, vp.name);
-    await page.goto("http://127.0.0.1:4173/");
+    await page.goto("http://127.0.0.1:4173/#/lab");
     await page.waitForSelector("[data-testid=hud]", { timeout: 90000 });
     const lab = (expr) => page.evaluate(expr);
     const st = () => lab(() => ({ ...window.__adugbo.lab.stats }));
