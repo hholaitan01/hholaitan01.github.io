@@ -504,7 +504,8 @@ export class MatchSim extends GameSim {
     const lockedTaker = (this.phase === "kickoff" || this.phase === "restart") && restartTaker === u;
     u.intent = { move: lockedTaker ? v2() : inp.move, sprint: inp.sprint };
     const aim = len(inp.move) > 0.1 ? inp.move : fwd(u.yaw);
-    const hasBall = this.owner === u || this.canPlay(u) !== null;
+    // a ball an opponent is carrying is his, even when it is within reach: the buttons defend (tackle, slide)
+    const hasBall = this.owner === u || (!this.owner && this.canPlay(u) !== null);
     if (this.holder === u) {
       if (inp.pass !== undefined || inp.lob !== undefined || inp.through !== undefined) {
         const recv = this.pickReceiver(u, aim);

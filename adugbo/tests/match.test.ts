@@ -105,6 +105,26 @@ describe("CPU vs CPU matches", () => {
   }, 120000);
 });
 
+describe("user controls", () => {
+  it("shoot next to an opponent carrying the ball tackles instead of shooting", () => {
+    const sim = new MatchSim(defaultConfig("fives"), undefined, 2);
+    sim.phase = "play";
+    sim.restart = null;
+    const team = sim.cfg.userTeam, u = sim.controlled!, o = sim.squads[1 - team].find((p) => p.role === "field")!;
+    o.pos = { x: 0, z: 0 };
+    o.yaw = 0;
+    u.pos = { x: 0, z: 1.0 };
+    u.yaw = Math.PI;
+    sim.physics.setBall({ x: 0, y: 0.11, z: 0.4 });
+    (sim as unknown as { setOwner(p: unknown): void }).setOwner(o);
+    sim.applyUser({ move: { x: 0, z: 0 }, sprint: false, shoot: 0.2 });
+    const ev = run(sim, 0.5);
+    expect(ev.some((e) => e.type === "tackle" && e.player === u.id)).toBe(true);
+    expect(ev.some((e) => e.type === "kick" && e.player === u.id)).toBe(false);
+    sim.dispose();
+  });
+});
+
 describe("restarts and kick-off control", () => {
   it("the user is given the kick-off taker when their side kicks off first", () => {
     let checked = 0;
