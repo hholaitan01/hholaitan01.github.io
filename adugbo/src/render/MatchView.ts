@@ -4,6 +4,7 @@ import type { MatchConfig } from "../game/match/rules";
 import { kitsFor, lookFor } from "../game/match/lineup";
 import { len, type V2 } from "../game/sim/SimPlayer";
 import { GameView } from "./GameView";
+import type { SimEvent } from "../game/sim/GameSim";
 
 export interface MatchHud {
   home: string;
@@ -30,21 +31,25 @@ export class MatchView extends GameView<MatchSim> {
   hud!: MatchHud;
   cfg!: MatchConfig;
 
-  async load(cfg: MatchConfig, onProgress?: (f: number) => void, seed = Date.now() % 100000) {
+  /** Online matches can't be paused (the other player keeps playing). */
+  protected canPause = true;
+
+  async load(cfg: MatchConfig, onProgress?: (f: number) => void, seed = Date.now() % 100000, humans?: [boolean, boolean]) {
     this.cfg = cfg;
     const contacts = await this.loadCommon(onProgress);
-    this.sim = new MatchSim(cfg, contacts, seed);
+    this.sim = new MatchSim(cfg, contacts, seed, { humans });
     const kits = kitsFor(this.sim.teams[0], this.sim.teams[1]);
     this.start(this.sim.pitch, (p) => lookFor(kits[p.team], this.sim.squads[p.team].indexOf(p), p.role === "gk", kits[1 - p.team], p.team * 5 + 3));
     this.refreshHud();
   }
 
-  protected step(dt: number) {
+  /** This frame's input from the keyboard and touch pad (also drives the power bar and the pause/mute keys). */
+  protected readInput(): UserInput {
     const sim = this.sim, k = this.keys;
     const inp: UserInput = { move: this.stickToWorld(k.stick()), sprint: k.held("sprint") };
     for (const b of k.takeTaps()) {
       if (b === "mute") this.toggleMute();
-      if (b === "pause" && sim.phase !== "fulltime") this.paused = !this.paused;
+      if (b === "pause" && sim.phase !== "fulltime" && this.canPause) this.paused = !this.paused;
       if (b === "switch") inp.switchPlayer = true;
     }
     for (const r of k.takeReleases()) {
@@ -62,21 +67,36 @@ export class MatchView extends GameView<MatchSim> {
     const sp = k.holdTime("shoot"), pp = k.holdTime("pass");
     this.hud.power = Math.min(1, Math.max(sp, pp) / 0.8);
     this.hud.powerFor = sp > 0 ? "shoot" : pp > 0 ? "pass" : null;
+    return inp;
+  }
+
+  protected step(dt: number) {
+    const inp = this.readInput();
     if (this.paused || dt === 0) return;
-    sim.applyUser(inp);
+    this.sim.applyUser(inp);
+    this.advance(dt);
+  }
+
+  /** Runs the simulation and plays its sounds and animations. */
+  protected advance(dt: number) {
+    const sim = this.sim;
     const before = sim.phase;
     sim.update(dt);
-    // referee whistle on phase changes
-    if (before !== sim.phase) {
-      if (sim.phase === "play" && (before === "kickoff" || before === "restart")) this.audio.whistle(1);
+    this.eventLog = sim.consume();
+    this.playEvents(this.eventLog, before);
+  }
+
+  protected playEvents(ev: SimEvent[], phaseBefore: string) {
+    const sim = this.sim;
+    if (phaseBefore !== sim.phase) {
+      if (sim.phase === "play" && (phaseBefore === "kickoff" || phaseBefore === "restart")) this.audio.whistle(1);
       if (sim.phase === "goal") this.audio.whistle(1);
       if (sim.phase === "halftime") this.audio.whistle(2, true);
       if (sim.phase === "fulltime") this.audio.whistle(3, true);
     }
-    this.eventLog = sim.consume();
-    this.onEvents(this.eventLog);
+    this.onEvents(ev);
     // the scoring side celebrates
-    if (this.eventLog.some((e) => e.type === "goal")) for (const p of sim.squads[sim.lastGoalBy]) if (p.role === "field") this.prefabs.get(p.id)?.play("cheer", true);
+    if (ev.some((e) => e.type === "goal")) for (const p of sim.squads[sim.lastGoalBy]) if (p.role === "field") this.prefabs.get(p.id)?.play("cheer", true);
   }
 
   protected focusPlayer() {

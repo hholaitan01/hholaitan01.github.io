@@ -1,36 +1,11 @@
 import * as THREE from "three";
+import { makeBall } from "./ballMesh";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { loadGLB } from "../assets/loader";
 import { FootballerAsset, PlayerPrefab, type PlayerLook } from "../game/PlayerPrefab";
 import type { ActionName } from "../game/anim/locomotion";
 
 /** Procedural ball (original artwork): white sphere with dark panels drawn on a canvas texture. */
-export function makeBall(): THREE.Mesh {
-  const c = document.createElement("canvas");
-  c.width = 512;
-  c.height = 256;
-  const g = c.getContext("2d")!;
-  g.fillStyle = "#f4f4f0";
-  g.fillRect(0, 0, 512, 256);
-  g.fillStyle = "#1c1c1c";
-  for (let row = 0; row < 5; row++)
-    for (let col = 0; col < 8; col++) {
-      const x = col * 64 + (row % 2) * 32, y = 24 + row * 52;
-      g.beginPath();
-      for (let i = 0; i < 5; i++) {
-        const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
-        g.lineTo(x + Math.cos(a) * 13, y + Math.sin(a) * 13 * (row === 0 || row === 4 ? 0.6 : 1));
-      }
-      g.fill();
-    }
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-  // a faint self-light keeps the ball readable against the sun-bleached court, even in shadow
-  const m = new THREE.Mesh(new THREE.SphereGeometry(0.11, 32, 20), new THREE.MeshStandardMaterial({ map: t, roughness: 0.45, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: 0.18 }));
-  m.castShadow = true;
-  return m;
-}
-
 export interface LabStats {
   state: string;
   clip: string;

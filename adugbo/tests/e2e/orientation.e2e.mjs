@@ -26,7 +26,8 @@ try {
   await page.setViewportSize({ width: 844, height: 390 });
   await page.waitForTimeout(300);
   check("phone in landscape: no overlay", !(await gate(page)));
-  await page.getByRole("button", { name: "Practice" }).click();
+  await page.getByRole("button", { name: /^Training/ }).click();
+  await page.getByRole("button", { name: /Practice court/ }).click();
   await page.waitForSelector("[data-testid=practice-hud]", { timeout: 120000 });
   check("practice runs in landscape", (await page.evaluate(() => window.__practice.paused)) === false);
   // turning upright mid-game pauses it and shows the overlay

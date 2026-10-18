@@ -72,7 +72,10 @@ export class MatchSim extends GameSim {
   score: [number, number] = [0, 0];
   stats: [TeamStats, TeamStats] = [emptyStats(), emptyStats()];
   phaseTime = 0;
-  controlled: SimPlayer | null = null;
+  /** Player each side's human controls (null for a CPU side). Online, both sides can be human. */
+  readonly ctrl: [SimPlayer | null, SimPlayer | null] = [null, null];
+  /** Which sides a person plays. */
+  readonly humans: [boolean, boolean];
   firstKickoff: number;
   /** +1 if team attacks +x. Teams keep their ends for the whole match. */
   readonly dir: [number, number] = [1, -1];
@@ -85,7 +88,7 @@ export class MatchSim extends GameSim {
     cfg: MatchConfig,
     contacts: ContactTimes = DEFAULT_CONTACTS,
     seed = 11,
-    opts: { userControlled?: boolean; teamDifficulty?: [Difficulty, Difficulty] } = {},
+    opts: { userControlled?: boolean; teamDifficulty?: [Difficulty, Difficulty]; humans?: [boolean, boolean] } = {},
   ) {
     super(pitchFor(cfg), contacts, seed);
     this.cfg = cfg;
@@ -120,8 +123,10 @@ export class MatchSim extends GameSim {
     }
     this.ai = [new TeamAI(this, 0), new TeamAI(this, 1)];
     this.firstKickoff = this.rand() < 0.5 ? 0 : 1;
-    // control must exist before the kick-off so the user is handed the taker when it is his side's kick-off
-    if (opts.userControlled !== false) this.setControlled(this.squads[cfg.userTeam].find((p) => p.role === "field") ?? null);
+    // control must exist before the kick-off so a human side is handed the taker when it is their kick-off
+    const user = opts.userControlled !== false;
+    this.humans = opts.humans ?? [user && cfg.userTeam === 0, user && cfg.userTeam === 1];
+    for (const t of [0, 1] as const) if (this.humans[t]) this.setControlled(this.squads[t].find((p) => p.role === "field") ?? null, t);
     this.startKickoff(this.firstKickoff);
   }
 
@@ -158,9 +163,16 @@ export class MatchSim extends GameSim {
     return { x: Math.max(-this.L + 1.5, Math.min(this.L - 1.5, x)), z: Math.max(-this.W + 1.2, Math.min(this.W - 1.2, z)) };
   }
 
-  setControlled(p: SimPlayer | null) {
-    if (this.controlled) this.controlled.controlled = false;
-    this.controlled = p;
+  /** The local user's player (the user's side). */
+  get controlled(): SimPlayer | null {
+    return this.ctrl[this.cfg.userTeam];
+  }
+
+  /** Hands control of `p` to its side's human (`team` is needed only to clear a side). */
+  setControlled(p: SimPlayer | null, team: number = p?.team ?? this.cfg.userTeam) {
+    const cur = this.ctrl[team];
+    if (cur) cur.controlled = false;
+    this.ctrl[team as 0 | 1] = p;
     if (p) {
       p.controlled = true;
       p.face = null;
@@ -216,8 +228,8 @@ export class MatchSim extends GameSim {
     this.phase = "kickoff";
     this.phaseTime = 0;
     this.restart = { type: "kickoff", team, spot: v2(), taker };
-    if (team === this.cfg.userTeam && this.controlled) this.setControlled(taker);
-    this.message = `Kick-off: ${this.teams[team].name}` + (team === this.cfg.userTeam && this.controlled ? " — pass to start" : "");
+    if (this.ctrl[team]) this.setControlled(taker);
+    this.message = `Kick-off: ${this.teams[team].name}` + (this.ctrl[team] ? " — pass to start" : "");
   }
 
   private startRestart(type: RestartType, team: number, spot: V2) {
@@ -237,11 +249,11 @@ export class MatchSim extends GameSim {
     this.restart = { type, team, spot, taker };
     this.phase = "restart";
     this.phaseTime = 0;
-    if (team === this.cfg.userTeam && this.controlled) this.setControlled(taker);
+    if (this.ctrl[team]) this.setControlled(taker);
     this.message =
       { kickoff: "Kick-off", kickin: "Kick-in", corner: "Corner", goalkick: "Goal kick" }[type] +
       `: ${this.teams[team].name}` +
-      (team === this.cfg.userTeam && this.controlled === taker ? " — pass or shoot to take it" : "");
+      (this.ctrl[team] === taker ? " — pass or shoot to take it" : "");
   }
 
   /** Opponents must keep 4 m from a dead ball (and stay out of the centre circle / their half at kick-off). */
@@ -492,13 +504,15 @@ export class MatchSim extends GameSim {
 
   // ---- user control ------------------------------------------------------------------------------------------
 
-  applyUser(inp: UserInput) {
+  /** Applies one side's human input (the local user's side unless `team` is given: online, the guest's side too). */
+  applyUser(inp: UserInput, team: number = this.cfg.userTeam) {
     if (this.phase === "fulltime" || this.phase === "halftime" || this.phase === "goal") return;
-    const team = this.cfg.userTeam;
+    if (!this.humans[team]) return;
     // auto-switch: the carrier, or the intended receiver of our pass
-    if (this.owner && this.owner.team === team && this.owner !== this.controlled) this.setControlled(this.owner);
-    else if (this.passTarget && this.passTarget.team === team && this.passTarget !== this.controlled && this.lastTouch?.team === team) this.setControlled(this.passTarget);
-    const u = this.controlled;
+    const cur = this.ctrl[team];
+    if (this.owner && this.owner.team === team && this.owner !== cur) this.setControlled(this.owner);
+    else if (this.passTarget && this.passTarget.team === team && this.passTarget !== cur && this.lastTouch?.team === team) this.setControlled(this.passTarget);
+    const u = this.ctrl[team];
     if (!u) return;
     const restartTaker = this.restart?.taker;
     const lockedTaker = (this.phase === "kickoff" || this.phase === "restart") && restartTaker === u;
