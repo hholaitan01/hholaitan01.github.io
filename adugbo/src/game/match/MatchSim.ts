@@ -117,8 +117,9 @@ export class MatchSim extends GameSim {
     }
     this.ai = [new TeamAI(this, 0), new TeamAI(this, 1)];
     this.firstKickoff = this.rand() < 0.5 ? 0 : 1;
-    this.startKickoff(this.firstKickoff);
+    // control must exist before the kick-off so the user is handed the taker when it is his side's kick-off
     if (opts.userControlled !== false) this.setControlled(this.squads[cfg.userTeam].find((p) => p.role === "field") ?? null);
+    this.startKickoff(this.firstKickoff);
   }
 
   get userTeam() {
@@ -220,6 +221,8 @@ export class MatchSim extends GameSim {
     this.holder = null;
     this.setOwner(null);
     this.passTarget = null;
+    // a kick or tackle still winding up when the ball went out must not hit the restart ball
+    for (const p of this.players) p.pending = null;
     this.physics.setBall({ x: spot.x, y: BALL_R, z: spot.z });
     const k = this.keepers[team];
     const taker = type === "goalkick" && k ? k : this.squads[team].filter((p) => p.role === "field").sort((a, b) => len(sub(a.pos, spot)) - len(sub(b.pos, spot)))[0];

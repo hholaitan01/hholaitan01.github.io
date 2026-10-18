@@ -7,6 +7,16 @@ import { SIM_DT } from "../src/physics/constants";
 
 beforeAll(() => initPhysics());
 
+/** Steps the sim for `seconds`, returning the events produced. */
+function run(sim: MatchSim, seconds: number): SimEvent[] {
+  const out: SimEvent[] = [];
+  for (let i = 0; i < Math.round(seconds / SIM_DT); i++) {
+    sim.fixedStep(SIM_DT);
+    out.push(...sim.consume());
+  }
+  return out;
+}
+
 /** Plays a CPU-vs-CPU match to the end (or a time cap), recording events and the longest stall. */
 function playOut(mode: ModeId, seed: number, halfMinutes = 2, difficulty: "easy" | "normal" | "hard" = "normal") {
   const cfg = { ...defaultConfig(mode), halfMinutes, difficulty };
@@ -93,4 +103,43 @@ describe("CPU vs CPU matches", () => {
     expect(sim.phase).toBe("fulltime");
     sim.dispose();
   }, 120000);
+});
+
+describe("restarts and kick-off control", () => {
+  it("the user is given the kick-off taker when his side kicks off first", () => {
+    let checked = 0;
+    for (let seed = 1; seed <= 12; seed++) {
+      const sim = new MatchSim(defaultConfig("fives"), undefined, seed);
+      if (sim.restart?.team === sim.cfg.userTeam) {
+        expect(sim.controlled).toBe(sim.restart.taker);
+        expect(sim.message).toMatch(/pass to start/);
+        checked++;
+      }
+      sim.dispose();
+    }
+    expect(checked).toBeGreaterThan(0);
+  });
+
+  it("a kick winding up when the ball goes out does not strike the restart ball", () => {
+    const sim = new MatchSim({ ...defaultConfig("sevens"), halfMinutes: 2 }, undefined, 3, { userControlled: false });
+    sim.phase = "play";
+    sim.restart = null;
+    // p's side gets the kick-in (the opponents touched it last), but a team-mate is nearer the spot and takes it
+    const p = sim.squads[0][1], taker = sim.squads[0][2];
+    taker.pos = { x: 0.3, z: sim.W - 0.2 };
+    p.pos = { x: 0, z: sim.W - 0.6 };
+    p.yaw = 0;
+    sim.physics.setBall({ x: 0, y: 0.11, z: sim.W - 0.2 });
+    run(sim, 0.05);
+    expect(sim.shoot(p, 1, 0, 0.5)).toBe(true);
+    // the ball is knocked loose over the touchline before the shot's contact frame
+    (sim as unknown as { setOwner(p: null): void }).setOwner(null);
+    sim.lastTouch = sim.squads[1][1];
+    sim.physics.setBall({ x: 0, y: 0.11, z: sim.W + 0.5 });
+    const ev = run(sim, 1);
+    expect(sim.phase).toBe("restart");
+    expect(ev.filter((e) => e.type === "kick" && e.player === p.id).length).toBe(0);
+    expect(p.pending).toBeNull();
+    sim.dispose();
+  });
 });

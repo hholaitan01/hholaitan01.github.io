@@ -38,6 +38,8 @@ try {
   await page.getByRole("button", { name: "Next: rules" }).click();
   await page.getByRole("button", { name: "Kick off" }).click();
   await page.waitForSelector("[data-testid=match-hud]", { timeout: 120000 });
+  // browsers only start audio after a user gesture: click the pitch first, as a player would
+  await page.mouse.click(640, 400);
   await page.waitForTimeout(800);
   const st = () => page.evaluate(() => { const s = window.__match.sim; return { phase: s.phase, score: [...s.score], diff: s.cfg.difficulty, away: s.teams[1].id, ctrl: s.controlled?.id ?? null, taker: s.restart?.taker?.id ?? null, kickTeam: s.restart?.team ?? null, user: s.cfg.userTeam }; });
   let s = await st();
