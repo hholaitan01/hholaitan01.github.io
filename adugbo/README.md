@@ -2,7 +2,7 @@
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
 Work is delivered in stages. **All planned stages are built except touch controls (skipped on request). See `docs/RELEASE_REPORT.md` for the
-release-readiness audit: test results, performance, licences, limitations and deployment.** Touch controls are not built: playing needs a keyboard.
+release-readiness audit: test results, performance, licences, limitations and deployment.** Touch controls are not built: playing needs a keyboard. On phones and tablets the game is landscape-only.
 
 ## Commands
 

@@ -11,6 +11,7 @@ import { profile, type QualityProfile, type Settings } from "../settings/setting
 import { makeBall } from "./LabScene";
 import { AudioManager } from "../audio/AudioManager";
 import { saveSettings } from "../settings/settings";
+import { PORTRAIT_TOUCH } from "../ui/orientation";
 
 /**
  * Shared renderer + loop for practice and matches: venue, player prefabs driven by a GameSim, ball, blob shadows,
@@ -66,10 +67,19 @@ export abstract class GameView<S extends GameSim> {
     this.ro.observe(host);
     this.resize();
     this.audio = new AudioManager(settings);
+    // landscape only: turning a phone upright pauses play (the rotate overlay covers the screen)
+    this.portraitMq = matchMedia(PORTRAIT_TOUCH);
+    this.portraitMq.addEventListener("change", this.onOrientation);
+    if (this.portraitMq.matches) this.paused = true;
     // browsers only start audio from a user gesture
     addEventListener("pointerdown", this.unlock);
     addEventListener("keydown", this.unlock);
   }
+
+  private portraitMq!: MediaQueryList;
+  private onOrientation = () => {
+    if (this.portraitMq.matches) this.paused = true;
+  };
 
   get muted() {
     return this.settings.muted;
@@ -328,6 +338,7 @@ export abstract class GameView<S extends GameSim> {
   }
 
   dispose() {
+    this.portraitMq.removeEventListener("change", this.onOrientation);
     removeEventListener("pointerdown", this.unlock);
     removeEventListener("keydown", this.unlock);
     this.audio.dispose();

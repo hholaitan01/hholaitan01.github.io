@@ -123,3 +123,10 @@ fieldset.house legend { color: var(--accent); padding: 0 6px; }
 @media (max-width: 700px) { .teams { grid-template-columns: 1fr; } .vs { text-align: center; } }
 .notices { white-space: pre-wrap; font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: rgba(0,0,0,.35); padding: 12px; border-radius: 8px; max-width: 900px; }
 .screen a { color: var(--accent); }
+.rotate-gate { position: fixed; inset: 0; z-index: 1000; display: grid; place-content: center; text-align: center; gap: 10px; padding: 24px;
+  background: radial-gradient(circle at 50% 30%, #1d3a2c, #0f1412 70%); }
+.rotate-gate h2 { margin: 0; font-size: 30px; }
+.rotate-gate p { margin: 0; color: var(--muted); font-size: 18px; }
+.rotate-icon { font-size: 64px; animation: rotateHint 2.4s ease-in-out infinite; }
+@keyframes rotateHint { 0%, 25% { transform: rotate(0deg); } 50%, 75% { transform: rotate(-90deg); } 100% { transform: rotate(0deg); } }
+@media (prefers-reduced-motion: reduce) { .rotate-icon { animation: none; transform: rotate(-90deg); } }

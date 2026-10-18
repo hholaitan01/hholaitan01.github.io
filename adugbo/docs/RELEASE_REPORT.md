@@ -46,6 +46,7 @@ npm run inspect:assets # regenerates docs/asset-inspection.json
 | Animation | 38 clips. Stride speeds and foot-plant phases measured from the clips at load; phase-synced 8-way locomotion blend; kicks fire on measured contact frames with the ball steered to the foot; random celebration and fall variants |
 | Venue | Procedural Lagos-inspired cage court: buildings with barred windows and zinc roofs, invented shop signs, yellow minibuses, stalls, poles and cables, floodlights, mural, animated spectators. Day and evening |
 | Audio | CC0 impact samples (kicks, shots, woodwork, boards, fence, net, tackles), synthesised whistle, crowd and street ambience; master/effects/crowd volume and mute, saved |
+| Orientation | Landscape only on phones and tablets: held upright, a rotate screen covers the app and any match or drill pauses; where the browser allows it (Android Chrome) the first tap goes fullscreen and locks landscape. iOS Safari has no orientation lock, so the rotate screen is what enforces it there. Desktop windows are never blocked |
 | Settings | Graphics low/medium/high (resolution, antialiasing, shadows, normal maps, environment lighting, crowd size), time of day, sound; saved in localStorage |
 | Tools | Player lab with kit/face/number editor and an animation viewer (every clip, scrub, slow motion, jump-to-contact, foot trails) |
 
