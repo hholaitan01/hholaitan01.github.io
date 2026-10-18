@@ -126,7 +126,9 @@ export function PracticeScreen({ onExit }: { onExit: () => void }) {
               </div>
             </div>
           )}
-          <div className="fps">{hud.fps} fps</div>
+          <div className="fps">
+            {hud.fps} fps · anim {hud.animMs.toFixed(1)} ms
+          </div>
         </>
       )}
     </div>

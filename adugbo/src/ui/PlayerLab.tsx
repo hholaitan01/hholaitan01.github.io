@@ -4,6 +4,7 @@ import { HEADS, type HairStyle, type HeadId, type PlayerLook } from "../game/Pla
 import type { ActionName } from "../game/anim/locomotion";
 import { TEAMS } from "../game/teams";
 import type { Kit, KitPattern } from "../render/kit";
+import { CLIP_SOURCE } from "../game/anim/clips";
 
 const PATTERNS: KitPattern[] = ["plain", "hoops", "hoop", "stripes", "pinstripe", "halves", "sash", "chevron"];
 const ACTIONS: ActionName[] = ["pass", "shoot", "kick", "header", "cheer"];
@@ -28,6 +29,11 @@ export function PlayerLab() {
   const [look, setLook] = useState<Omit<PlayerLook, "kit">>({ name: "Adebayo", number: 10, head: "m300", hair: "full", skinTone: 0.62 });
   const [speed, setSpeed] = useState(0);
   const [dribbling, setDribbling] = useState(false);
+  const [heading, setHeading] = useState(0);
+  const [clip, setClip] = useState<string>("");
+  const [scrub, setScrub] = useState(0);
+  const [rate, setRate] = useState(1);
+  const [trails, setTrails] = useState(false);
 
   useEffect(() => {
     const s = new LabScene(host.current!);
@@ -56,8 +62,28 @@ export function PlayerLab() {
     if (lab.current) {
       lab.current.speed = speed;
       lab.current.dribbling = dribbling;
+      lab.current.heading = heading;
+      lab.current.trails = trails;
     }
-  }, [speed, dribbling]);
+  }, [speed, dribbling, heading, trails]);
+
+  // clip viewer
+  useEffect(() => {
+    const pl = lab.current?.player;
+    if (!ready || !pl) return;
+    pl.setPreview(clip || null);
+    setRate(1);
+  }, [ready, clip]);
+  useEffect(() => {
+    if (lab.current?.player) lab.current.player.previewRate = rate;
+  }, [rate]);
+  useEffect(() => {
+    if (!clip) return;
+    const id = setInterval(() => lab.current?.player && setScrub(lab.current.player.previewTime), 100);
+    return () => clearInterval(id);
+  }, [clip]);
+  const clipInfo = clip ? lab.current?.asset?.info.get(clip) : undefined;
+  const clips = ready && lab.current?.asset ? [...lab.current.asset.clips.keys()].sort() : [];
 
   const turn = (rate: number) => () => {
     if (lab.current) lab.current.yawRate = rate;
@@ -116,6 +142,79 @@ export function PlayerLab() {
             </button>
           ))}
         </div>
+
+        <div className="row">
+          <label htmlFor="heading">Direction</label>
+          <select id="heading" value={heading} onChange={(e) => setHeading(+e.target.value)} disabled={!ready}>
+            <option value={0}>Forward</option>
+            <option value={Math.PI / 4}>Forward-left</option>
+            <option value={Math.PI / 2}>Left (strafe)</option>
+            <option value={(3 * Math.PI) / 4}>Back-left</option>
+            <option value={Math.PI}>Backwards</option>
+            <option value={-Math.PI / 2}>Right (strafe)</option>
+          </select>
+        </div>
+        <div className="row">
+          <label htmlFor="trails">Foot trails</label>
+          <input id="trails" type="checkbox" checked={trails} onChange={(e) => setTrails(e.target.checked)} disabled={!ready} />
+        </div>
+
+        <h2>Animation viewer</h2>
+        <div className="row">
+          <label htmlFor="clip">Clip</label>
+          <select id="clip" value={clip} onChange={(e) => setClip(e.target.value)} disabled={!ready}>
+            <option value="">— live (state machine) —</option>
+            {clips.map((c) => (
+              <option key={c} value={c}>
+                {c} ({CLIP_SOURCE[c] ?? "?"})
+              </option>
+            ))}
+          </select>
+        </div>
+        {clip && clipInfo && (
+          <>
+            <div className="row">
+              <label htmlFor="scrub">Time</label>
+              <input
+                id="scrub"
+                type="range"
+                min={0}
+                max={clipInfo.duration}
+                step={0.005}
+                value={scrub}
+                onChange={(e) => {
+                  setRate(0);
+                  lab.current?.player?.seekPreview(+e.target.value);
+                  setScrub(+e.target.value);
+                }}
+              />
+            </div>
+            <div className="row">
+              <label htmlFor="rate">Speed</label>
+              <select id="rate" value={rate} onChange={(e) => setRate(+e.target.value)}>
+                <option value={0}>Paused</option>
+                <option value={0.25}>0.25x</option>
+                <option value={0.5}>0.5x</option>
+                <option value={1}>1x</option>
+              </select>
+            </div>
+            <div className="stats" data-testid="clip-info">
+              {`${clip}: ${clipInfo.duration.toFixed(2)} s, t = ${scrub.toFixed(2)} s\nsource: ${CLIP_SOURCE[clip] ?? "unknown"}` +
+                (clipInfo.stride ? `\nmeasured stride speed ${clipInfo.stride} m/s` : "") +
+                (clipInfo.contact !== undefined ? `\ncontact ${clipInfo.contact.toFixed(3)} s, ${clipInfo.foot} foot at (${clipInfo.contactPos?.x}, ${clipInfo.contactPos?.z})` : "")}
+            </div>
+            {clipInfo.contact !== undefined && (
+              <button
+                onClick={() => {
+                  setRate(0);
+                  lab.current?.player?.seekPreview(clipInfo.contact!);
+                }}
+              >
+                Jump to contact
+              </button>
+            )}
+          </>
+        )}
 
         <h2>Team & kit</h2>
         <div className="row">

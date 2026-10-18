@@ -11,12 +11,18 @@ export interface ContactTimes {
   shoot: number;
   kick: number;
   header: number;
+  /** Where the striking foot is at contact, in the kicker's frame (x = his left, z = forward), per kick clip. */
+  pos?: Partial<Record<"pass" | "shoot" | "kick", { x: number; z: number }>>;
 }
-export const DEFAULT_CONTACTS: ContactTimes = { pass: 0.11, shoot: 0.4, kick: 0.32, header: 0.3 };
+/** Measured from footballer.glb (see FootballerAsset.findContact); the view passes the live values. */
+export const DEFAULT_CONTACTS: ContactTimes = {
+  pass: 0.11, shoot: 0.4, kick: 0.32, header: 0.3,
+  pos: { pass: { x: -0.06, z: 0.23 }, shoot: { x: -0.13, z: 0.33 }, kick: { x: -0.69, z: 0.47 } },
+};
 
 export type SimEvent =
   | { type: "action"; player: number; action: ActionName }
-  | { type: "kick"; player: number; kind: "pass" | "lob" | "shot" | "header" | "clear"; speed: number }
+  | { type: "kick"; player: number; kind: "pass" | "lob" | "shot" | "header" | "clear"; speed: number; gap?: number }
   | { type: "miss"; player: number }
   | { type: "touch"; player: number; quality: "clean" | "heavy" | "deflect" }
   | { type: "possession"; player: number | null }
@@ -75,6 +81,16 @@ export class GameSim {
   footPoint(p: SimPlayer, ahead = 0.42): V2 {
     const f = fwd(p.yaw);
     return { x: p.pos.x + f.x * ahead, z: p.pos.z + f.z * ahead };
+  }
+
+  /** Ball position (centre) that the kick animation's foot meets at contact. */
+  contactPoint(p: SimPlayer, action: ActionName): V2 {
+    const key = action === "shoot" ? "shoot" : action === "kick" ? "kick" : "pass";
+    const c = this.contacts.pos?.[key] ?? { x: 0, z: 0.33 };
+    const f = fwd(p.yaw), left = { x: f.z, z: -f.x };
+    // the ball's centre sits a ball-radius ahead of the toe
+    const z = c.z + BALL_R;
+    return { x: p.pos.x + f.x * z + left.x * c.x, z: p.pos.z + f.z * z + left.z * c.x };
   }
 
   /** Advances the simulation by real time `dt`, in fixed steps. */
@@ -142,9 +158,12 @@ export class GameSim {
       if (d > 1.8 || b.y > CONTROL_HEIGHT + 0.3) this.setOwner(null);
       else if (!o.pending) this.dribble(o);
       else {
-        // setting up a kick: the ball is steadied in front of the planted foot
-        const t = this.footPoint(o, 0.45);
-        this.physics.kick({ x: (t.x - ball.x) * 5 + o.vel.x, y: Math.min(bv.y, 0), z: (t.z - ball.z) * 5 + o.vel.z });
+        // setting up a kick: the ball is steered to where the kicking foot will meet it on the contact frame
+        const t = this.contactPoint(o, o.pending.action);
+        // arrive exactly on the contact frame: cover the remaining gap in the remaining wind-up time
+        const left = Math.max(o.pending.delay, 1 / 60);
+        const tx = t.x + o.vel.x * left, tz = t.z + o.vel.z * left;
+        this.physics.kick({ x: (tx - ball.x) / left, y: Math.min(bv.y, 0), z: (tz - ball.z) / left });
       }
     }
     // contest: an opponent (or anyone, when the ball is loose) within reach can take or deflect it
@@ -255,9 +274,12 @@ export class GameSim {
     p.touchLock = 0.35;
     // the strike starts from the ball's current spot; lift it clear of the ground for lofted kicks
     const b = this.physics.ballPos;
+    // how far the ball is from where the animation's foot meets it (contact alignment)
+    const action = kind === "shot" ? "shoot" : kind === "lob" ? "kick" : "pass";
+    const cp = this.contactPoint(p, action), gap = kind === "header" ? undefined : +Math.hypot(b.x - cp.x, b.z - cp.z).toFixed(3);
     if (vel.y > 0.5 && b.y < BALL_R + 0.02) this.physics.setBall({ x: b.x, y: BALL_R + 0.02, z: b.z }, vel, { x: 0, y: spinY, z: 0 });
     else this.physics.kick(vel, { x: 0, y: spinY, z: 0 });
-    this.events.push({ type: "kick", player: p.id, kind, speed: Math.hypot(vel.x, vel.y, vel.z) });
+    this.events.push({ type: "kick", player: p.id, kind, speed: Math.hypot(vel.x, vel.y, vel.z), gap });
   }
 
   private passAt = 0;

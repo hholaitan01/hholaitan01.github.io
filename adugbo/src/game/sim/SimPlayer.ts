@@ -59,6 +59,8 @@ export class SimPlayer {
   /** Seconds of committed movement (dive, slide) during which velocity is kept rather than steered. */
   lunge = 0;
   role: "gk" | "field" = "field";
+  /** When set, the player keeps facing this point while moving slowly (jockeying, keeper shuffling). */
+  face: V2 | null = null;
   /** Human-controlled right now. */
   controlled = false;
 
@@ -106,7 +108,14 @@ export class SimPlayer {
     if (kicking) this.vel = { x: this.vel.x * (1 - 6 * dt), z: this.vel.z * (1 - 6 * dt) };
     this.pos.x += this.vel.x * dt;
     this.pos.z += this.vel.z * dt;
-    const want = len(this.intent.move) > 0.1 ? yawOf(this.intent.move) : this.speed > 0.3 ? yawOf(this.vel) : this.yaw;
+    const facePt = this.face && this.speed < 3.2 && !withBall ? this.face : null;
+    const want = facePt
+      ? yawOf({ x: facePt.x - this.pos.x, z: facePt.z - this.pos.z })
+      : len(this.intent.move) > 0.1
+        ? yawOf(this.intent.move)
+        : this.speed > 0.3
+          ? yawOf(this.vel)
+          : this.yaw;
     // turning is quick when slow (receive-and-turn), slower at a sprint, slower again with the ball
     const rate = (this.speed < 1.5 ? 13 : this.intent.sprint ? 5.5 : 8.5) * (withBall ? 0.8 : 1);
     const d = wrapAngle(want - this.yaw), step = Math.max(-rate * dt, Math.min(rate * dt, d));

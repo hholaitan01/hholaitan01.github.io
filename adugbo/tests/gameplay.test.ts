@@ -185,3 +185,24 @@ describe("shooting", () => {
     sim.dispose();
   });
 });
+
+describe("kick contact alignment", () => {
+  it("the ball is where the kicking foot meets it on the contact frame (standing, jogging, sprinting)", () => {
+    const gaps: number[] = [];
+    for (const [speed, sprint] of [[0, false], [1, false], [1, true]] as [number, boolean][])
+      for (const kind of ["pass", "shot"] as const) {
+        const sim = new PracticeSim("free");
+        run(sim, 0.4);
+        sim.user.intent = { move: v2(speed, 0), sprint };
+        run(sim, 1.2);
+        if (kind === "pass") sim.pass(sim.user, v2(1, 0.2), 0.5);
+        else sim.shoot(sim.user, 1, 0.5, 0.6);
+        const ev = run(sim, 1);
+        const k = ev.find((e) => e.type === "kick");
+        if (k && k.type === "kick" && k.gap !== undefined) gaps.push(k.gap);
+        sim.dispose();
+      }
+    expect(gaps.length).toBe(6);
+    expect(Math.max(...gaps)).toBeLessThan(0.2);
+  });
+});

@@ -91,6 +91,7 @@ export class TeamAI {
         continue;
       }
       if (sim.owner === p) {
+        p.face = null;
         this.carry(p);
         continue;
       }
@@ -99,6 +100,8 @@ export class TeamAI {
         this.nextThink.set(p.id, t + this.d.reaction * (0.7 + 0.6 * this.sim.rand()));
       }
       const plan = this.plans.get(p.id)!;
+      // defenders and support players watch the ball while adjusting position
+      p.face = plan.state === "chase" || plan.state === "receive" ? null : sim.ball2();
       // targets that follow moving things are refreshed every step
       if (plan.state === "press" || plan.state === "chase" || plan.state === "receive") Object.assign(plan, roles.get(p.id) ?? plan);
       if (plan.state === "mark" && plan.mark) plan.target = this.goalSide(plan.mark.pos, 1.4);
@@ -284,6 +287,7 @@ export class TeamAI {
 
   private keeper(k: SimPlayer) {
     const sim = this.sim, goal = sim.ownGoal(this.team), ball = sim.ball2();
+    k.face = ball;
     if (sim.holder === k) {
       // hold briefly, then throw to an open teammate (or kick long under no option)
       k.intent = { move: v2(), sprint: false };

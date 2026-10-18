@@ -58,6 +58,15 @@ export class LabScene {
   speed = 0;
   yawRate = 0;
   dribbling = false;
+  /** Movement direction relative to facing for the directional blend (radians, + = his left). */
+  heading = 0;
+  /** Foot trails: last positions of each foot, drawn as lines (shows foot sliding). */
+  trails = false;
+  private trailLines: Record<"l" | "r", THREE.Line> = {
+    l: new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x4dabf7 })),
+    r: new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0xff6b6b })),
+  };
+  private trailPts: Record<"l" | "r", THREE.Vector3[]> = { l: [], r: [] };
   private frames = 0;
   private fpsT = 0;
   stats: LabStats = { state: "-", clip: "-", action: null, fps: 0, triangles: 0, joints: 0, clipCount: 0, contacts: {}, lastContact: "none" };
@@ -120,6 +129,7 @@ export class LabScene {
     this.scene.add(floor);
     this.ball.visible = false;
     this.scene.add(this.ball);
+    this.scene.add(this.trailLines.l, this.trailLines.r);
   }
 
   async load(look: PlayerLook, onProgress?: (f: number) => void) {
@@ -161,6 +171,42 @@ export class LabScene {
     return this.player?.play(action) ?? false;
   }
 
+  /** Foot positions on the treadmill: a planted foot should travel backwards at exactly the floor speed. */
+  private updateTrails(dt: number) {
+    for (const f of ["l", "r"] as const) {
+      const line = this.trailLines[f];
+      line.visible = this.trails;
+      if (!this.trails || !this.player) continue;
+      const pts = this.trailPts[f];
+      // move old points with the treadmill floor (it travels toward -z in the player's frame)
+      const back = new THREE.Vector3(Math.sin(this.player.root.rotation.y + this.heading), 0, Math.cos(this.player.root.rotation.y + this.heading)).multiplyScalar(-this.speed * dt);
+      for (const p of pts) p.add(back);
+      pts.push(this.player.bone(`ball_${f}`)!.getWorldPosition(new THREE.Vector3()));
+      if (pts.length > 150) pts.shift();
+      line.geometry.setFromPoints(pts);
+    }
+  }
+
+  /** Test hook: plays a kick clip in 1/120 s steps and returns the striking foot's distance from its recorded contact point. */
+  contactCheck(action: ActionName): number | null {
+    const pl = this.player, a = this.asset;
+    if (!pl || !a) return null;
+    const clip = action === "shoot" ? "strike" : action === "kick" ? "kick" : "pass";
+    const info = a.info.get(clip);
+    if (!info?.contactPos || info.contact === undefined) return null;
+    pl.root.position.set(0, 0, 0);
+    pl.root.rotation.set(0, 0, 0);
+    pl.play(action, true);
+    // step in 1/120 s, then land exactly on the contact time (a fast foot covers ~10 cm in one step)
+    for (let i = 0; i < 480 && pl.actionClipTime + 1 / 120 < info.contact; i++) pl.update(1 / 120, { speed: 0, yawRate: 0 });
+    const fired = pl.actionClipTime >= 0;
+    // kick clips play at rate 1, so clip time advances by dt
+    if (fired) pl.update(info.contact - pl.actionClipTime, { speed: 0, yawRate: 0 });
+    pl.root.updateMatrixWorld(true);
+    const p = pl.bone(info.foot === "l" ? "ball_l" : "ball_r")!.getWorldPosition(new THREE.Vector3());
+    return fired ? Math.hypot(p.x - info.contactPos.x, p.z - info.contactPos.z) : null;
+  }
+
   private resize() {
     const w = this.host.clientWidth, h = this.host.clientHeight;
     if (!w || !h) return;
@@ -173,7 +219,8 @@ export class LabScene {
     this.raf = requestAnimationFrame(this.loop);
     const real = this.clock.getDelta(), dt = Math.min(real, 1 / 20);
     if (this.player) {
-      this.player.update(dt, { speed: this.speed, yawRate: this.yawRate, dribbling: this.dribbling });
+      this.player.update(dt, { speed: this.speed, yawRate: this.yawRate, dribbling: this.dribbling, heading: this.heading });
+      this.updateTrails(dt);
       // treadmill: the floor moves under the in-place player at the commanded speed (texture repeat = 2 m)
       this.floorTex.offset.y -= (this.speed * dt) / 2;
       this.player.root.rotation.y += this.yawRate * dt * (this.speed < 1 ? 1 : 0);

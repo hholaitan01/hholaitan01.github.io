@@ -33,8 +33,10 @@ sides swapped every match):
 
 | Pairing | Goals | W–L |
 |---|---|---|
-| hard v easy | 16–4 | 7–0 |
-| hard v normal | 8–7 | 4–2 |
-| normal v easy | 11–4 | 5–0 |
+| hard v easy | 20–3 | 8–0 |
+| hard v normal | 13–3 | 6–1 |
+| normal v easy | 17–4 | 8–0 |
 
-Hard v normal is close; the ordering holds in this sample but the margin is small.
+(After the stage 6 animation work defenders face the ball while jockeying, which widened the margins; the first
+tuning pass had hard v normal at 8–7.) Easy CPUs attempt about three times as many tackles as hard ones; success
+rates per attempt are similar (~24–26%).

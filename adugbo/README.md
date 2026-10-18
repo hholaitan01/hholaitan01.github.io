@@ -1,7 +1,7 @@
 # ADUGBO: Street Kings
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
-Work is delivered in stages. **Current stage: 5 — AI and difficulty.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
+Work is delivered in stages. **Current stage: 6 — animation polish.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
 
 ## Commands
 
@@ -70,6 +70,18 @@ works around it and does not change versions.
 - Easy / normal / hard change reaction time, decision noise, skill and pace scaling, pressing distance, tackle rate
   and timing, shooting range and keeper ability. Verified ordering: hard > normal > easy over seeded CPU-vs-CPU series.
 - AI debug overlay in matches (button or F3): each CPU player's state, target and reasoning, plus match state.
+
+## Stage 6: what works
+- Stride speeds and foot-plant phases are measured from every locomotion clip at load (no guessed values).
+- Locomotion is a phase-synced blend space: idle → walk → jog → sprint by speed, eight-way direction blending
+  (backpedal, strafe, diagonals), keeper shuffles, turn-on-the-spot side steps. Defenders and keepers face the ball
+  while moving slowly, so the directional clips are used in matches.
+- Kick contact: the ball is steered during the wind-up to arrive where the animation's foot is on the contact frame.
+  Verified in the sim (gap < 0.2 m standing, jogging, sprinting) and on the rendered skeleton (< 0.05 m).
+- Variety: random celebration (cheer, dance, hop, jump) and fall (trip, two slides) clips; desynchronised idles.
+- Profiling: animation cost per frame shown in the HUD; spectators animate every other frame on low/medium.
+- Animation viewer in the Player lab: every clip with source, scrubbing, slow motion, jump-to-contact, measured
+  stride, direction control and foot trails for spotting foot sliding.
 
 ## Docs
 - `docs/AI.md` — AI states and difficulty tuning evidence

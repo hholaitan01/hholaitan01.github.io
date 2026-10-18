@@ -65,6 +65,36 @@ try {
         const needsContact = ["pass", "shoot", "kick"].includes(a);
         check(`action ${a}`, during.action === a && (!needsContact || after.lastContact !== before), `during ${during.action}, contact ${after.lastContact}`);
       }
+      // the rendered skeleton puts the striking foot on the recorded contact point on the contact frame
+      for (const a of ["pass", "shoot", "kick"]) {
+        const gap = await lab(`window.__adugbo.lab.contactCheck(${JSON.stringify(a)})`);
+        check(`rendered ${a} foot reaches its contact point on the contact frame`, gap !== null && gap < 0.05, `gap ${gap?.toFixed(3)} m`);
+      }
+      // directional locomotion: backwards uses the backpedal clip, strafing the side-step
+      await page.getByRole("button", { name: "Jog", exact: true }).click();
+      await page.getByLabel("Direction").selectOption({ label: "Backwards" });
+      await page.waitForFunction(() => window.__adugbo.lab.player.dominantClip === "jogB", null, { timeout: 15000 }).catch(() => {});
+      check("backwards jog uses jogB", (await lab(() => window.__adugbo.lab.player.dominantClip)) === "jogB");
+      await page.getByLabel("Direction").selectOption({ label: "Left (strafe)" });
+      await page.waitForFunction(() => window.__adugbo.lab.player.dominantClip === "jogSL", null, { timeout: 15000 }).catch(() => {});
+      check("strafing left uses jogSL", (await lab(() => window.__adugbo.lab.player.dominantClip)) === "jogSL");
+      await page.getByLabel("Foot trails").check();
+      await page.waitForTimeout(1500);
+      await page.screenshot({ path: `${out}/lab-trails-strafe.png` });
+      await page.getByLabel("Foot trails").uncheck();
+      await page.getByLabel("Direction").selectOption({ label: "Forward" });
+      await page.getByRole("button", { name: "Idle", exact: true }).click();
+      // animation viewer: pick a clip, jump to its contact frame
+      const clipCount = await page.locator("#clip option").count();
+      check("animation viewer lists every clip", clipCount === 39, `${clipCount - 1} clips`);
+      await page.getByLabel("Clip").selectOption("strike");
+      await page.getByRole("button", { name: "Jump to contact" }).click();
+      await page.waitForTimeout(400);
+      const t = await lab(() => window.__adugbo.lab.player.previewTime);
+      check("viewer jumps to the strike contact frame", Math.abs(t - 0.4) < 0.02, `t ${t.toFixed(3)}`);
+      check("viewer shows clip source and contact data", /mixamo/.test(await page.textContent("[data-testid=clip-info]")));
+      await page.screenshot({ path: `${out}/lab-viewer-strike-contact.png` });
+      await page.getByLabel("Clip").selectOption("");
       // look changes: team, head, number
       await page.getByLabel("Team").selectOption("ajg");
       await page.getByLabel("Number").fill("7");

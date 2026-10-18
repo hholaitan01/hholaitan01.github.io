@@ -35,6 +35,9 @@ export abstract class GameView<S extends GameSim> {
   protected snapCamera = true;
   paused = false;
   fps = 0;
+  /** Milliseconds spent in skinned-animation updates last frame (players, spectators). */
+  animMs = 0;
+  private frameNo = 0;
   private frames = 0;
   private fpsT = 0;
   /** Last frame's sim events (for tests and sound). */
@@ -61,7 +64,14 @@ export abstract class GameView<S extends GameSim> {
     const [gltf] = await Promise.all([loadGLB("characters/footballer.glb", onProgress), initPhysics()]);
     this.asset = new FootballerAsset(gltf);
     const c = (n: string, d: number) => this.asset.info.get(n)?.contact ?? d;
-    return { pass: c("pass", DEFAULT_CONTACTS.pass), shoot: c("strike", DEFAULT_CONTACTS.shoot), kick: c("kick", DEFAULT_CONTACTS.kick), header: DEFAULT_CONTACTS.header };
+    const pos = (n: string, d: { x: number; z: number } | undefined) => this.asset.info.get(n)?.contactPos ?? d;
+    return {
+      pass: c("pass", DEFAULT_CONTACTS.pass),
+      shoot: c("strike", DEFAULT_CONTACTS.shoot),
+      kick: c("kick", DEFAULT_CONTACTS.kick),
+      header: DEFAULT_CONTACTS.header,
+      pos: { pass: pos("pass", DEFAULT_CONTACTS.pos?.pass), shoot: pos("strike", DEFAULT_CONTACTS.pos?.shoot), kick: pos("kick", DEFAULT_CONTACTS.pos?.kick) },
+    };
   }
 
   /** Builds the venue and one prefab per sim player, then starts the loop. */
@@ -147,8 +157,12 @@ export abstract class GameView<S extends GameSim> {
   /** Per-frame HUD refresh. */
   protected abstract refreshHud(): void;
 
+  /** Distance (m) at each strike between the ball and where the kick animation's foot meets it. */
+  readonly contactLog: { kind: string; gap: number }[] = [];
+
   protected onEvents(ev: SimEvent[]) {
     for (const e of ev) {
+      if (e.type === "kick" && e.gap !== undefined) this.contactLog.push({ kind: e.kind, gap: e.gap });
       // dives, falls and saves interrupt whatever the player was doing
       if (e.type === "action") this.prefabs.get(e.player)?.play(e.action, e.action === "fall" || e.action.startsWith("dive") || e.action === "save");
       if (e.type === "goal") this.spectators.forEach((p, i) => i % 2 === 0 && p.play("cheer"));
@@ -172,13 +186,19 @@ export abstract class GameView<S extends GameSim> {
 
   protected sync(dt: number) {
     const sim = this.sim;
+    const t0 = performance.now();
+    this.frameNo++;
     for (const p of sim.players) {
       const pf = this.prefabs.get(p.id)!;
       pf.root.position.set(p.pos.x, 0, p.pos.z);
       pf.root.rotation.y = p.yaw;
-      pf.update(dt, { speed: p.speed, yawRate: p.yawRate, dribbling: sim.owner === p && !sim.holder });
+      const heading = p.speed > 0.1 ? Math.atan2(p.vel.x, p.vel.z) - p.yaw : 0;
+      pf.update(dt, { speed: p.speed, yawRate: p.yawRate, dribbling: sim.owner === p && !sim.holder, heading, keeper: p.role === "gk" });
     }
-    for (const sp of this.spectators) sp.update(dt, { speed: 0, yawRate: 0 });
+    // spectators are background: on low/medium they animate every other frame
+    const everyOther = this.settings.quality !== "high";
+    for (const sp of this.spectators) if (!everyOther || this.frameNo % 2 === 0) sp.update(everyOther ? dt * 2 : dt, { speed: 0, yawRate: 0 });
+    this.animMs = performance.now() - t0;
     const b = sim.physics.ballPos, w = sim.physics.ball.angvel();
     if (this.blobs.length) {
       sim.players.forEach((p, i) => this.blobs[i].position.set(p.pos.x, 0.012, p.pos.z));

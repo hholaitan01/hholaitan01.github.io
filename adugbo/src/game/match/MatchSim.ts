@@ -157,7 +157,10 @@ export class MatchSim extends GameSim {
   setControlled(p: SimPlayer | null) {
     if (this.controlled) this.controlled.controlled = false;
     this.controlled = p;
-    if (p) p.controlled = true;
+    if (p) {
+      p.controlled = true;
+      p.face = null;
+    }
   }
 
   /** Teammate nearest the ball (excluding the current one and, unless holding, the keeper). */

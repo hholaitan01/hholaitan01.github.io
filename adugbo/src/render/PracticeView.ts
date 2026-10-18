@@ -22,12 +22,13 @@ export interface PracticeHud {
   paused: boolean;
   fps: number;
   owner: string;
+  animMs: number;
 }
 
 /** Practice mode: drives PracticeSim from the keyboard; target rings for the target drill. */
 export class PracticeView extends GameView<PracticeSim> {
   private targets: THREE.Mesh[] = [];
-  hud: PracticeHud = { drill: "free", score: 0, timeLeft: null, goals: 0, shots: 0, passes: 0, message: "", finished: false, power: 0, powerFor: null, paused: false, fps: 0, owner: "" };
+  hud: PracticeHud = { drill: "free", score: 0, timeLeft: null, goals: 0, shots: 0, passes: 0, message: "", finished: false, power: 0, powerFor: null, paused: false, fps: 0, owner: "", animMs: 0 };
 
   async load(drill: Drill, onProgress?: (f: number) => void) {
     const contacts = await this.loadCommon(onProgress);
@@ -114,6 +115,6 @@ export class PracticeView extends GameView<PracticeSim> {
 
   protected refreshHud() {
     const st = this.sim.state;
-    Object.assign(this.hud, { drill: st.drill, score: st.score, timeLeft: st.timeLeft, goals: st.goals, shots: st.shots, passes: st.passes, message: st.message, finished: st.finished, paused: this.paused, owner: this.sim.owner?.name ?? "", fps: this.fps });
+    Object.assign(this.hud, { drill: st.drill, score: st.score, timeLeft: st.timeLeft, goals: st.goals, shots: st.shots, passes: st.passes, message: st.message, finished: st.finished, paused: this.paused, owner: this.sim.owner?.name ?? "", fps: this.fps, animMs: this.animMs });
   }
 }

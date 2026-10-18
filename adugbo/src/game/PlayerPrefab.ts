@@ -3,7 +3,7 @@ import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { kitMaterial, shirtTexture, type Kit, type KitUniforms } from "../render/kit";
 import { STRIDE_SPEED } from "./anim/clips";
-import { ACTION_CLIP, ACTION_RATE, locoClip, selectLocomotion, type ActionName, type LocoInput, type LocoState } from "./anim/locomotion";
+import { ACTION_CLIP, ACTION_RATE, ACTION_VARIANTS, locoBlend, selectLocomotion, type ActionName, type LocoInput, type LocoState } from "./anim/locomotion";
 
 export const HEADS = ["m300", "m006", "m007", "m102", "m130", "sm005", "m016", "m108"] as const;
 export type HeadId = (typeof HEADS)[number];
@@ -34,12 +34,20 @@ export interface ClipInfo {
   /** Seconds into the clip where the striking foot moves fastest (ball contact), for kick-type clips. */
   contact?: number;
   foot?: "l" | "r";
+  /** Striking foot position at contact in the character's frame (x = his left, z = forward), metres. */
+  contactPos?: { x: number; z: number };
+  /** Ground speed the in-place loop was authored for, measured from planted-foot slide (m/s). */
+  stride?: number;
 }
+
+/** Loops whose ground speed is measured at load (used to set playback rate so feet don't slide). */
+export const MEASURED_LOOPS = ["walk", "jog", "sprint", "dribble", "jogB", "jogSL", "jogSR", "jogFL", "jogFR", "jogBL", "jogBR", "shufL", "shufR"];
 
 /** Shared, analysed data for the footballer GLB. */
 export class FootballerAsset {
   readonly clips = new Map<string, THREE.AnimationClip>();
   readonly info = new Map<string, ClipInfo>();
+  strideTable: Record<string, number> = {};
   /** Lowest bind-pose y of the body mesh (the soles). */
   floorY = 0;
   private hairCuts = new Map<string, THREE.BufferGeometry>();
@@ -72,37 +80,103 @@ export class FootballerAsset {
       this.info.set(c.name, { name: c.name, duration: c.duration });
     }
     for (const n of ["pass", "strike", "kick"]) this.findContact(n);
+    for (const n of MEASURED_LOOPS) {
+      this.measureStride(n);
+      this.measurePlant(n);
+    }
+    for (const [n, c] of this.clips) this.durations[n] = c.duration;
+    this.strideTable = this.strides(STRIDE_SPEED);
+  }
+
+  private probe?: { root: THREE.Object3D; mixer: THREE.AnimationMixer; feet: Record<"l" | "r", THREE.Object3D> };
+
+  /** Samples foot positions (character frame) through a clip at 120 Hz. */
+  private sampleFeet(clip: THREE.AnimationClip, end = clip.duration) {
+    if (!this.probe) {
+      const root = SkeletonUtils.clone(this.gltf.scene);
+      this.probe = { root, mixer: new THREE.AnimationMixer(root), feet: { l: root.getObjectByName("ball_l")!, r: root.getObjectByName("ball_r")! } };
+    }
+    const { root, mixer, feet } = this.probe;
+    mixer.stopAllAction();
+    const act = mixer.clipAction(clip);
+    act.reset().play();
+    const dt = 1 / 120, out: Record<"l" | "r", THREE.Vector3[]> = { l: [], r: [] };
+    for (let t = 0; t < end; t += dt) {
+      act.time = t;
+      mixer.update(0);
+      root.updateMatrixWorld(true);
+      for (const f of ["l", "r"] as const) out[f].push(feet[f].getWorldPosition(new THREE.Vector3()));
+    }
+    act.stop();
+    return { dt, track: out };
   }
 
   /**
-   * Samples a kick clip and finds the ball-contact time: the frame where a foot moves forward fastest while it is
-   * still near its lowest height in the clip (the swing through the ball, not the follow-through or recovery).
+   * Kick clips: ball contact is where a foot moves forward fastest while still near its lowest height in the clip
+   * (the swing through the ball, not the follow-through or recovery). Also records where that foot is.
    */
   private findContact(name: string) {
     const clip = this.clips.get(name);
     if (!clip) return;
-    const root = SkeletonUtils.clone(this.gltf.scene);
-    const mixer = new THREE.AnimationMixer(root);
-    const act = mixer.clipAction(clip);
-    act.play();
-    const dt = 1 / 120;
-    const track: Record<"l" | "r", THREE.Vector3[]> = { l: [], r: [] };
     // skip the final frame: in-place clips can wrap back to the first pose there
-    for (let t = 0; t < clip.duration - 1 / 30; t += dt) {
-      act.time = t;
-      mixer.update(0);
-      root.updateMatrixWorld(true);
-      for (const f of ["l", "r"] as const) track[f].push(root.getObjectByName(`ball_${f}`)!.getWorldPosition(new THREE.Vector3()));
-    }
-    const best = { t: 0, v: 0, foot: "r" as "l" | "r" };
+    const { dt, track } = this.sampleFeet(clip, clip.duration - 1 / 30);
+    const best = { i: 0, v: 0, foot: "r" as "l" | "r" };
     for (const f of ["l", "r"] as const) {
       const pts = track[f], floor = Math.min(...pts.map((p) => p.y));
       for (let i = 1; i < pts.length; i++) {
         const vz = (pts[i].z - pts[i - 1].z) / dt;
-        if (pts[i].y < floor + 0.22 && vz > best.v) Object.assign(best, { t: i * dt, v: vz, foot: f });
+        if (pts[i].y < floor + 0.22 && vz > best.v) Object.assign(best, { i, v: vz, foot: f });
       }
     }
-    this.info.set(name, { ...this.info.get(name)!, contact: +best.t.toFixed(3), foot: best.foot });
+    const p = track[best.foot][best.i];
+    this.info.set(name, { ...this.info.get(name)!, contact: +(best.i * dt).toFixed(3), foot: best.foot, contactPos: { x: +p.x.toFixed(3), z: +p.z.toFixed(3) } });
+  }
+
+  /**
+   * In-place loops: while a foot is planted it slides backwards under the body at exactly the speed the clip was
+   * animated for. The median planted-foot speed is that stride speed.
+   */
+  private measureStride(name: string) {
+    const clip = this.clips.get(name);
+    if (!clip) return;
+    const { dt, track } = this.sampleFeet(clip);
+    const speeds: number[] = [];
+    for (const f of ["l", "r"] as const) {
+      const pts = track[f], floor = Math.min(...pts.map((p) => p.y));
+      for (let i = 1; i < pts.length; i++)
+        if (pts[i].y < floor + 0.035 && pts[i - 1].y < floor + 0.035) speeds.push(Math.hypot(pts[i].x - pts[i - 1].x, pts[i].z - pts[i - 1].z) / dt);
+    }
+    if (speeds.length < 4) return;
+    speeds.sort((a, b) => a - b);
+    this.info.set(name, { ...this.info.get(name)!, stride: +speeds[Math.floor(speeds.length / 2)].toFixed(2) });
+  }
+
+  /** Normalised time of the left foot's mid-stance in each loop, so blended clips share foot phase. */
+  readonly plantPhase: Record<string, number> = {};
+  readonly durations: Record<string, number> = {};
+
+  private measurePlant(name: string) {
+    const clip = this.clips.get(name);
+    if (!clip) return;
+    const { dt, track } = this.sampleFeet(clip);
+    let best = 0, by = Infinity;
+    track.l.forEach((p, i) => {
+      if (p.y < by) {
+        by = p.y;
+        best = i;
+      }
+    });
+    this.plantPhase[name] = (best * dt) / clip.duration;
+  }
+
+  /** Measured stride speeds, falling back to the hand-set table for clips that could not be measured. */
+  strides(fallback: Record<string, number>): Record<string, number> {
+    const out = { ...fallback };
+    for (const n of MEASURED_LOOPS) {
+      const s = this.info.get(n)?.stride;
+      if (s && s > 0.3) out[n] = s;
+    }
+    return out;
   }
 
   hairCut(geo: THREE.BufferGeometry, style: HairStyle): THREE.BufferGeometry {
@@ -144,7 +218,6 @@ export class PlayerPrefab {
   idleClip: string | null = null;
   private actionTime = 0;
   private contactFired = false;
-  private current: THREE.AnimationAction;
   private actionAction: THREE.AnimationAction | null = null;
   private body!: THREE.SkinnedMesh;
   private kitU!: KitUniforms;
@@ -167,11 +240,10 @@ export class PlayerPrefab {
       this.meshes.push(sm);
     });
     this.mixer = new THREE.AnimationMixer(this.root);
-    this.current = this.mixer.clipAction(asset.clips.get("idle")!);
-    this.current.play();
-    this.mixer.addEventListener("finished", () => {
-      if (this.action) this.endAction();
-    });
+    this.locoW.set("idle", 1);
+    // every player starts at a different point of his gait and idle, so a crowd never moves in lockstep
+    this.phase = Math.random();
+    this.idleOffset = Math.random() * 3;
     this.setLook(look);
   }
 
@@ -220,34 +292,55 @@ export class PlayerPrefab {
     if (k.boots) this.kitU.uBoots.value.set(k.boots);
   }
 
-  private crossTo(name: string, rate: number, fade: number) {
-    const clip = this.asset.clips.get(name)!;
-    const next = this.mixer.clipAction(clip);
-    next.timeScale = rate;
-    if (next === this.current) return;
-    next.reset().setLoop(THREE.LoopRepeat, Infinity).play();
-    // keep the foot phase continuous between gait cycles
-    next.time = (this.current.time / this.current.getClip().duration) * clip.duration;
-    this.current.crossFadeTo(next, fade, false);
-    this.current = next;
+  /** Locomotion actions, all playing; weights and time are driven every frame by the blend space. */
+  private locoActions = new Map<string, THREE.AnimationAction>();
+  private locoW = new Map<string, number>();
+  private phase = 0;
+  private actionW = 0;
+  /** Playback position of the current one-shot action's clip (seconds), or -1. */
+  get actionClipTime() {
+    return this.action && this.actionAction ? this.actionAction.time : -1;
+  }
+
+  /** Heaviest locomotion clip this frame (for HUDs and tests). */
+  get dominantClip() {
+    let best = "idle", bw = -1;
+    for (const [k, v] of this.locoW)
+      if (v > bw) {
+        bw = v;
+        best = k;
+      }
+    return best;
+  }
+
+  private idleOffset = 0;
+
+  private locoAction(name: string) {
+    let a = this.locoActions.get(name);
+    if (!a) {
+      const clip = this.asset.clips.get(name);
+      if (!clip) return null;
+      a = this.mixer.clipAction(clip);
+      a.setLoop(THREE.LoopRepeat, Infinity).play();
+      a.time = this.idleOffset % clip.duration;
+      a.setEffectiveWeight(0);
+      this.locoActions.set(name, a);
+    }
+    return a;
   }
 
   /** Plays a one-shot action over locomotion. Returns false if the clip is missing or an action is running. */
   play(action: ActionName, force = false): boolean {
     if (this.action && !force) return false;
-    if (this.action && this.actionAction) {
-      this.actionAction.stop();
-      this.action = null;
-      this.actionAction = null;
-    }
-    const clip = this.asset.clips.get(ACTION_CLIP[action]);
+    const options = (ACTION_VARIANTS[action] ?? [ACTION_CLIP[action]]).filter((n) => this.asset.clips.has(n));
+    const clip = this.asset.clips.get(options[Math.floor(Math.random() * options.length)] ?? ACTION_CLIP[action]);
     if (!clip) return false;
+    if (this.actionAction) this.actionAction.stop();
     const a = this.mixer.clipAction(clip);
     a.reset().setLoop(THREE.LoopOnce, 1);
     a.clampWhenFinished = true;
     a.timeScale = ACTION_RATE[action] ?? 1;
     a.play();
-    this.current.crossFadeTo(a, 0.12, false);
     this.actionAction = a;
     this.action = action;
     this.actionTime = 0;
@@ -257,33 +350,92 @@ export class PlayerPrefab {
 
   private endAction() {
     const done = this.action!;
-    const back = this.mixer.clipAction(this.asset.clips.get(this.locoClipName)!);
-    back.reset().setLoop(THREE.LoopRepeat, Infinity).play();
-    this.actionAction!.crossFadeTo(back, 0.2, false);
-    this.current = back;
     this.action = null;
-    this.actionAction = null;
     for (const l of this.listeners) l({ type: "actionEnd", action: done });
   }
 
+  /** Animation viewer: one clip played on its own (null returns to normal behaviour). */
+  private preview: THREE.AnimationAction | null = null;
+  previewRate = 1;
+  setPreview(name: string | null, loop = true) {
+    this.preview?.stop();
+    this.preview = null;
+    if (!name) return;
+    const clip = this.asset.clips.get(name);
+    if (!clip) return;
+    const a = this.mixer.clipAction(clip);
+    a.reset().setLoop(loop ? THREE.LoopRepeat : THREE.LoopOnce, Infinity).play();
+    a.clampWhenFinished = true;
+    a.setEffectiveWeight(1);
+    this.preview = a;
+  }
+  /** Seeks the previewed clip (seconds) and pauses it. */
+  seekPreview(t: number) {
+    if (!this.preview) return;
+    this.previewRate = 0;
+    this.preview.time = t;
+  }
+  get previewTime() {
+    return this.preview?.time ?? 0;
+  }
+
   update(dt: number, inp: LocoInput) {
-    const next = selectLocomotion(this.loco, inp);
-    const lc = locoClip(next, inp, STRIDE_SPEED);
-    const clip = next === "idle" && this.idleClip ? this.idleClip : lc.clip, rate = lc.rate;
-    this.loco = next;
-    if (!this.action) {
-      if (clip !== this.locoClipName) this.crossTo(clip, rate, 0.25);
-      else this.current.timeScale = rate;
+    if (this.preview) {
+      for (const a of this.locoActions.values()) a.setEffectiveWeight(0);
+      this.actionAction?.setEffectiveWeight(0);
+      this.preview.setEffectiveWeight(1);
+      this.preview.timeScale = this.previewRate;
+      this.mixer.update(dt);
+      return;
     }
-    this.locoClipName = clip;
+    // label state (HUD/tests) and blend weights
+    this.loco = selectLocomotion(this.loco, inp);
+    const idle = this.idleClip ?? "idle";
+    const blend = locoBlend(inp, this.asset.strideTable, this.asset.durations, idle);
+    const k = Math.min(1, dt * 10);
+    for (const name of new Set([...this.locoW.keys(), ...Object.keys(blend.weights)])) {
+      const w = (this.locoW.get(name) ?? 0) + ((blend.weights[name] ?? 0) - (this.locoW.get(name) ?? 0)) * (dt > 0 ? k : 1);
+      if (w < 1e-3 && !blend.weights[name]) this.locoW.delete(name);
+      else this.locoW.set(name, w);
+    }
+    // normalise so the pose is never pulled toward the bind pose
+    let total = 0;
+    for (const v of this.locoW.values()) total += v;
+    // shared gait phase: advance by distance covered / metres per cycle
+    const effSpeed = blend.cycle > 0 ? Math.max(inp.speed, Math.abs(inp.yawRate) > 1.6 && inp.speed < 1 ? 1.1 : 0) : 0;
+    if (blend.cycle > 0) this.phase = (this.phase + (effSpeed / blend.cycle) * dt) % 1;
+    // one-shot actions fade in fast and out at their end
     if (this.action && this.actionAction) {
       this.actionTime += dt;
+      this.actionW = Math.min(1, this.actionW + dt / 0.1);
+      const a = this.actionAction, left = a.getClip().duration - a.time;
+      if (left / Math.max(0.1, a.timeScale) < 0.2) this.actionW = Math.min(this.actionW, (left / a.timeScale) / 0.2);
       const info = this.asset.info.get(ACTION_CLIP[this.action]);
-      if (info?.contact !== undefined && !this.contactFired && this.actionAction.time >= info.contact) {
+      if (info?.contact !== undefined && !this.contactFired && a.time >= info.contact) {
         this.contactFired = true;
         for (const l of this.listeners) l({ type: "contact", action: this.action, foot: info.foot ?? "r" });
       }
+      if (left <= 1e-3 || this.actionTime > a.getClip().duration / a.timeScale + 0.1) this.endAction();
+    } else this.actionW = Math.max(0, this.actionW - dt / 0.2);
+    if (!this.action && this.actionAction && this.actionW === 0) {
+      this.actionAction.stop();
+      this.actionAction = null;
     }
+    this.actionAction?.setEffectiveWeight(this.actionW);
+    for (const [name, w] of this.locoW) {
+      const a = this.locoAction(name);
+      if (!a) continue;
+      a.setEffectiveWeight((w / Math.max(total, 1e-6)) * (1 - this.actionW));
+      if (name === idle || name === "idle" || name === "talk" || name === "sit") a.timeScale = 1;
+      else {
+        // moving clips follow the shared phase, offset so every clip plants the left foot together
+        a.timeScale = 0;
+        const d = a.getClip().duration;
+        a.time = ((this.phase + (this.asset.plantPhase[name] ?? 0)) % 1) * d;
+      }
+    }
+    for (const [name, a] of this.locoActions) if (!this.locoW.has(name)) a.setEffectiveWeight(0);
+    this.locoClipName = this.dominantClip;
     this.mixer.update(dt);
   }
 

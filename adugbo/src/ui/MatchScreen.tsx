@@ -77,7 +77,9 @@ export function MatchScreen({ config, onExit, onReplay }: { config: MatchConfig;
             <button onClick={() => setDebug((d) => !d)}>{debug ? "Hide AI debug" : "AI debug"}</button>
           </div>
           {debug && view.current && <DebugOverlay view={view.current} />}
-          <div className="fps">{hud.fps} fps</div>
+          <div className="fps">
+            {hud.fps} fps · anim {hud.animMs.toFixed(1)} ms
+          </div>
           {pauseOrFull && (
             <div className="overlay" data-testid={hud.phase === "fulltime" ? "fulltime" : "paused"}>
               <h2>{hud.phase === "fulltime" ? sim.message : "Paused"}</h2>

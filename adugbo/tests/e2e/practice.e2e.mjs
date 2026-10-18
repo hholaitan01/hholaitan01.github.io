@@ -81,7 +81,7 @@ try {
   await page.waitForFunction((t) => window.__practice.sim.state.timeLeft < t, t2, { timeout: 40000 }).catch(() => {});
   const t3 = await S(() => window.__practice.sim.state.timeLeft);
   check("Resume continues the clock", t3 < t2, `${t2} -> ${t3}`);
-  await page.getByRole("button", { name: "Menu" }).click();
+  await page.locator(".toolbar").getByRole("button", { name: "Menu" }).click();
   check("Menu returns to the home screen", await page.getByRole("button", { name: "Player lab" }).isVisible({ timeout: 5000 }).catch(() => false) || (await page.waitForSelector(".home", { timeout: 5000 }).then(() => true, () => false)));
   await ctx.close();
 } finally {

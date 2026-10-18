@@ -20,6 +20,7 @@ export interface MatchHud {
   powerFor: "shoot" | "pass" | null;
   paused: boolean;
   fps: number;
+  animMs: number;
 }
 
 /** Match mode: keyboard drives the user's controlled player; the CPU runs everyone else. */
@@ -93,6 +94,7 @@ export class MatchView extends GameView<MatchSim> {
       powerFor: this.hud?.powerFor ?? null,
       paused: this.paused,
       fps: this.fps,
+      animMs: this.animMs,
     };
   }
 }
