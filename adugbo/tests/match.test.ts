@@ -82,7 +82,7 @@ describe("CPU vs CPU matches", () => {
   it("keepers make saves", () => {
     let saves = 0;
     for (const seed of [3, 4]) {
-      const { sim } = playOut("fives", seed, 2);
+      const { sim } = playOut("sevens", seed, 2);
       saves += sim.stats[0].saves + sim.stats[1].saves;
       sim.dispose();
     }
@@ -106,7 +106,7 @@ describe("CPU vs CPU matches", () => {
 });
 
 describe("restarts and kick-off control", () => {
-  it("the user is given the kick-off taker when his side kicks off first", () => {
+  it("the user is given the kick-off taker when their side kicks off first", () => {
     let checked = 0;
     for (let seed = 1; seed <= 12; seed++) {
       const sim = new MatchSim(defaultConfig("fives"), undefined, seed);

@@ -58,7 +58,7 @@ https://hholaitan01.github.io/adugbo/play/. (A from-scratch `npm install` withou
 - Modes: **Street 5s** (cage, keepers), **7-a-side** (open turf, kick-ins, corners, goal kicks), **Four posts**
   (no keepers, bollard goals, configurable players a side, goal width, first-to score, cage or open street), and
   **Practice**. The rules screen text is generated from the same config the engine uses.
-- Six fictional teams with home/away kits (automatic clash switch), keeper kits, ratings that feed the simulation.
+- Fourteen street sides named after Lagos neighbourhoods (Onipanu, Mushin, Ojuelegba, Idumota and more) with home/away kits (automatic clash switch), keeper kits, ratings that feed the simulation.
 - Match engine (`src/game/match/MatchSim.ts`): kick-offs (opponents held out of the circle), restarts with 4 m
   distance, goals, half-time, full-time, first-to-N, stats (possession, shots, on target, passes, tackles, saves).
 - Keepers: narrow the angle, react to shots with a skill/difficulty-based chance, step-save or dive, catch or parry,

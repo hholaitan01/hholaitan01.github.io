@@ -366,7 +366,9 @@ export class GameSim {
       // error grows with power and distance and shrinks with skill
       const spread = (0.15 + power * 0.7) * (1.3 - skill) * Math.max(0.5, dist / 12);
       const tzE = tz + jitter(this.rand) * spread * 2.2;
-      const tyE = Math.max(0.15, 0.35 + power * 1.25 + jitter(this.rand) * spread * 1.2);
+      // aim height scales with the goal, so monkey posts get low drives rather than shots over the bar
+      const hs = Math.min(1, this.pitch.goalHeight / 1.8);
+      const tyE = Math.max(0.12, (0.35 + power * 1.25 + jitter(this.rand) * spread * 1.2) * hs);
       const vh = head ? 9 + 6 * power : 13 + power * (12 + 8 * skill);
       const dir = norm({ x: gx - b.x, z: tzE - b.z });
       const by = this.physics.ballPos.y;

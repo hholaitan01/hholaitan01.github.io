@@ -49,14 +49,15 @@ function ground(p: PitchSpec): THREE.Object3D {
     c.beginPath();
     c.arc(W / 2, H / 2, 0.15 * S, 0, Math.PI * 2);
     c.fill();
-    // goal areas: semicircle of 6 m (futsal style)
+    // goal areas: semicircle of 6 m (futsal style), 3 m in front of a monkey post
+    const area = p.goalWidth < 2 ? 3 : 6;
     for (const s of [0, 1]) {
       const x = s ? W - o : o;
       c.beginPath();
-      c.arc(x, H / 2, 6 * S, s ? Math.PI / 2 : -Math.PI / 2, s ? (3 * Math.PI) / 2 : Math.PI / 2);
+      c.arc(x, H / 2, area * S, s ? Math.PI / 2 : -Math.PI / 2, s ? (3 * Math.PI) / 2 : Math.PI / 2);
       c.stroke();
       c.beginPath();
-      c.arc(s ? W - 6 * S : 6 * S, H / 2, 0.12 * S, 0, Math.PI * 2);
+      c.arc(s ? W - area * S : area * S, H / 2, 0.12 * S, 0, Math.PI * 2);
       c.fill();
     }
   });

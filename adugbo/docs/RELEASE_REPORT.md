@@ -38,7 +38,7 @@ npm run inspect:assets # regenerates docs/asset-inspection.json
 |---|---|
 | Modes | Street 5s (cage, keepers) · 7-a-side (open turf; kick-ins, corners, goal kicks) · Four posts (no keepers, bollard goals; players a side, goal width, first-to score and walls configurable) · Practice (free play, 60 s target shooting, 60 s passing circuit) |
 | Flow | Main menu → setup (mode, teams, side, difficulty, length, day/evening) → rules screen generated from the same config the engine uses → kick-off → pause (resume, restart, quit) → full-time stats (possession, shots, on target, passes, tackles, saves) → rematch |
-| Teams | Six fictional teams with home/away kits, automatic kit-clash switch, distinct keeper kits, ratings that feed the simulation |
+| Teams | Fourteen street sides named after Lagos neighbourhoods (Onipanu, Mushin, Ojuelegba, Idumota and more) with home/away kits, automatic kit-clash switch, distinct keeper kits, ratings that feed the simulation |
 | Physics (Rapier) | Ball mass, bounce, rolling resistance per surface, air drag, Magnus curl; posts, crossbar, nets, boards and chain-link fence as colliders; whole-ball-over-the-line goals |
 | Gameplay | Acceleration and turn-rate-limited movement; close-control dribbling by touches; first touch that depends on ball pace and control (clean / heavy / ricochet); interceptions; ground, lofted and headed passes solved to arrive at pace; shots with a power-versus-accuracy trade-off; standing and sliding tackles; air kicks if the ball has gone before the contact frame |
 | Keepers | Narrow the angle, react to shots (step or dive, catch or parry), body blocks, claim loose balls and smother in the area, then throw or kick out |
