@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { Home } from "./ui/Home";
 import { MatchSetup } from "./ui/MatchSetup";
 import { Credits } from "./ui/Credits";
+import { RotateGate } from "./ui/RotateGate";
 
 // the 3D screens pull in three.js and Rapier (several MB): load them only when needed
 const PlayerLab = lazy(() => import("./ui/PlayerLab").then((m) => ({ default: m.PlayerLab })));
@@ -24,7 +25,12 @@ export default function App() {
   const go = (r: string) => {
     location.hash = r === "home" ? "" : `/${r}`;
   };
-  return <Suspense fallback={<div className="loading">Loading…</div>}>{screen()}</Suspense>;
+  return (
+    <>
+      <Suspense fallback={<div className="loading">Loading…</div>}>{screen()}</Suspense>
+      <RotateGate />
+    </>
+  );
 
   function screen() {
     switch (route) {
