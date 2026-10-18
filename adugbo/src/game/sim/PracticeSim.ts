@@ -157,7 +157,8 @@ export class PracticeSim extends GameSim {
 
   restart(drill: Drill = this.state.drill) {
     this.state = { drill, score: 0, timeLeft: DRILLS[drill].seconds, goals: 0, shots: 0, passes: 0, litTarget: 0, finished: false, message: DRILLS[drill].howTo };
-    this.user.pos = v2(-4, 0);
+    // target practice starts inside shooting range
+    this.user.pos = drill === "targets" ? v2(8, 0) : v2(-4, 0);
     this.user.vel = v2();
     this.user.yaw = Math.PI / 2;
     this.owner = null;
