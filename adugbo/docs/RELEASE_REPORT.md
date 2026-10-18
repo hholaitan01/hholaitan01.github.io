@@ -22,8 +22,8 @@ npm ci                 # install exactly the locked versions (Node 22, npm 10 te
 npm run dev            # http://localhost:5173
 npm run typecheck
 npm run lint
-npm test               # 44 unit/simulation tests (Vitest, Node)
-npm run test:e2e       # builds, then 4 Playwright browser suites (needs Chromium; see tests/e2e/browser.mjs)
+npm test               # 47 unit/simulation tests (Vitest, Node)
+npm run test:e2e       # builds, then 6 Playwright browser suites (needs Chromium; see tests/e2e/browser.mjs)
 npm run build          # production build → dist/
 npm run build:pages    # production build → play/ (what GitHub Pages serves)
 npm run inspect:assets # regenerates docs/asset-inspection.json
@@ -77,15 +77,18 @@ Aim shots across the goal by holding up/down on release. Practice adds R (ball b
 |---|---|
 | Typecheck (`tsc -b`) | pass |
 | Lint (ESLint + typescript-eslint + react-hooks) | pass, 0 warnings |
-| Unit/simulation (Vitest) | **44/44** in 6 files: asset manifest, locomotion blend space, Rapier physics (bounce, rolling distance vs analytic value, net, post, bar, Magnus curl, boards, fence), gameplay (dribbling, turning, walk-in goal, pass-and-return, contact timing and alignment, air kick, interception, first touch, shot accuracy, target drill), full CPU-vs-CPU matches in all three modes, difficulty ordering |
+| Unit/simulation (Vitest) | **47/47** in 6 files: asset manifest, locomotion blend space, Rapier physics (bounce, rolling distance vs analytic value, net, post, bar, Magnus curl, boards, fence), gameplay (dribbling by touches, turning, walk-in goal, pass-and-return, contact timing and alignment, air kick, interception, first touch, shot accuracy, target drill), full CPU-vs-CPU matches in all three modes, shoot-near-an-opponent tackles, difficulty ordering |
 | Browser — Player lab (`lab.e2e.mjs`) | **26/26**: model, contact frames, every button drives the state machine, directional clips, rendered foot on its contact point (≤ 3 mm), viewer, head swap, desktop + phone-landscape viewports |
 | Browser — Practice (`practice.e2e.mjs`) | **12/12**: real key events for dribble, shot and goal, pass and return, audio unlock and sounds, mute persistence, drills, pause/resume, menu |
-| Browser — Venue (`venue.e2e.mjs`) | **25/25**: day/evening × quality × desktop/phone; player and ball contrast against the ground; goal kept in shot |
-| Browser — Match (`match.e2e.mjs`) | **15/15**: setup, four-post house rules on the rules screen, kick-off by keyboard, whistle, AI debug overlay, pause, full-time stats, rematch, quit, how-to-play, settings |
+| Browser — Venue (`venue.e2e.mjs`) | **21/21**: day/evening × quality × desktop/phone; player and ball contrast against the ground; goal kept in shot |
+| Browser — Match (`match.e2e.mjs`) | **14/14**: setup, four-post house rules on the rules screen, kick-off by keyboard, whistle, AI debug overlay, pause, full-time stats, rematch, quit, how-to-play, settings |
+| Browser — Orientation (`orientation.e2e.mjs`) | **8/8**: rotate screen on upright phones, pause while upright, desktop never blocked |
+| Browser — Touch (`touch.e2e.mjs`) | **16/16**: pad on an emulated phone and never on desktop; real touch events for stick, PASS, flick-up lofted pass, THROUGH, SHOOT with power bar, DASH with two fingers, defending layout, SWITCH and TACKLE |
 | Fresh clone | `npm ci`, typecheck, lint, test, build all pass from a clean clone |
 
-Difficulty (10 seeded 2×2-minute 5s matches per pairing, identical ratings, sides swapped): hard v easy 20–3 (W8 L0),
-hard v normal 13–3 (W6 L1), normal v easy 17–4 (W8 L0). See `docs/AI.md` for how a test failure drove the retuning.
+Difficulty, monkey-post 5s (10 seeded 2×2-minute matches per pairing, identical ratings, sides swapped): hard v easy
+32–12 (W8 L2), hard v normal 15–8 (W6 L2), normal v easy 35–27 (W5 L3). Over 30 matches per pairing: 113–34, 45–26
+and 114–66. Hard v normal is the closest; see `docs/AI.md` for the retuning and its evidence.
 
 Two checks were reworked during this audit because they were testing the environment, not the game: the browser
 tests now wait for rendered frames rather than fixed times (software WebGL ran at 1–20 fps), and an earlier test of
