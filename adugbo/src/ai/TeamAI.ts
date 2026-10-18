@@ -133,6 +133,15 @@ export class TeamAI {
     const sim = this.sim, roles = new Map<number, Plan>(), ball = sim.ball2(), bv = sim.physics.ballVel;
     const field = this.mates().filter((p) => p.role === "field" && !p.controlled && sim.owner !== p);
     const owner = sim.owner, weHave = owner?.team === this.team, theyHave = owner && owner.team !== this.team;
+    // no goalkeepers (monkey post, four posts): the deepest player stays back as the last man, between the ball and
+    // our goal once the other side has it in our third. Easy CPUs forget to leave anyone back. (Dropping a man back
+    // as soon as the ball is lost was tried for hard CPUs: over 30 seeded matches it cost them more than it saved.)
+    const g = sim.ownGoal(this.team), inOurThird = Math.abs(ball.x - g.x) < sim.pitch.length / 3;
+    if (!sim.cfg.keepers && field.length >= 3 && !weHave && this.d.noise < 0.3 && inOurThird) {
+      const last = field.reduce((a, p) => (dist(sim.slot(p), g) < dist(sim.slot(a), g) ? p : a));
+      const toBall = sub(ball, g), l = len(toBall), back = Math.min(l * 0.4, weHave ? 7 : 4);
+      if (l > 1) roles.set(last.id, { state: "cover", target: { x: g.x + (toBall.x / l) * back, z: g.z + (toBall.z / l) * back }, sprint: !weHave, note: "last man" });
+    }
     // expected receiver of our pass runs onto it
     if (sim.passTarget && sim.passTarget.team === this.team && !sim.passTarget.controlled) {
       const r = sim.passTarget, v = { x: bv.x, z: bv.z }, sp = len(v);

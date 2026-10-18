@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { loadGLB } from "../assets/loader";
 import { FootballerAsset, PlayerPrefab, type HeadId, type PlayerLook } from "../game/PlayerPrefab";
-import { DEFAULT_CONTACTS, type ContactTimes, type GameSim, type SimEvent } from "../game/sim/GameSim";
+import { DEFAULT_CONTACTS, DEFAULT_GAIT, type ContactTimes, type GameSim, type SimEvent } from "../game/sim/GameSim";
 import type { SimPlayer, V2 } from "../game/sim/SimPlayer";
 import type { PitchSpec } from "../game/pitch";
 import { initPhysics } from "../physics/PhysicsWorld";
@@ -27,7 +27,8 @@ export abstract class GameView<S extends GameSim> {
   protected asset!: FootballerAsset;
   protected prefabs = new Map<number, PlayerPrefab>();
   protected ball = makeBall();
-  protected keys = new Keyboard();
+  /** Keyboard plus the touch pad, which feeds the same buttons (see TouchPad.tsx). */
+  readonly keys = new Keyboard();
   protected spectators: PlayerPrefab[] = [];
   private blobs: THREE.Mesh[] = [];
   private ring!: THREE.Mesh;
@@ -107,6 +108,12 @@ export abstract class GameView<S extends GameSim> {
       kick: c("kick", DEFAULT_CONTACTS.kick),
       header: DEFAULT_CONTACTS.header,
       pos: { pass: pos("pass", DEFAULT_CONTACTS.pos?.pass), shoot: pos("strike", DEFAULT_CONTACTS.pos?.shoot), kick: pos("kick", DEFAULT_CONTACTS.pos?.kick) },
+      gait: {
+        stride: this.asset.strideTable,
+        dur: this.asset.durations,
+        touch: this.asset.reachPhases.dribble?.r ?? DEFAULT_GAIT.touch,
+        sprintTouch: this.asset.reachPhases.sprint ? [...this.asset.reachPhases.sprint.r, ...this.asset.reachPhases.sprint.l] : DEFAULT_GAIT.sprintTouch,
+      },
     };
   }
 
@@ -250,8 +257,7 @@ export abstract class GameView<S extends GameSim> {
       const pf = this.prefabs.get(p.id)!;
       pf.root.position.set(p.pos.x, 0, p.pos.z);
       pf.root.rotation.y = p.yaw;
-      const heading = p.speed > 0.1 ? Math.atan2(p.vel.x, p.vel.z) - p.yaw : 0;
-      pf.update(dt, { speed: p.speed, yawRate: p.yawRate, dribbling: sim.owner === p && !sim.holder, heading, keeper: p.role === "gk" });
+      pf.update(dt, sim.locoInput(p));
     }
     // spectators are background: on low/medium they animate every other frame
     const everyOther = this.settings.quality !== "high";

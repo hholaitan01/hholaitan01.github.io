@@ -6,13 +6,13 @@ This report states only what was built and actually run. Where something was not
 
 ## 1. Verdict
 
-A single-player, keyboard-controlled browser football game with three match modes, practice drills, CPU opponents at
-three difficulty levels, a Lagos-inspired venue in day and evening lighting, audio, and settings. It builds and passes
-its automated checks from a fresh clone.
+A single-player browser football game with three match modes, practice drills, CPU opponents at three difficulty
+levels, a Lagos-inspired venue in day and evening lighting, audio, and settings. Computers play with the keyboard;
+phones and tablets get an eFootball-style touch pad (never shown on desktop). It builds and passes its automated
+checks from a fresh clone.
 
-It is **not ready to ship to phones**: touch controls were skipped in this pass (as requested), so on a phone or tablet
-the menus work but nobody can play without a keyboard. It has also **not been run on any real device**; every browser
-test used Chromium with software (SwiftShader) WebGL on a server.
+It has **not been run on any real device**. Every browser test used Chromium with software (SwiftShader) WebGL on a
+server; the touch pad was tested with real touch events on an emulated phone, not on a physical one.
 
 ## 2. Commands
 
@@ -22,8 +22,8 @@ npm ci                 # install exactly the locked versions (Node 22, npm 10 te
 npm run dev            # http://localhost:5173
 npm run typecheck
 npm run lint
-npm test               # 44 unit/simulation tests (Vitest, Node)
-npm run test:e2e       # builds, then 4 Playwright browser suites (needs Chromium; see tests/e2e/browser.mjs)
+npm test               # 47 unit/simulation tests (Vitest, Node)
+npm run test:e2e       # builds, then 6 Playwright browser suites (needs Chromium; see tests/e2e/browser.mjs)
 npm run build          # production build → dist/
 npm run build:pages    # production build → play/ (what GitHub Pages serves)
 npm run inspect:assets # regenerates docs/asset-inspection.json
@@ -36,27 +36,33 @@ npm run inspect:assets # regenerates docs/asset-inspection.json
 
 | Area | What works |
 |---|---|
-| Modes | Street 5s (cage, keepers) · 7-a-side (open turf; kick-ins, corners, goal kicks) · Four posts (no keepers, bollard goals; players a side, goal width, first-to score and walls configurable) · Practice (free play, 60 s target shooting, 60 s passing circuit) |
+| Modes | Street 5s (cage, monkey posts: 1.5 m × 0.75 m framed goals, no keepers) · 7-a-side (open turf; kick-ins, corners, goal kicks) · Four posts (no keepers, bollard goals; players a side, goal width, first-to score and walls configurable) · Practice (free play, 60 s target shooting, 60 s passing circuit) |
 | Flow | Main menu → setup (mode, teams, side, difficulty, length, day/evening) → rules screen generated from the same config the engine uses → kick-off → pause (resume, restart, quit) → full-time stats (possession, shots, on target, passes, tackles, saves) → rematch |
-| Teams | Six fictional teams with home/away kits, automatic kit-clash switch, distinct keeper kits, ratings that feed the simulation |
+| Teams | Fourteen street sides named after Lagos neighbourhoods (Onipanu, Mushin, Ojuelegba, Idumota and more) with home/away kits, automatic kit-clash switch, distinct keeper kits, ratings that feed the simulation |
 | Physics (Rapier) | Ball mass, bounce, rolling resistance per surface, air drag, Magnus curl; posts, crossbar, nets, boards and chain-link fence as colliders; whole-ball-over-the-line goals |
-| Gameplay | Acceleration and turn-rate-limited movement; close-control dribbling by touches; first touch that depends on ball pace and control (clean / heavy / ricochet); interceptions; ground, lofted and headed passes solved to arrive at pace; shots with a power-versus-accuracy trade-off; standing and sliding tackles; air kicks if the ball has gone before the contact frame |
+| Gameplay | Acceleration and turn-rate-limited movement; dribbling by real touches timed to the gait (the animation's foot meets each push; the ball rolls freely between touches); first touch that depends on ball pace and control (clean / heavy / ricochet); interceptions; ground, lofted and headed passes solved to arrive at pace; shots with a power-versus-accuracy trade-off; standing and sliding tackles; air kicks if the ball has gone before the contact frame |
 | Keepers | Narrow the angle, react to shots (step or dive, catch or parry), body blocks, claim loose balls and smother in the area, then throw or kick out |
 | AI | Per-team state machine (carry, receive, support, press, cover, mark, chase, keeper, restarts); easy/normal/hard; in-match debug overlay (F3 / button) |
-| Animation | 38 clips. Stride speeds and foot-plant phases measured from the clips at load; phase-synced 8-way locomotion blend; kicks fire on measured contact frames with the ball steered to the foot; random celebration and fall variants |
-| Venue | Procedural Lagos-inspired cage court: buildings with barred windows and zinc roofs, invented shop signs, yellow minibuses, stalls, poles and cables, floodlights, mural, animated spectators. Day and evening |
+| Animation | 38 clips. Stride speeds and foot-plant phases measured from the clips at load; phase-synced 8-way locomotion blend; kicks fire on measured contact frames, the kicker adjusting his steps to meet the ball (it is never pulled to the foot); random celebration and fall variants |
+| Venue | Procedural Lagos-inspired cage court: sun-bleached cracked concrete with faded green-white-green paint and a painted centre roundel, red laterite earth, broken tarmac with black-and-yellow kerbs, slogan boards, brightly painted buildings with barred windows and zinc roofs, invented shop signs, yellow minibuses, stalls, poles and cables, floodlights, mural, animated spectators. Day and evening |
 | Audio | CC0 impact samples (kicks, shots, woodwork, boards, fence, net, tackles), synthesised whistle, crowd and street ambience; master/effects/crowd volume and mute, saved |
+| Touch | eFootball-style pad on phones and tablets only (`(hover: none) and (pointer: coarse)`): floating stick; PASS (flick: lofted), THROUGH (flick: lofted), SHOOT (hold), DASH when attacking; SWITCH, SLIDE, TACKLE, DASH when defending; BALL in practice. Multi-touch |
 | Orientation | Landscape only on phones and tablets: held upright, a rotate screen covers the app and any match or drill pauses; where the browser allows it (Android Chrome) the first tap goes fullscreen and locks landscape. iOS Safari has no orientation lock, so the rotate screen is what enforces it there. Desktop windows are never blocked |
 | Settings | Graphics low/medium/high (resolution, antialiasing, shadows, normal maps, environment lighting, crowd size), time of day, sound; saved in localStorage |
 | Tools | Player lab with kit/face/number editor and an animation viewer (every clip, scrub, slow motion, jump-to-contact, foot trails) |
 
-## 4. Controls (keyboard)
+## 4. Controls
+
+Touch (phones and tablets): see the README's touch section or How to play in the game.
+
+Keyboard:
 
 | Key | With the ball | Without the ball |
 |---|---|---|
 | W A S D / arrows | move | move |
 | Shift | sprint | sprint |
 | Space or J | pass (tap firm to a team-mate, hold to play into space) | switch to the player nearest the ball |
+| I | through ball into a runner's path | — |
 | K (hold) | shoot; hold longer for power (less accurate, rises) | standing tackle |
 | L | lofted pass | slide tackle |
 | Q | — | switch player |
@@ -71,15 +77,18 @@ Aim shots across the goal by holding up/down on release. Practice adds R (ball b
 |---|---|
 | Typecheck (`tsc -b`) | pass |
 | Lint (ESLint + typescript-eslint + react-hooks) | pass, 0 warnings |
-| Unit/simulation (Vitest) | **44/44** in 6 files: asset manifest, locomotion blend space, Rapier physics (bounce, rolling distance vs analytic value, net, post, bar, Magnus curl, boards, fence), gameplay (dribbling, turning, walk-in goal, pass-and-return, contact timing and alignment, air kick, interception, first touch, shot accuracy, target drill), full CPU-vs-CPU matches in all three modes, difficulty ordering |
+| Unit/simulation (Vitest) | **47/47** in 6 files: asset manifest, locomotion blend space, Rapier physics (bounce, rolling distance vs analytic value, net, post, bar, Magnus curl, boards, fence), gameplay (dribbling by touches, turning, walk-in goal, pass-and-return, contact timing and alignment, air kick, interception, first touch, shot accuracy, target drill), full CPU-vs-CPU matches in all three modes, shoot-near-an-opponent tackles, difficulty ordering |
 | Browser — Player lab (`lab.e2e.mjs`) | **26/26**: model, contact frames, every button drives the state machine, directional clips, rendered foot on its contact point (≤ 3 mm), viewer, head swap, desktop + phone-landscape viewports |
 | Browser — Practice (`practice.e2e.mjs`) | **12/12**: real key events for dribble, shot and goal, pass and return, audio unlock and sounds, mute persistence, drills, pause/resume, menu |
-| Browser — Venue (`venue.e2e.mjs`) | **25/25**: day/evening × quality × desktop/phone; player and ball contrast against the ground; goal kept in shot |
-| Browser — Match (`match.e2e.mjs`) | **15/15**: setup, four-post house rules on the rules screen, kick-off by keyboard, whistle, AI debug overlay, pause, full-time stats, rematch, quit, how-to-play, settings |
+| Browser — Venue (`venue.e2e.mjs`) | **21/21**: day/evening × quality × desktop/phone; player and ball contrast against the ground; goal kept in shot |
+| Browser — Match (`match.e2e.mjs`) | **14/14**: setup, four-post house rules on the rules screen, kick-off by keyboard, whistle, AI debug overlay, pause, full-time stats, rematch, quit, how-to-play, settings |
+| Browser — Orientation (`orientation.e2e.mjs`) | **8/8**: rotate screen on upright phones, pause while upright, desktop never blocked |
+| Browser — Touch (`touch.e2e.mjs`) | **16/16**: pad on an emulated phone and never on desktop; real touch events for stick, PASS, flick-up lofted pass, THROUGH, SHOOT with power bar, DASH with two fingers, defending layout, SWITCH and TACKLE |
 | Fresh clone | `npm ci`, typecheck, lint, test, build all pass from a clean clone |
 
-Difficulty (10 seeded 2×2-minute 5s matches per pairing, identical ratings, sides swapped): hard v easy 20–3 (W8 L0),
-hard v normal 13–3 (W6 L1), normal v easy 17–4 (W8 L0). See `docs/AI.md` for how a test failure drove the retuning.
+Difficulty, monkey-post 5s (10 seeded 2×2-minute matches per pairing, identical ratings, sides swapped): hard v easy
+32–12 (W8 L2), hard v normal 15–8 (W6 L2), normal v easy 35–27 (W5 L3). Over 30 matches per pairing: 113–34, 45–26
+and 114–66. Hard v normal is the closest; see `docs/AI.md` for the retuning and its evidence.
 
 Two checks were reworked during this audit because they were testing the environment, not the game: the browser
 tests now wait for rendered frames rather than fixed times (software WebGL ran at 1–20 fps), and an earlier test of
@@ -127,11 +136,13 @@ Not done: no measurement on real phones, tablets or GPUs; no thermal or battery 
 
 ## 8. Known limitations
 
-- **No touch controls** (stage skipped as requested). Phones and tablets need a keyboard to play.
-- **Not tested on real devices** or browsers other than Chromium; Safari/iOS is untested.
+- **Not tested on real devices** or browsers other than Chromium; Safari/iOS is untested. The touch pad has only
+  been driven in emulation.
 - No fouls, cards, penalties, offside, substitutions or stamina. The rules screen states this.
 - **No multiplayer**, local or online, and none is advertised.
 - Teams keep the same ends for the whole match.
+- The touch pad's defending layout has no eFootball "match-up" (auto-press) button, because the game has no such
+  action. Its buttons are mapped to what the game does have (switch, slide, tackle, dash).
 - The match setup lives in memory, so reloading the match page returns to setup.
 - Headers have a fixed contact time of 0.3 s (not measured from the clip). There are no dedicated turn clips; turning
   uses side-steps.

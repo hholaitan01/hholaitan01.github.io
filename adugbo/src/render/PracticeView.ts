@@ -77,6 +77,7 @@ export class PracticeView extends GameView<PracticeSim> {
         const rm = this.stickToWorld(r.stick), aim = len(rm) > 0.1 ? rm : null;
         if (r.button === "pass") sim.pass(u, aim ?? { x: Math.sin(u.yaw), z: Math.cos(u.yaw) }, power);
         if (r.button === "lob") sim.pass(u, aim ?? { x: Math.sin(u.yaw), z: Math.cos(u.yaw) }, power, true);
+        if (r.button === "through") sim.pass(u, aim ?? { x: Math.sin(u.yaw), z: Math.cos(u.yaw) }, power, !!r.flick, true);
         if (r.button === "shoot") {
           // aim across the goal with up/down; with no input pick the far post
           const aimZ = aim && Math.abs(rm.z) > 0.2 ? Math.sign(rm.z) * 0.8 : u.pos.z > 0 ? -0.6 : 0.6;

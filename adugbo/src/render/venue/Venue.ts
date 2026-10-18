@@ -4,6 +4,7 @@ import type { PitchSpec } from "../../game/pitch";
 import type { QualityProfile, TimeOfDay } from "../../settings/settings";
 import { buildPitch } from "../pitchMesh";
 import { building, mural, type Building } from "./buildings";
+import { courtDecal, kerbMaterial, lateriteTexture } from "./ground";
 import { canvasTex, pbr, seeded } from "./materials";
 import { mergeStatic } from "./mergeStatic";
 import { cable, chainLink, chairGeometry, floodMast, minibus, powerPole, streetLamp, umbrella } from "./props";
@@ -71,20 +72,40 @@ export class Venue {
     this.sun.shadow.bias = -0.0005;
     this.sun.shadow.normalBias = 0.03;
 
-    // ground: concrete court, asphalt streets around it
-    const street = new THREE.Mesh(new THREE.PlaneGeometry(160, 120), pbr("asphalt", { repeat: 24, normals: q.normalMaps }));
-    street.rotation.x = -Math.PI / 2;
-    street.position.y = -0.01;
-    street.receiveShadow = true;
-    this.group.add(street);
+    // ground: red laterite earth all round, a strip of broken tarmac along the far-side street with painted kerbs,
+    // and the court itself: sun-bleached, cracked concrete with faded paint (or worn turf for 7-a-side)
+    const earth = new THREE.Mesh(new THREE.PlaneGeometry(160, 120), new THREE.MeshStandardMaterial({ map: lateriteTexture(40), roughness: 1 }));
+    earth.rotation.x = -Math.PI / 2;
+    earth.position.y = -0.012;
+    earth.receiveShadow = true;
+    this.group.add(earth);
+    const roadZ0 = -W - 5.4, roadZ1 = -W - 3.0, roadLen = 2 * L + 60;
+    const road = new THREE.Mesh(new THREE.PlaneGeometry(roadLen, roadZ1 - roadZ0), pbr("asphalt", { repeat: 6, color: "#8a8784", normals: q.normalMaps }));
+    road.rotation.x = -Math.PI / 2;
+    road.position.set(0, -0.006, (roadZ0 + roadZ1) / 2);
+    road.receiveShadow = true;
+    this.group.add(road);
+    for (const z of [roadZ0 - 0.09, roadZ1 + 0.09]) {
+      const kerb = new THREE.Mesh(new THREE.BoxGeometry(roadLen, 0.14, 0.18), kerbMaterial(roadLen));
+      kerb.position.set(0, 0.06, z);
+      kerb.receiveShadow = true;
+      this.group.add(kerb);
+    }
     const courtW = 2 * (L + pitch.goalDepth + 0.15), courtD = 2 * (W + 0.3);
     const court = new THREE.Mesh(
       new THREE.PlaneGeometry(courtW, courtD),
-      pitch.surface === "turf" ? turfMaterial(courtW, courtD) : pbr("concrete", { repeat: 6, color: "#86786a", normals: q.normalMaps }),
+      pitch.surface === "turf" ? turfMaterial(courtW, courtD) : pbr("concrete", { repeat: 6, color: "#e0bf8f", normals: q.normalMaps }),
     );
     court.rotation.x = -Math.PI / 2;
     court.receiveShadow = true;
     this.group.add(court);
+    if (pitch.surface !== "turf") {
+      const decal = new THREE.Mesh(new THREE.PlaneGeometry(courtW, courtD), courtDecal(courtW, courtD));
+      decal.rotation.x = -Math.PI / 2;
+      decal.position.y = 0.0015;
+      decal.receiveShadow = true;
+      this.group.add(decal);
+    }
     this.group.add(buildPitch(pitch, { ground: false }));
 
     this.addFence(L, W);

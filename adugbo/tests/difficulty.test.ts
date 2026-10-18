@@ -12,8 +12,8 @@ function series(a: Difficulty, b: Difficulty, n: number, seed0: number) {
   const tackles = { a: 0, aWon: 0, b: 0, bWon: 0 };
   for (let i = 0; i < n; i++) {
     const side = i % 2;
-    // identical team ratings, so only behaviour differs
-    const sim = new MatchSim({ ...defaultConfig("fives", "yab", "sur"), halfMinutes: 2 }, undefined, seed0 + i, {
+    // the same side on both ends (identical ratings), so only behaviour differs
+    const sim = new MatchSim({ ...defaultConfig("fives", "onipanu", "onipanu"), halfMinutes: 2 }, undefined, seed0 + i, {
       userControlled: false,
       teamDifficulty: side === 0 ? [a, b] : [b, a],
     });

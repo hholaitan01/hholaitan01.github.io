@@ -1,11 +1,12 @@
-// Desktop keyboard input. (Touch controls are a separate, later stage.)
+// Player input: the desktop keyboard, plus the on-screen touch pad on phones and tablets (src/ui/TouchPad.tsx), which
+// feeds the same buttons and stick through press()/release()/setStick(), so both drive the game identically.
 // Movement is reported in camera space: x = right, y = up the screen (away from the camera).
 
-export type Button = "pass" | "shoot" | "lob" | "sprint" | "reset" | "pause" | "switch" | "mute";
+export type Button = "pass" | "through" | "shoot" | "lob" | "sprint" | "reset" | "pause" | "switch" | "mute";
 
 const KEYMAP: Record<string, Button | "up" | "down" | "left" | "right"> = {
   KeyW: "up", ArrowUp: "up", KeyS: "down", ArrowDown: "down", KeyA: "left", ArrowLeft: "left", KeyD: "right", ArrowRight: "right",
-  Space: "pass", KeyJ: "pass", KeyK: "shoot", KeyL: "lob", ShiftLeft: "sprint", ShiftRight: "sprint", KeyR: "reset", KeyP: "pause", Escape: "pause", KeyQ: "switch", KeyM: "mute",
+  Space: "pass", KeyJ: "pass", KeyI: "through", KeyK: "shoot", KeyL: "lob", ShiftLeft: "sprint", ShiftRight: "sprint", KeyR: "reset", KeyP: "pause", Escape: "pause", KeyQ: "switch", KeyM: "mute",
 };
 
 /** Match controls: the same keys do different things with and without the ball. */
@@ -13,6 +14,7 @@ export const MATCH_KEY_HELP: [string, string, string][] = [
   ["W A S D / arrows", "move", "move"],
   ["Shift", "sprint", "sprint"],
   ["Space or J", "pass (aim with direction)", "switch to the player nearest the ball"],
+  ["I", "through ball into a runner's path", "—"],
   ["K (hold)", "shoot, hold for power", "standing tackle"],
   ["L", "lofted pass", "slide tackle"],
   ["Q", "—", "switch player"],
@@ -24,6 +26,7 @@ export const KEY_HELP: [string, string][] = [
   ["W A S D / arrows", "move"],
   ["Shift", "sprint"],
   ["Space or J", "pass (hold for longer pass into space)"],
+  ["I", "through ball"],
   ["K (hold)", "shoot — hold longer for power"],
   ["L", "lofted pass"],
   ["R", "ball back to your feet"],
@@ -31,12 +34,25 @@ export const KEY_HELP: [string, string][] = [
   ["M", "mute / unmute"],
 ];
 
+export interface Release {
+  button: Button;
+  /** Seconds the button was held. */
+  held: number;
+  /** Stick at the moment of release (a quick tap may end before the next frame reads it). */
+  stick: { x: number; y: number };
+  /** Touch pad: the finger was flicked upward off the button (lofted pass / lofted through ball). */
+  flick?: boolean;
+}
+
 export class Keyboard {
   private down = new Set<string>();
   private pressedAt = new Map<Button, number>();
   /** Buttons released this frame with how long they were held (s). */
-  private released: { button: Button; held: number; stick: { x: number; y: number } }[] = [];
+  private released: Release[] = [];
   private tapped = new Set<Button>();
+  /** Touch-pad state: buttons held on screen and the virtual stick. */
+  private virt = new Set<Button>();
+  private vstick: { x: number; y: number } | null = null;
 
   constructor(private target: Window = window) {
     target.addEventListener("keydown", this.onDown);
@@ -72,6 +88,8 @@ export class Keyboard {
   private onBlur = () => {
     this.down.clear();
     this.pressedAt.clear();
+    this.virt.clear();
+    this.vstick = null;
   };
 
   private is(dir: string) {
@@ -79,8 +97,9 @@ export class Keyboard {
     return false;
   }
 
-  /** Camera-space stick, length ≤ 1. */
+  /** Camera-space stick, length ≤ 1. The touch pad's stick wins while a thumb is on it. */
   stick(): { x: number; y: number } {
+    if (this.vstick) return this.vstick;
     const x = (this.is("right") ? 1 : 0) - (this.is("left") ? 1 : 0);
     const y = (this.is("up") ? 1 : 0) - (this.is("down") ? 1 : 0);
     const l = Math.hypot(x, y);
@@ -88,8 +107,46 @@ export class Keyboard {
   }
 
   held(b: Button): boolean {
+    if (this.virt.has(b)) return true;
     for (const c of this.down) if (KEYMAP[c] === b) return true;
     return false;
+  }
+
+  // ---- touch pad -------------------------------------------------------------------------------------------------
+
+  /** An on-screen button went down. */
+  press(b: Button) {
+    if (this.virt.has(b)) return;
+    this.virt.add(b);
+    this.pressedAt.set(b, performance.now());
+    this.tapped.add(b);
+  }
+
+  /** An on-screen button came up (`flick`: the finger left it with an upward flick). */
+  release(b: Button, flick = false) {
+    if (!this.virt.delete(b)) return;
+    const t0 = this.pressedAt.get(b);
+    this.pressedAt.delete(b);
+    if (t0 !== undefined) this.released.push({ button: b, held: (performance.now() - t0) / 1000, stick: this.stick(), flick });
+  }
+
+  /** Drops a release queued this frame (a pass turned into a lofted pass by a flick). */
+  cancelLastRelease(b: Button) {
+    for (let i = this.released.length - 1; i >= 0; i--)
+      if (this.released[i].button === b) {
+        this.released.splice(i, 1);
+        return;
+      }
+  }
+
+  /** The virtual stick (length ≤ 1), or null when no thumb is on it. */
+  setStick(v: { x: number; y: number } | null) {
+    if (!v) {
+      this.vstick = null;
+      return;
+    }
+    const l = Math.hypot(v.x, v.y);
+    this.vstick = l > 1 ? { x: v.x / l, y: v.y / l } : l < 0.12 ? { x: 0, y: 0 } : v;
   }
 
   /** Seconds the button has been held so far (0 if up). */

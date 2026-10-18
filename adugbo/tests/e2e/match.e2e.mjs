@@ -43,7 +43,7 @@ try {
   await page.waitForTimeout(800);
   const st = () => page.evaluate(() => { const s = window.__match.sim; return { phase: s.phase, score: [...s.score], diff: s.cfg.difficulty, away: s.teams[1].id, ctrl: s.controlled?.id ?? null, taker: s.restart?.taker?.id ?? null, kickTeam: s.restart?.team ?? null, user: s.cfg.userTeam }; });
   let s = await st();
-  check("match starts in kick-off with chosen settings", s.phase === "kickoff" && s.diff === "hard" && s.away !== "msh", JSON.stringify(s));
+  check("match starts in kick-off with chosen settings", s.phase === "kickoff" && s.diff === "hard" && s.away !== "mushin", JSON.stringify(s));
   await page.screenshot({ path: `${out}/match-kickoff.png` });
   if (s.kickTeam === s.user) {
     check("user controls the kick-off taker", s.ctrl === s.taker, JSON.stringify(s));

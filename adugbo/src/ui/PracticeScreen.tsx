@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { PracticeView, type PracticeHud } from "../render/PracticeView";
 import { DRILLS, type Drill } from "../game/sim/PracticeSim";
 import { KEY_HELP } from "../controls/keyboard";
+import { TouchPad, useTouchUi } from "./TouchPad";
 import { loadSettings, saveSettings, type Quality, type Settings, type TimeOfDay } from "../settings/settings";
 
 declare global {
@@ -19,6 +20,7 @@ export function PracticeScreen({ onExit }: { onExit: () => void }) {
   const [drill, setDrill] = useState<Drill>("free");
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const drillRef = useRef<Drill>("free");
+  const touch = useTouchUi();
 
   useEffect(() => {
     // the renderer is rebuilt when graphics settings change (antialiasing can't be toggled live)
@@ -51,7 +53,7 @@ export function PracticeScreen({ onExit }: { onExit: () => void }) {
   };
 
   return (
-    <div className="game">
+    <div className={touch ? "game touch" : "game"}>
       <div className="game-view" ref={host} />
       {!hud && !error && <div className="loading">Loading practice… {Math.round(progress * 100)}%</div>}
       {error && <div className="loading error">Could not start practice: {error}</div>}
@@ -107,8 +109,8 @@ export function PracticeScreen({ onExit }: { onExit: () => void }) {
                 <b>{k}</b> {v}
               </div>
             ))}
-            <p className="muted">Touch controls are not built yet; practice needs a keyboard for now.</p>
           </details>
+          {touch && view.current && !hud.paused && !hud.finished && <TouchPad keys={view.current.keys} mode="attack" extra={{ label: "BALL", button: "reset" }} />}
           {(hud.paused || hud.finished) && (
             <div className="overlay">
               <h2>{hud.finished ? "Drill complete" : "Paused"}</h2>

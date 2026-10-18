@@ -96,7 +96,7 @@ try {
       await page.screenshot({ path: `${out}/lab-viewer-strike-contact.png` });
       await page.getByLabel("Clip").selectOption("");
       // look changes: team, head, number
-      await page.getByLabel("Team").selectOption("ajg");
+      await page.getByLabel("Team").selectOption("ojuelegba");
       await page.getByLabel("Number").fill("7");
       await page.getByLabel("Head").selectOption("m016");
       await page.waitForTimeout(400);

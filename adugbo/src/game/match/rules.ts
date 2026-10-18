@@ -26,8 +26,8 @@ export interface MatchConfig {
 export const MODES: Record<ModeId, { title: string; blurb: string; defaults: Omit<MatchConfig, "home" | "away" | "userTeam" | "difficulty" | "timeOfDay"> }> = {
   fives: {
     title: "Street 5s",
-    blurb: "Five-a-side in the cage. Boards keep the ball in play; goalkeepers in nets.",
-    defaults: { mode: "fives", halfMinutes: 3, playersPerSide: 5, keepers: true, targetScore: null, goalWidth: FIVES_PITCH.goalWidth, walls: true },
+    blurb: "Five-a-side monkey post in the cage: small goals, no goalkeepers. Boards keep the ball in play.",
+    defaults: { mode: "fives", halfMinutes: 3, playersPerSide: 5, keepers: false, targetScore: null, goalWidth: FIVES_PITCH.goalWidth, walls: true },
   },
   sevens: {
     title: "7-a-side",
@@ -65,6 +65,8 @@ export function rulesText(c: MatchConfig): string[] {
     r.push(`Goals are ${c.goalWidth.toFixed(1)} m wide between two posts, with no crossbar: the ball must cross below ${FOURPOST_MAX_HEIGHT.toFixed(1)} m.`);
     r.push(c.targetScore ? `First to ${c.targetScore} wins, or the leader after ${c.halfMinutes} minutes.` : `One period of ${c.halfMinutes} minutes.`);
   } else {
+    if (c.mode === "fives")
+      r.push(`Monkey post: the goals are ${c.goalWidth.toFixed(1)} m wide and ${FIVES_PITCH.goalHeight.toFixed(2)} m high. Nobody can use their hands, so someone has to stay back.`);
     r.push(`Two halves of ${c.halfMinutes} minutes (real time). Teams keep the same ends.`);
   }
   r.push(c.walls ? "Boards and fence around the pitch: the ball stays in play off the walls." : "Open pitch: kick-ins from the touchline, corners and goal kicks.");
@@ -74,6 +76,6 @@ export function rulesText(c: MatchConfig): string[] {
   return r;
 }
 
-export function defaultConfig(mode: ModeId, home = "yab", away = "msh"): MatchConfig {
+export function defaultConfig(mode: ModeId, home = "onipanu", away = "mushin"): MatchConfig {
   return { ...MODES[mode].defaults, home, away, userTeam: 0, difficulty: "normal", timeOfDay: "day" };
 }

@@ -1,8 +1,9 @@
 # ADUGBO: Street Kings
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
-Work is delivered in stages. **All planned stages are built except touch controls (skipped on request). See `docs/RELEASE_REPORT.md` for the
-release-readiness audit: test results, performance, licences, limitations and deployment.** Touch controls are not built: playing needs a keyboard. On phones and tablets the game is landscape-only.
+Work is delivered in stages. **See `docs/RELEASE_REPORT.md` for the release-readiness audit: test results, performance,
+licences, limitations and deployment.** Computers play with the keyboard; phones and tablets get an eFootball-style touch
+pad (hidden on desktop) and are landscape-only. Touch has been tested in emulated Chromium only, not on a real device.
 
 ## Commands
 
@@ -55,10 +56,10 @@ https://hholaitan01.github.io/adugbo/play/. (A from-scratch `npm install` withou
 
 ## Stage 4: what works
 - Main menu → Play match → mode, teams, side, CPU difficulty, length, time of day → rules for this match → kick-off.
-- Modes: **Street 5s** (cage, keepers), **7-a-side** (open turf, kick-ins, corners, goal kicks), **Four posts**
+- Modes: **Street 5s** (cage, monkey posts: 1.5 m × 0.75 m goals, no keepers), **7-a-side** (open turf, kick-ins, corners, goal kicks), **Four posts**
   (no keepers, bollard goals, configurable players a side, goal width, first-to score, cage or open street), and
   **Practice**. The rules screen text is generated from the same config the engine uses.
-- Six fictional teams with home/away kits (automatic clash switch), keeper kits, ratings that feed the simulation.
+- Fourteen street sides named after Lagos neighbourhoods (Onipanu, Mushin, Ojuelegba, Idumota and more) with home/away kits (automatic clash switch), keeper kits, ratings that feed the simulation.
 - Match engine (`src/game/match/MatchSim.ts`): kick-offs (opponents held out of the circle), restarts with 4 m
   distance, goals, half-time, full-time, first-to-N, stats (possession, shots, on target, passes, tackles, saves).
 - Keepers: narrow the angle, react to shots with a skill/difficulty-based chance, step-save or dive, catch or parry,
@@ -77,8 +78,11 @@ https://hholaitan01.github.io/adugbo/play/. (A from-scratch `npm install` withou
 - Locomotion is a phase-synced blend space: idle → walk → jog → sprint by speed, eight-way direction blending
   (backpedal, strafe, diagonals), keeper shuffles, turn-on-the-spot side steps. Defenders and keepers face the ball
   while moving slowly, so the directional clips are used in matches.
-- Kick contact: the ball is steered during the wind-up to arrive where the animation's foot is on the contact frame.
-  Verified in the sim (gap < 0.2 m standing, jogging, sprinting) and on the rendered skeleton (< 0.05 m).
+- Kick contact: the kicker adjusts his steps during the wind-up so the animation's foot meets the ball on the contact
+  frame (the ball is never pulled toward the foot). Verified in the sim: gap ≤ 0.03 m standing, jogging and sprinting.
+- Dribbling is a series of real touches timed to the gait: the sim owns the gait phase and the animation follows it,
+  so each push lands when a foot reaches forward (phases measured from the dribble and sprint clips). Between touches
+  the ball rolls freely and slows on the surface; sharp turns get a cut or drag-back, stopping gets a sole trap.
 - Variety: random celebration (cheer, dance, hop, jump) and fall (trip, two slides) clips; desynchronised idles.
 - Profiling: animation cost per frame shown in the HUD; spectators animate every other frame on low/medium.
 - Animation viewer in the Player lab: every clip with source, scrubbing, slow motion, jump-to-contact, measured
@@ -90,6 +94,23 @@ https://hholaitan01.github.io/adugbo/play/. (A from-scratch `npm install` withou
   synthesised crowd murmur that swells near the goals, "ooh" on saves and woodwork, roar on goals; street rumble.
 - Master / effects / crowd volume and mute in Settings, mute button in practice and matches, M key. Saved.
 - Graphics quality low / medium / high in Settings and in practice (see stage 3), day/evening per match.
+
+## Touch controls (phones and tablets)
+- Shown only where the main pointer is a touch screen and there is no hover (`(hover: none) and (pointer: coarse)`),
+  so desktops, including touch-screen laptops, keep the keyboard and never see it.
+- Left half: floating stick that appears under the thumb. Right: four eFootball-style buttons that change with
+  possession. Attacking: PASS (flick up: lofted), THROUGH (into the runner's path; flick up: lofted), SHOOT (hold for
+  power) and DASH. Defending: SWITCH, SLIDE, TACKLE and DASH. Practice adds a BALL button. Multi-touch works, for
+  example stick plus DASH plus a pass.
+- The pad feeds the same input object as the keyboard, so every button does exactly what its key does.
+- `tests/e2e/touch.e2e.mjs` drives it with real touch events (Chrome DevTools protocol) on an emulated phone and checks
+  that it is absent on desktop. It has not been tried on a physical phone or tablet.
+
+## Venue look
+- Court floor: sun-bleached concrete with cracks, faded green-white-green and yellow paint splashes, a hand-painted
+  centre roundel and sand blown onto the edges. Around it: red laterite earth, a strip of broken tarmac with
+  black-and-yellow kerbs, boards painted with slogans (ADUGBO, BALL NA LIFE, EKO O NI BAJE…), and brightly painted
+  houses. All drawn in code. Stalls, umbrellas, chairs and minibuses are unchanged.
 
 ## Docs
 - `docs/RELEASE_REPORT.md` — release-readiness audit

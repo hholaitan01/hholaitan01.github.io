@@ -21,8 +21,9 @@ export const PRACTICE_PITCH: PitchSpec = {
   length: 40, width: 26, goalWidth: 5, goalHeight: 2, goalDepth: 1.4, walls: true, wallHeight: 1.2, fenceHeight: 4, surface: "concrete", goals: "single",
 };
 
+/** Street 5s plays to monkey posts: small framed goals, about knee high, and no goalkeepers. */
 export const FIVES_PITCH: PitchSpec = {
-  length: 36, width: 22, goalWidth: 4.8, goalHeight: 1.8, goalDepth: 1.2, walls: true, wallHeight: 1.2, fenceHeight: 4, surface: "concrete", goals: "full",
+  length: 36, width: 22, goalWidth: 1.5, goalHeight: 0.75, goalDepth: 0.6, walls: true, wallHeight: 1.2, fenceHeight: 4, surface: "concrete", goals: "full",
 };
 
 export const SEVENS_PITCH: PitchSpec = {
