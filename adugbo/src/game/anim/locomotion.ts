@@ -14,6 +14,8 @@ export interface LocoInput {
   heading?: number;
   /** Goalkeepers side-step with the shuffle clips. */
   keeper?: boolean;
+  /** Gait phase supplied by the simulation (left-foot mid-stance at 0); when absent the prefab advances its own. */
+  phase?: number;
 }
 
 // Thresholds with hysteresis so the state does not flicker at a boundary.
@@ -75,6 +77,12 @@ export interface LocoBlend {
   weights: Record<string, number>;
   /** Metres covered per gait cycle of the blend (drives the shared phase); 0 when standing. */
   cycle: number;
+}
+
+/** Ground speed that drives the gait phase (turning on the spot side-steps at a slow walk). */
+export function gaitSpeed(inp: LocoInput, cycle: number) {
+  if (cycle <= 0) return 0;
+  return Math.max(inp.speed, Math.abs(inp.yawRate) > TURN_RATE && inp.speed < TURN_MAX_SPEED ? 1.1 : 0);
 }
 
 /**

@@ -63,6 +63,9 @@ export class SimPlayer {
   face: V2 | null = null;
   /** Human-controlled right now. */
   controlled = false;
+  /** Gait phase (0..1, left-foot mid-stance at 0), shared with the animation so dribble touches meet a swinging foot. */
+  gait = 0;
+  gaitPrev = 0;
 
   constructor(
     readonly id: number,
@@ -72,6 +75,8 @@ export class SimPlayer {
     readonly name: string,
   ) {
     this.pos = { ...start };
+    // players start out of step with each other (deterministic, so seeded matches replay exactly)
+    this.gait = (id * 0.618) % 1;
   }
 
   maxSpeed(withBall: boolean) {

@@ -104,7 +104,7 @@ export class MatchSim extends GameSim {
           control: Math.min(0.99, vary((a.passing + a.shooting) / 2) * sk),
           passing: Math.min(0.99, vary(a.passing) * sk),
           shooting: Math.min(0.99, vary(a.shooting) * sk),
-          defending: vary(a.defending),
+          defending: Math.min(0.99, vary(a.defending) * sk),
           keeping: vary(a.keeping),
         };
         const p = this.addPlayer(new SimPlayer(id++, t, v2(), attrs, `${team.name.split(" ")[0]} ${i + 1}`));

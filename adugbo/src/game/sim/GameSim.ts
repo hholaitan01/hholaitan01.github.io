@@ -1,6 +1,7 @@
 import { PhysicsWorld, type HitKind } from "../../physics/PhysicsWorld";
-import { BALL_R, ROLL_DECEL, SIM_DT } from "../../physics/constants";
-import type { ActionName } from "../anim/locomotion";
+import { AIR_K, BALL_R, ROLL_DECEL, SIM_DT } from "../../physics/constants";
+import { STRIDE_SPEED } from "../anim/clips";
+import { gaitSpeed, locoBlend, type ActionName } from "../anim/locomotion";
 import type { PitchSpec } from "../pitch";
 import { groundPassSpeed, jitter, loftSpeed, rng, shotLift } from "./kick";
 import { fwd, len, norm, sub, v2, yawOf, type SimPlayer, type V2 } from "./SimPlayer";
@@ -13,7 +14,26 @@ export interface ContactTimes {
   header: number;
   /** Where the striking foot is at contact, in the kicker's frame (x = his left, z = forward), per kick clip. */
   pos?: Partial<Record<"pass" | "shoot" | "kick", { x: number; z: number }>>;
+  /** Locomotion clips' stride speeds and lengths, and the dribble touch phase, so the sim's gait matches the animation. */
+  gait?: Gait;
 }
+
+export interface Gait {
+  stride: Record<string, number>;
+  dur: Record<string, number>;
+  /** Phases at which the dribbling (right) foot reaches forward in the dribble loop (left-foot mid-stance = 0). */
+  touch: number[];
+  /** The same for the sprint loop, where both feet push the ball on. */
+  sprintTouch: number[];
+}
+
+/** Measured from footballer.glb in the browser (FootballerAsset); used by headless tests. The view passes the live values. */
+export const DEFAULT_GAIT: Gait = {
+  stride: { ...STRIDE_SPEED, walk: 0.95, jog: 2.36, dribble: 2.47, sprint: 8.52, jogSL: 2.62, jogSR: 2.1, jogB: 2.11, jogFL: 2.53, jogFR: 2.54, jogBL: 2.22, jogBR: 2.05, shufL: 2.81, shufR: 2.79 },
+  dur: { walk: 1.333, jog: 0.8, dribble: 1.733, sprint: 0.667, jogB: 0.8, jogSL: 0.7, jogSR: 0.733, jogFL: 0.8, jogFR: 0.8, jogBL: 0.833, jogBR: 0.733, shufL: 0.5, shufR: 0.5 },
+  touch: [0.067, 0.6],
+  sprintTouch: [0.2, 0.8],
+};
 /** Measured from footballer.glb (see FootballerAsset.findContact); the view passes the live values. */
 export const DEFAULT_CONTACTS: ContactTimes = {
   pass: 0.11, shoot: 0.4, kick: 0.32, header: 0.3,
@@ -120,6 +140,7 @@ export class GameSim {
         }
       }
       p.move(dt, this.owner === p, !!p.pending);
+      this.advanceGait(p, dt);
       this.physics.movePlayer(p.id, p.pos.x, p.pos.z);
     }
     if (this.passTarget && !this.pendingPass()) {
@@ -135,6 +156,74 @@ export class GameSim {
     this.physics.step();
     for (const h of this.physics.takeHits()) this.events.push({ type: "hit", kind: h.kind, speed: h.speed, player: h.player });
     this.afterStep(dt);
+  }
+
+  /** Locomotion input the view's animation will see for this player (same blend, so the same gait cycle). */
+  locoInput(p: SimPlayer) {
+    const heading = p.speed > 0.1 ? Math.atan2(p.vel.x, p.vel.z) - p.yaw : 0;
+    return { speed: p.speed, yawRate: p.yawRate, dribbling: this.owner === p && !this.holder, heading, keeper: p.role === "gk", phase: p.gait };
+  }
+
+  private gaitCycle(p: SimPlayer) {
+    const g = this.contacts.gait ?? DEFAULT_GAIT;
+    return locoBlend(this.locoInput(p), g.stride, g.dur).cycle;
+  }
+
+  private advanceGait(p: SimPlayer, dt: number) {
+    p.gaitPrev = p.gait;
+    const cyc = this.gaitCycle(p);
+    if (cyc > 0) p.gait = (p.gait + (gaitSpeed(this.locoInput(p), cyc) / cyc) * dt) % 1;
+  }
+
+  /** Phases in the gait cycle where a foot meets the ball: the dribble loop's, or the sprint loop's when sprinting. */
+  private touchPhases(p: SimPlayer) {
+    const g = this.contacts.gait ?? DEFAULT_GAIT;
+    const fast = p.speed > ((g.stride.dribble ?? 2.5) + (g.stride.sprint ?? 8)) / 2;
+    const t = fast ? g.sprintTouch : g.touch;
+    return t.length ? t : [0];
+  }
+
+  /** True on the step the gait passes a touch phase. */
+  private touchFrame(p: SimPlayer) {
+    const a = p.gaitPrev, b = p.gait;
+    return this.touchPhases(p).some((t) => (a <= b ? a < t && t <= b : t > a || t <= b));
+  }
+
+  /** Seconds until the gait reaches its next touch phase after the current one. */
+  private nextTouchIn(p: SimPlayer, cycle: number) {
+    const ts = this.touchPhases(p), rate = gaitSpeed(this.locoInput(p), cycle) / Math.max(cycle, 1e-3);
+    let gap = 1;
+    for (const t of ts) {
+      const d = (((t - p.gait) % 1) + 1) % 1;
+      if (d > 0.02) gap = Math.min(gap, d);
+    }
+    return gap / Math.max(rate, 0.3);
+  }
+
+  /**
+   * Sends the ball rolling so it arrives at `target`: in `time` seconds still moving if given, otherwise coming to
+   * rest there. Uses the surface's rolling resistance plus air drag, so it is a real touch, not a tether.
+   */
+  private rollTo(target: V2, time?: number, err = 0) {
+    const ball = this.ball2(), s = sub(target, ball), d = len(s);
+    if (d < 1e-3) {
+      this.physics.kick({ x: 0, y: Math.min(this.physics.ballVel.y, 0), z: 0 });
+      return;
+    }
+    const dir = { x: s.x / d, z: s.z / d };
+    let v = Math.sqrt(2 * this.rollDecel * d);
+    if (time !== undefined) {
+      const t = Math.max(time, 0.12);
+      let a = this.rollDecel;
+      for (let i = 0; i < 2; i++) {
+        v = d / t + 0.5 * a * t;
+        a = this.rollDecel + AIR_K * v * v;
+      }
+      // a ball that would stop short of the target in that time is played to stop on it instead
+      if (v < a * t) v = Math.sqrt(2 * a * d);
+    }
+    v = Math.min(v, 14);
+    this.physics.kick({ x: dir.x * v + jitter(this.rand) * err, y: Math.min(this.physics.ballVel.y, 0), z: dir.z * v + jitter(this.rand) * err });
   }
 
   protected setOwner(p: SimPlayer | null) {
@@ -158,12 +247,29 @@ export class GameSim {
       if (d > 1.8 || b.y > CONTROL_HEIGHT + 0.3) this.setOwner(null);
       else if (!o.pending) this.dribble(o);
       else {
-        // setting up a kick: the ball is steered to where the kicking foot will meet it on the contact frame
-        const t = this.contactPoint(o, o.pending.action);
-        // arrive exactly on the contact frame: cover the remaining gap in the remaining wind-up time
-        const left = Math.max(o.pending.delay, 1 / 60);
-        const tx = t.x + o.vel.x * left, tz = t.z + o.vel.z * left;
-        this.physics.kick({ x: (tx - ball.x) / left, y: Math.min(bv.y, 0), z: (tz - ball.z) / left });
+        // setting up a kick: the ball keeps rolling on its own, and the kicker adjusts his steps so the striking foot
+        // meets it on the contact frame (where the ball will be then, minus where the foot sits relative to him)
+        const left = Math.max(o.pending.delay, 1 / 60), sp = Math.hypot(bv.x, bv.z);
+        const a = this.rollDecel + AIR_K * sp * sp, run = sp > 1e-3 ? Math.min(sp * left - 0.5 * a * left * left, (sp * sp) / (2 * a)) : 0;
+        const fut = sp > 1e-3 ? { x: ball.x + (bv.x / sp) * run, z: ball.z + (bv.z / sp) * run } : ball;
+        const cp = this.contactPoint(o, o.pending.action), off = sub(cp, o.pos);
+        // where his own momentum takes him before contact (he brakes while winding up, as in SimPlayer.move)
+        const at = { ...o.pos }, v = { ...o.vel };
+        for (let t = 0; t < left - 1e-6; t += dt) {
+          const l = len(v), dec = Math.min(l, 20 * dt), k = l > 1e-6 ? (1 - dec / l) * (1 - 6 * dt) : 0;
+          v.x *= k;
+          v.z *= k;
+          at.x += v.x * dt;
+          at.z += v.z * dt;
+        }
+        const miss = sub({ x: fut.x - off.x, z: fut.z - off.z }, at);
+        // capped at a sprinter's extra stride: at speed he simply carries on running onto it
+        const need = len(miss) / left, cap = 8 * dt;
+        const step = Math.min(need * dt, cap, len(miss));
+        if (step > 1e-4) {
+          o.pos.x += (miss.x / len(miss)) * step;
+          o.pos.z += (miss.z / len(miss)) * step;
+        }
       }
     }
     // contest: an opponent (or anyone, when the ball is loose) within reach can take or deflect it
@@ -174,9 +280,11 @@ export class GameSim {
       if (d > REACH || b.y > CONTROL_HEIGHT) continue;
       if (this.owner) {
         if (this.owner.team === p.team) continue;
-        // a tackle-free steal: only when the ball is not tight to the carrier's feet
+        // a tackle-free steal (nicking it between touches): rare while the ball is tight to the carrier's feet, likelier
+        // the further his last push sent it, certain once it is clear of him
         const ownerGap = len(sub(ball, this.owner.pos));
-        if (ownerGap < 1.0 && this.rand() > 0.02) continue;
+        const perSecond = 0.2 + 2.5 * Math.max(0, ownerGap - 0.55) * (1.2 - this.owner.attrs.control);
+        if (ownerGap < 1.0 && this.rand() > perSecond * dt) continue;
       }
       if (this.passTarget && this.passTarget !== p && this.passTarget.team === p.team && !p.controlled) continue;
       this.firstTouch(p, { x: bv.x, y: bv.y, z: bv.z });
@@ -217,35 +325,64 @@ export class GameSim {
     }
   }
 
-  /** Close control: a series of touches that keep the ball a little ahead of the carrier. */
+  /**
+   * Close control as real touches. While moving, the ball is pushed on the frames where the right foot swings through
+   * it (measured from the dribble clip), weighted so it rolls, and slows by rolling resistance, to just ahead of where
+   * that foot will be at the next touch. Faster running means longer strides, so the ball is knocked further. Between
+   * touches the ball rolls freely. A sharp change of direction gets an immediate cut or drag-back; stopping gets a sole trap.
+   */
   private dribble(p: SimPlayer) {
     const b = this.physics.ballPos, bv = this.physics.ballVel;
     const ball = { x: b.x, z: b.z };
-    const sp = p.speed;
-    if (sp < 0.6) {
-      // under the sole: settle it at the feet
-      const t = this.footPoint(p, 0.38);
-      this.physics.kick({ x: (t.x - ball.x) * 4, y: Math.min(bv.y, 0), z: (t.z - ball.z) * 4 });
+    const sp = p.speed, wants = len(p.intent.move) > 0.1;
+    const err = (1 - p.attrs.control) * 0.35 * (p.intent.sprint ? 1.6 : 1);
+    if (!wants || sp < 0.6) {
+      // stopping or standing: trap it under the sole, then leave it be; if he has turned away from it, roll it back
+      // in front of the new facing with one small touch
+      const stopAt = sp > 0.05 ? { x: p.pos.x + (p.vel.x * sp) / 40, z: p.pos.z + (p.vel.z * sp) / 40 } : p.pos;
+      const f = fwd(p.yaw), t = { x: stopAt.x + f.x * 0.4, z: stopAt.z + f.z * 0.4 };
+      const off = len(sub(ball, t)), moving = Math.hypot(bv.x, bv.z);
+      if (p.touchCd <= 0 && (off > 0.3 || (moving > 0.4 && off < 0.5 && moving > Math.sqrt(2 * this.rollDecel * off) + 0.3))) {
+        this.rollTo(t, undefined, err * 0.3);
+        p.touchCd = 0.35;
+        this.events.push({ type: "touch", player: p.id, quality: "clean" });
+      }
       return;
     }
-    const lead = this.owner === p && p.intent.sprint ? 0.42 : 0.3; // seconds ahead the touch aims for
-    const target = {
-      x: p.pos.x + p.vel.x * lead + fwd(p.yaw).x * (0.45 + 0.05 * sp),
-      z: p.pos.z + p.vel.z * lead + fwd(p.yaw).z * (0.45 + 0.05 * sp),
-    };
-    const off = len(sub(ball, target));
-    const ahead = (ball.x - p.pos.x) * fwd(p.yaw).x + (ball.z - p.pos.z) * fwd(p.yaw).z;
-    if (p.touchCd <= 0 && (off > 0.32 || ahead < 0.25)) {
-      const t = lead;
-      const err = (1 - p.attrs.control) * 0.25 * (p.intent.sprint ? 1.6 : 1);
-      this.physics.kick({
-        x: (target.x - ball.x) / t + jitter(this.rand) * err,
-        y: 0,
-        z: (target.z - ball.z) / t + jitter(this.rand) * err,
-      });
-      p.touchCd = p.intent.sprint ? 0.42 : 0.26;
-      this.events.push({ type: "touch", player: p.id, quality: "clean" });
+    const dir = norm(p.intent.move);
+    const rel = sub(ball, p.pos), ahead = rel.x * dir.x + rel.z * dir.z, side = Math.abs(rel.x * dir.z - rel.z * dir.x);
+    const bsp = Math.hypot(bv.x, bv.z);
+    const along = bsp > 0.3 ? (bv.x * dir.x + bv.z * dir.z) / bsp : 1;
+    // the ball is going the wrong way, or is behind or wide of him: cut it now rather than wait for the stride
+    const cut = p.touchCd <= 0 && (ahead < 0.15 || side > 0.55 || along < 0.6) && len(rel) < 1.3;
+    const cyc = this.gaitCycle(p);
+    if (!cut && !this.touchFrame(p)) return;
+    // only touch a ball that is at his feet, not one still running ahead from the last push
+    if (!cut && (ahead > 0.85 || len(rel) > 1.2)) return;
+    const want = p.maxSpeed(true) * Math.min(1, len(p.intent.move));
+    // next touch: the next touch frame of the gait; a cut waits until he has turned and got going again
+    const turn = len(sub({ x: dir.x * want, z: dir.z * want }, p.vel)) / (13 + 5 * p.attrs.pace);
+    const horizon = Math.max(0.25, Math.min(0.9, this.nextTouchIn(p, cyc)), cut ? turn + 0.15 : 0);
+    const at = this.predictRun(p, horizon), lead = 0.42 + 0.03 * want;
+    this.rollTo({ x: at.x + dir.x * lead, z: at.z + dir.z * lead }, horizon, err);
+    p.touchCd = cut ? 0.3 : 0.15;
+    this.events.push({ type: "touch", player: p.id, quality: "clean" });
+  }
+
+  /** Where the player will be after `time` seconds if he keeps his current intent (same model as SimPlayer.move). */
+  private predictRun(p: SimPlayer, time: number): V2 {
+    const want = p.maxSpeed(true), at = { ...p.pos }, v = { ...p.vel }, h = 1 / 60;
+    const tv = { x: p.intent.move.x * want, z: p.intent.move.z * want };
+    for (let t = 0; t < time; t += h) {
+      const dv = sub(tv, v), dl = len(dv), acc = (len(tv) > len(v) ? 13 + 5 * p.attrs.pace : 20) * h;
+      if (dl > acc) {
+        v.x += (dv.x / dl) * acc;
+        v.z += (dv.z / dl) * acc;
+      } else Object.assign(v, tv);
+      at.x += v.x * h;
+      at.z += v.z * h;
     }
+    return at;
   }
 
   /** True if the ball is where this player's kick can reach it right now. */
@@ -396,7 +533,9 @@ export class GameSim {
       let success = false;
       if (inReach) {
         const def = p.attrs.defending ?? 0.6, ctl = carrier ? carrier.attrs.control : 0;
-        const chance = carrier ? Math.min(0.9, Math.max(0.15, 0.5 + 0.55 * (def - ctl) + (slide ? 0.12 : 0))) : 1;
+        // a ball just pushed out of the carrier's stride is easier to nick than one tight at his feet
+        const exposed = carrier ? Math.max(-0.15, Math.min(0.25, (len(sub(ball, carrier.pos)) - 0.55) * 0.6)) : 0;
+        const chance = carrier ? Math.min(0.9, Math.max(0.15, 0.5 + 0.55 * (def - ctl) + exposed + (slide ? 0.12 : 0))) : 1;
         success = this.rand() < chance;
       }
       if (success) {

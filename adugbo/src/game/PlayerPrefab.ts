@@ -3,7 +3,7 @@ import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { kitMaterial, shirtTexture, type Kit, type KitUniforms } from "../render/kit";
 import { STRIDE_SPEED } from "./anim/clips";
-import { ACTION_CLIP, ACTION_RATE, ACTION_VARIANTS, locoBlend, selectLocomotion, type ActionName, type LocoInput, type LocoState } from "./anim/locomotion";
+import { ACTION_CLIP, ACTION_RATE, ACTION_VARIANTS, gaitSpeed, locoBlend, selectLocomotion, type ActionName, type LocoInput, type LocoState } from "./anim/locomotion";
 
 export const HEADS = ["m300", "m006", "m007", "m102", "m130", "sm005", "m016", "m108"] as const;
 export type HeadId = (typeof HEADS)[number];
@@ -153,6 +153,11 @@ export class FootballerAsset {
 
   /** Normalised time of the left foot's mid-stance in each loop, so blended clips share foot phase. */
   readonly plantPhase: Record<string, number> = {};
+  /**
+   * Shared-phase times at which each foot reaches furthest forward while still low: where a dribbler's push meets the
+   * ball. Measured per loop relative to the left foot's mid-stance (the shared phase's zero).
+   */
+  readonly reachPhases: Record<string, { l: number[]; r: number[] }> = {};
   readonly durations: Record<string, number> = {};
 
   private measurePlant(name: string) {
@@ -167,6 +172,16 @@ export class FootballerAsset {
       }
     });
     this.plantPhase[name] = (best * dt) / clip.duration;
+    // forward reach: local maxima of the foot's forward position, near the ground, at least 70% of the furthest
+    const reach = (pts: THREE.Vector3[]) => {
+      const floor = Math.min(...pts.map((p) => p.y)), top = Math.max(...pts.map((p) => p.z)), n = pts.length, out: number[] = [];
+      for (let i = 0; i < n; i++) {
+        const p = pts[i], a = pts[(i + n - 1) % n], b = pts[(i + 1) % n];
+        if (p.y < floor + 0.15 && p.z >= a.z && p.z > b.z && p.z > top * 0.7) out.push(+((((((i - best) * dt) / clip.duration) % 1) + 1) % 1).toFixed(3));
+      }
+      return out;
+    };
+    this.reachPhases[name] = { l: reach(track.l), r: reach(track.r) };
   }
 
   /** Measured stride speeds, falling back to the hand-set table for clips that could not be measured. */
@@ -402,8 +417,9 @@ export class PlayerPrefab {
     let total = 0;
     for (const v of this.locoW.values()) total += v;
     // shared gait phase: advance by distance covered / metres per cycle
-    const effSpeed = blend.cycle > 0 ? Math.max(inp.speed, Math.abs(inp.yawRate) > 1.6 && inp.speed < 1 ? 1.1 : 0) : 0;
-    if (blend.cycle > 0) this.phase = (this.phase + (effSpeed / blend.cycle) * dt) % 1;
+    // (the match and practice sims own the phase, so dribble touches land on the foot that is swinging through)
+    if (inp.phase !== undefined) this.phase = inp.phase;
+    else if (blend.cycle > 0) this.phase = (this.phase + (gaitSpeed(inp, blend.cycle) / blend.cycle) * dt) % 1;
     // one-shot actions fade in fast and out at their end
     if (this.action && this.actionAction) {
       this.actionTime += dt;
