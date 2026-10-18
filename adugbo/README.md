@@ -1,7 +1,7 @@
 # ADUGBO: Street Kings
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
-Work is delivered in stages. **Current stage: 4 — match modes and menus.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
+Work is delivered in stages. **Current stage: 5 — AI and difficulty.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
 
 ## Commands
 
@@ -65,7 +65,14 @@ works around it and does not change versions.
 - Pause menu (resume, restart, quit), full-time screen (stats, rematch, quit), How to play, Settings.
 - Not implemented (stated in the rules screen): fouls, cards, penalties, offside, substitutions, multiplayer.
 
+## Stage 5: what works
+- State-based team AI (carry / receive / support / press / cover / mark / chase / keeper / restarts) — see `docs/AI.md`.
+- Easy / normal / hard change reaction time, decision noise, skill and pace scaling, pressing distance, tackle rate
+  and timing, shooting range and keeper ability. Verified ordering: hard > normal > easy over seeded CPU-vs-CPU series.
+- AI debug overlay in matches (button or F3): each CPU player's state, target and reasoning, plus match state.
+
 ## Docs
+- `docs/AI.md` — AI states and difficulty tuning evidence
 - `docs/ASSET_MANIFEST.md` — sources, licences, decisions, face limitation and workflow
 - `docs/THIRD_PARTY_NOTICES.md` — notices that must ship with the game
 - `tools/pipeline/README.md` — how the character GLB was built

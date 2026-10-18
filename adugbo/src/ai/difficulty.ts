@@ -17,6 +17,8 @@ export interface DifficultyParams {
   tackleRate: number;
   /** Chance a tackle attempt is a slide when the carrier is moving away. */
   slideChance: number;
+  /** Only tackle when the ball is at least this far from the carrier's feet (0 = lunge at anything). */
+  tackleTiming: number;
   /** Shooting range in metres. */
   shootRange: number;
   /** Keeper: base chance to save a reachable shot. */
@@ -24,8 +26,13 @@ export interface DifficultyParams {
   keeperReaction: number;
 }
 
+/**
+ * Tuned from CPU-vs-CPU ablations (tests/difficulty.test.ts): what wins matches is clean decisions (low noise),
+ * patient shooting from good positions, a sharp keeper and well-timed rather than frequent tackles. Easy CPUs dive
+ * into tackles, shoot from distance and misread situations; hard CPUs do the opposite.
+ */
 export const DIFFICULTY: Record<Difficulty, DifficultyParams> = {
-  easy: { reaction: 0.45, decisionInterval: 0.5, noise: 0.35, skill: 0.82, pace: 0.9, pressDistance: 5, tackleRate: 0.35, slideChance: 0.05, shootRange: 9, keeperSave: 0.45, keeperReaction: 0.3 },
-  normal: { reaction: 0.28, decisionInterval: 0.32, noise: 0.18, skill: 1, pace: 1, pressDistance: 8, tackleRate: 0.7, slideChance: 0.12, shootRange: 11, keeperSave: 0.62, keeperReaction: 0.2 },
-  hard: { reaction: 0.15, decisionInterval: 0.2, noise: 0.07, skill: 1.12, pace: 1.06, pressDistance: 11, tackleRate: 1.1, slideChance: 0.2, shootRange: 13, keeperSave: 0.75, keeperReaction: 0.12 },
+  easy: { reaction: 0.5, decisionInterval: 0.6, noise: 0.5, skill: 0.78, pace: 0.9, pressDistance: 6, tackleRate: 1.4, slideChance: 0.15, tackleTiming: 0, shootRange: 13, keeperSave: 0.4, keeperReaction: 0.3 },
+  normal: { reaction: 0.28, decisionInterval: 0.32, noise: 0.12, skill: 1, pace: 1, pressDistance: 8, tackleRate: 0.7, slideChance: 0.12, tackleTiming: 0.3, shootRange: 10, keeperSave: 0.62, keeperReaction: 0.2 },
+  hard: { reaction: 0.15, decisionInterval: 0.2, noise: 0.04, skill: 1.1, pace: 1.05, pressDistance: 9, tackleRate: 0.5, slideChance: 0.08, tackleTiming: 0.5, shootRange: 9, keeperSave: 0.8, keeperReaction: 0.1 },
 };

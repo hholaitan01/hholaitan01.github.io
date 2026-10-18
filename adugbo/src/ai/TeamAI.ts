@@ -44,7 +44,7 @@ export class TeamAI {
   ) {}
 
   private get d() {
-    return this.sim.diff;
+    return this.sim.teamDiff[this.team];
   }
 
   private opponents() {
@@ -210,6 +210,9 @@ export class TeamAI {
     if (!o || o.team === this.team || (this.tackleCd.get(p.id) ?? 0) > 0) return;
     const d = dist(p.pos, o.pos);
     const facing = Math.cos(yawOf(sub(o.pos, p.pos)) - p.yaw) > 0.5;
+    // better defenders wait for a loose touch instead of diving in
+    const exposed = dist(sim.ball2(), o.pos) >= this.d.tackleTiming;
+    if (!exposed) return;
     // tackleRate is attempts per second while in range; update() runs every fixed step
     if (d < 1.3 && facing && this.sim.rand() < this.d.tackleRate * (1 / 120)) {
       sim.tackle(p);

@@ -20,10 +20,10 @@ export type SimEvent =
   | { type: "miss"; player: number }
   | { type: "touch"; player: number; quality: "clean" | "heavy" | "deflect" }
   | { type: "possession"; player: number | null }
-  | { type: "hit"; kind: HitKind; speed: number }
+  | { type: "hit"; kind: HitKind; speed: number; player?: number }
   | { type: "goal"; side: number; scorer: number | null }
   | { type: "tackle"; player: number; victim: number | null; success: boolean; slide: boolean }
-  | { type: "save"; player: number; kind: "catch" | "parry" | "miss" | "claim" };
+  | { type: "save"; player: number; kind: "catch" | "parry" | "block" | "miss" | "claim" };
 
 const REACH = 0.85; // metres from the player's feet within which the ball can be played
 const CONTROL_HEIGHT = 1.0;
@@ -117,7 +117,7 @@ export class GameSim {
       this.physics.setBall({ x: h.pos.x + f.x * 0.3, y: 1.05, z: h.pos.z + f.z * 0.3 });
     } else this.updatePossession(dt);
     this.physics.step();
-    for (const h of this.physics.takeHits()) this.events.push({ type: "hit", kind: h.kind, speed: h.speed });
+    for (const h of this.physics.takeHits()) this.events.push({ type: "hit", kind: h.kind, speed: h.speed, player: h.player });
     this.afterStep(dt);
   }
 

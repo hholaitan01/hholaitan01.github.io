@@ -58,7 +58,7 @@ export function DebugOverlay({ view }: { view: MatchView }) {
       g.fillRect(8, h - 92, 270, 50);
       g.fillStyle = "#fff";
       g.fillText(`phase ${s.phase}  owner ${s.owner?.id ?? "-"}  passTarget ${s.passTarget?.id ?? "-"}`, 14, h - 74);
-      g.fillText(`difficulty ${s.cfg.difficulty}  reaction ${s.diff.reaction}s  press ${s.diff.pressDistance}m`, 14, h - 60);
+      g.fillText(`CPU ${s.cfg.difficulty}: reaction ${s.diff.reaction}s, press ${s.diff.pressDistance}m, tackles ${s.diff.tackleRate}/s`, 14, h - 60);
       g.fillText(`time ${s.time.toFixed(1)}s  restart ${s.restart?.type ?? "-"}`, 14, h - 46);
     };
     raf = requestAnimationFrame(draw);

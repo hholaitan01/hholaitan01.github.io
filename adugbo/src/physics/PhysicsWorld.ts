@@ -21,8 +21,9 @@ export class PhysicsWorld {
   private kinds = new Map<number, HitKind>();
   private rollDecel: number;
   /** Collisions since the last call to takeHits(), for sound and gameplay (deflections). */
-  private hits: { kind: HitKind; speed: number; handle: number }[] = [];
+  private hits: { kind: HitKind; speed: number; handle: number; player?: number }[] = [];
   private players = new Map<number, RAPIER.RigidBody>();
+  private playerByHandle = new Map<number, number>();
 
   constructor(readonly pitch: PitchSpec) {
     this.world = new RAPIER.World({ x: 0, y: -GRAVITY, z: 0 });
@@ -104,6 +105,7 @@ export class PhysicsWorld {
     const b = this.world.createRigidBody(RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, 1.15, 0));
     const c = this.world.createCollider(RAPIER.ColliderDesc.capsule(0.45, 0.24).setRestitution(0.35), b);
     this.kinds.set(c.handle, "player");
+    this.playerByHandle.set(c.handle, id);
     this.players.set(id, b);
     c.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS);
     return c.handle;
@@ -162,14 +164,15 @@ export class PhysicsWorld {
       const k = 1 - 0.4 * SIM_DT;
       this.ball.setAngvel({ x: w.x * k, y: w.y * k, z: w.z * k }, true);
     }
+    const before = this.ball.linvel(), preSpeed = Math.hypot(before.x, before.y, before.z);
     this.world.step(this.events);
     this.events.drainCollisionEvents((h1, h2, started) => {
       if (!started) return;
       const other = h1 === this.ballCollider.handle ? h2 : h2 === this.ballCollider.handle ? h1 : -1;
       const kind = this.kinds.get(other);
       if (kind && kind !== "ground") {
-        const bv = this.ball.linvel();
-        this.hits.push({ kind, speed: Math.hypot(bv.x, bv.y, bv.z), handle: other });
+        // speed going into the contact (after the bounce it is much lower)
+        this.hits.push({ kind, speed: preSpeed, handle: other, player: this.playerByHandle.get(other) });
       }
     });
   }

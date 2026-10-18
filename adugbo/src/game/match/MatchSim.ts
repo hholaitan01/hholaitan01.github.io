@@ -4,7 +4,7 @@ import { TeamAI } from "../../ai/TeamAI";
 import { TEAMS, type Team } from "../teams";
 import { DEFAULT_CONTACTS, GameSim, type ContactTimes } from "../sim/GameSim";
 import { SimPlayer, fwd, len, norm, sub, v2, yawOf, type V2 } from "../sim/SimPlayer";
-import { FOURPOST_MAX_HEIGHT, pitchFor, type MatchConfig } from "./rules";
+import { FOURPOST_MAX_HEIGHT, pitchFor, type Difficulty, type MatchConfig } from "./rules";
 
 export type Phase = "kickoff" | "play" | "restart" | "goal" | "halftime" | "fulltime";
 export type RestartType = "kickoff" | "kickin" | "corner" | "goalkick";
@@ -57,7 +57,10 @@ export class MatchSim extends GameSim {
   readonly squads: [SimPlayer[], SimPlayer[]] = [[], []];
   readonly keepers: [SimPlayer | null, SimPlayer | null] = [null, null];
   readonly ai: [TeamAI, TeamAI];
+  /** CPU difficulty (the opponent's). */
   readonly diff: DifficultyParams;
+  /** Behaviour parameters per team: the CPU side uses the chosen difficulty, the user's AI team-mates play at normal. */
+  readonly teamDiff: [DifficultyParams, DifficultyParams];
   phase: Phase = "kickoff";
   restart: Restart | null = null;
   half = 1;
@@ -75,16 +78,23 @@ export class MatchSim extends GameSim {
   winner: number | null = null;
   message = "";
 
-  constructor(cfg: MatchConfig, contacts: ContactTimes = DEFAULT_CONTACTS, seed = 11, opts: { userControlled?: boolean } = {}) {
+  constructor(
+    cfg: MatchConfig,
+    contacts: ContactTimes = DEFAULT_CONTACTS,
+    seed = 11,
+    opts: { userControlled?: boolean; teamDifficulty?: [Difficulty, Difficulty] } = {},
+  ) {
     super(pitchFor(cfg), contacts, seed);
     this.cfg = cfg;
     this.diff = DIFFICULTY[cfg.difficulty];
+    const td = opts.teamDifficulty ?? (cfg.userTeam === 0 ? ["normal", cfg.difficulty] : [cfg.difficulty, "normal"]);
+    this.teamDiff = [DIFFICULTY[td[0]], DIFFICULTY[td[1]]];
     this.teams = [TEAMS.find((t) => t.id === cfg.home) ?? TEAMS[0], TEAMS.find((t) => t.id === cfg.away) ?? TEAMS[1]];
     this.halfLength = cfg.halfMinutes * 60;
     let id = 0;
     for (const t of [0, 1] as const) {
-      const team = this.teams[t], a = team.attrs, cpu = opts.userControlled === false || t !== cfg.userTeam;
-      const sk = cpu ? this.diff.skill : 1, pc = cpu ? this.diff.pace : 1;
+      const team = this.teams[t], a = team.attrs;
+      const sk = this.teamDiff[t].skill, pc = this.teamDiff[t].pace;
       const n = cfg.playersPerSide;
       for (let i = 0; i < n; i++) {
         const gk = cfg.keepers && i === 0;
@@ -295,6 +305,7 @@ export class MatchSim extends GameSim {
 
   protected afterStep() {
     const b = this.physics.ballPos;
+    this.trackShot();
     // a restart ends when the taker plays the ball
     if ((this.phase === "kickoff" || this.phase === "restart") && this.restart?.taker) {
       const kicked = this.events.some((e) => e.type === "kick" && e.player === this.restart!.taker!.id);
@@ -352,6 +363,59 @@ export class MatchSim extends GameSim {
     else this.startRestart("goalkick", defending, { x: side * (this.L - 2.5), z: 0 });
   }
 
+  /** The shot currently in flight; the next thing that happens to it decides whether it was saved. */
+  private liveShot: { team: number; at: number } | null = null;
+
+  /**
+   * Save accounting: a shot is saved if the opposing keeper is the next player to deal with it — a scripted save,
+   * the ball striking his body, or him taking it with a first touch or in his hands.
+   */
+  private scanArr: unknown[] | null = null;
+  private scanIdx = 0;
+
+  private trackShot() {
+    // only look at events added since the last step (the array is replaced when the view consumes it)
+    if (this.scanArr !== this.events) {
+      this.scanArr = this.events;
+      this.scanIdx = 0;
+    }
+    const fresh = this.events.slice(this.scanIdx);
+    this.scanIdx = this.events.length;
+    for (const e of fresh) {
+      if (e.type === "kick") {
+        const p = this.players[e.player];
+        this.liveShot = e.kind === "shot" || (e.kind === "header" && len(sub(p.pos, this.attackGoal(p.team))) < 12) ? { team: p.team, at: this.time } : null;
+        continue;
+      }
+      const ls = this.liveShot;
+      if (!ls) continue;
+      let keeper: SimPlayer | null = null, other = false, kind: "block" | null = null;
+      if (e.type === "save" && e.kind !== "miss") keeper = this.players[e.player];
+      else if (e.type === "hit" && e.kind === "player" && e.player !== undefined) {
+        const p = this.players[e.player];
+        if (p.role === "gk" && p.team !== ls.team && e.speed > 4) {
+          keeper = p;
+          kind = "block";
+        } else other = true;
+      } else if (e.type === "touch" || (e.type === "possession" && e.player !== null)) {
+        const p = this.players[e.player as number];
+        if (p.role === "gk" && p.team !== ls.team) keeper = p;
+        else other = true;
+      } else if (e.type === "goal") other = true;
+      if (keeper && keeper.team !== ls.team) {
+        this.stats[keeper.team].saves++;
+        this.stats[ls.team].onTarget++;
+        if (kind) {
+          this.events.push({ type: "save", player: keeper.id, kind });
+          this.scanIdx = this.events.length;
+        }
+        this.lastTouch = keeper;
+        this.liveShot = null;
+      } else if (other) this.liveShot = null;
+    }
+    if (this.liveShot && this.time - this.liveShot.at > 3) this.liveShot = null;
+  }
+
   // ---- goalkeeping -------------------------------------------------------------------------------------------
 
   /** Inside the keeper's handling area (6 m semicircle in front of his goal). */
@@ -373,29 +437,34 @@ export class MatchSim extends GameSim {
       const zAt = b.z + v.z * tLine, yAt = b.y + v.y * tLine - 0.5 * GRAVITY * tLine * tLine;
       if (Math.abs(zAt) > this.pitch.goalWidth / 2 + 0.6 || yAt > this.pitch.goalHeight + 0.4) continue;
       // reaction: the keeper commits once the shot is close enough given his reaction time
-      if (tLine > 0.25 + this.diff.keeperReaction + (1 - (k.attrs.keeping ?? 0.6)) * 0.2 && this.keeperReacting !== k) {
+      const kd = this.teamDiff[t];
+      if (tLine > 0.25 + kd.keeperReaction + (1 - (k.attrs.keeping ?? 0.6)) * 0.2 && this.keeperReacting !== k) {
         this.keeperReacting = k;
         continue;
       }
-      const dz = zAt - k.pos.z, speed = Math.hypot(v.x, v.y, v.z);
-      const dive = Math.abs(dz) > 0.6 || yAt > 1.9;
+      // where the ball will be when it reaches the keeper's plane (he stands off his line)
+      const tK = Math.max(0.05, Math.min(tLine, (k.pos.x - b.x) / v.x));
+      const zK = b.z + v.z * tK, yK = b.y + v.y * tK - 0.5 * GRAVITY * tK * tK;
+      const dz = zK - k.pos.z, speed = Math.hypot(v.x, v.y, v.z);
+      const dive = Math.abs(dz) > 0.6 || yK > 1.9;
       const reach = dive ? 2.3 : 0.9;
-      const skill = (k.attrs.keeping ?? 0.6) * (k.team === this.cfg.userTeam ? 1 : this.diff.keeperSave / 0.62);
-      const chance = Math.max(0.05, Math.min(0.95, skill * 1.15 - speed / 60 - Math.abs(dz) * 0.12));
+      const skill = (k.attrs.keeping ?? 0.6) * (kd.keeperSave / 0.62);
+      // straight at him: almost always; pace, distance to cover and the top corners make it harder
+      const reachFrac = Math.abs(dz) / (dive ? 2.3 : 0.9), high = yK > 1.5 ? (yK - 1.5) * 0.25 : 0;
+      const chance = Math.max(0.05, Math.min(0.97, 0.7 + 0.3 * skill - Math.max(0, speed - 14) / 40 - reachFrac * 0.45 - high));
       const willSave = Math.abs(dz) < reach && this.rand() < chance;
       this.events.push({ type: "action", player: k.id, action: dive ? (dz * this.dir[t] > 0 ? "diveL" : "diveR") : "save" });
-      k.vel = { x: 0, z: Math.max(-7, Math.min(7, dz / Math.max(0.2, tLine))) };
-      k.lunge = Math.max(0.1, tLine);
+      k.vel = { x: 0, z: Math.max(-7, Math.min(7, dz / Math.max(0.2, tK))) };
+      k.lunge = Math.max(0.1, tK);
       this.keeperReacting = null;
-      this.schedule(k, dive ? (dz * this.dir[t] > 0 ? "diveL" : "diveR") : "save", Math.max(0.02, tLine - 0.06), () => {
+      this.schedule(k, dive ? (dz * this.dir[t] > 0 ? "diveL" : "diveR") : "save", Math.max(0.02, tK - 0.04), () => {
         const bb = this.physics.ballPos;
-        const near = Math.abs(bb.z - k.pos.z) < reach + 0.3 && Math.abs(bb.x - k.pos.x) < 1.5;
+        const near = Math.abs(bb.z - k.pos.z) < reach + 0.3 && Math.abs(bb.x - k.pos.x) < 1.2 && bb.y < 2.5;
         if (!willSave || !near) {
           this.events.push({ type: "save", player: k.id, kind: "miss" });
           if (dive) k.stun = 0.7;
           return;
         }
-        this.stats[t].saves++;
         const bv = this.physics.ballVel, sp = Math.hypot(bv.x, bv.y, bv.z);
         if (sp < 17 && !dive && this.inKeeperArea(k)) {
           this.keeperCatch(k);
@@ -471,8 +540,6 @@ export class MatchSim extends GameSim {
         if (e.kind === "shot" || (e.kind === "header" && p.role === "field" && len(sub(p.pos, this.attackGoal(p.team))) < 12)) this.stats[p.team].shots++;
         if (e.kind === "pass" || e.kind === "lob") this.stats[p.team].passes++;
       }
-      // a shot is on target if the keeper had to save it (claims at an attacker's feet are not shots)
-      if (e.type === "save" && (e.kind === "catch" || e.kind === "parry")) this.stats[1 - this.players[e.player].team].onTarget++;
       if (e.type === "goal") {
         const t = this.dir[0] === e.side ? 0 : 1;
         this.stats[t].onTarget++;
