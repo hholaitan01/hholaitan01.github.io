@@ -8,7 +8,7 @@ import { initPhysics } from "../physics/PhysicsWorld";
 import { Keyboard } from "../controls/keyboard";
 import { Venue } from "./venue/Venue";
 import { profile, type QualityProfile, type Settings } from "../settings/settings";
-import { makeBall, paintBallMesh } from "./LabScene";
+import { makeBall, paintBallMesh } from "./ballMesh";
 import type { BallDesign } from "../game/ball";
 import { AudioManager } from "../audio/AudioManager";
 import { saveSettings } from "../settings/settings";

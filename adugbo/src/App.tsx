@@ -8,6 +8,8 @@ import { RotateGate } from "./ui/RotateGate";
 const PlayerLab = lazy(() => import("./ui/PlayerLab").then((m) => ({ default: m.PlayerLab })));
 const PracticeScreen = lazy(() => import("./ui/PracticeScreen").then((m) => ({ default: m.PracticeScreen })));
 const RoomScreen = lazy(() => import("./ui/online/RoomScreen").then((m) => ({ default: m.RoomScreen })));
+const PenaltyScreen = lazy(() => import("./ui/PenaltyScreen").then((m) => ({ default: m.PenaltyScreen })));
+const BallDesigner = lazy(() => import("./ui/BallDesigner").then((m) => ({ default: m.BallDesigner })));
 const MatchScreen = lazy(() => import("./ui/MatchScreen").then((m) => ({ default: m.MatchScreen })));
 import { HowToPlay } from "./ui/HowToPlay";
 import { SettingsScreen } from "./ui/SettingsScreen";
@@ -16,6 +18,7 @@ import { OnlineHome } from "./ui/online/OnlineHome";
 import { QueueScreen } from "./ui/online/QueueScreen";
 import { RankingsScreen } from "./ui/online/RankingsScreen";
 import { WatchScreen } from "./ui/online/WatchScreen";
+import { TrainingMenu } from "./ui/TrainingMenu";
 
 const routeOf = () => location.hash.replace(/^#\/?/, "") || "home";
 
@@ -43,6 +46,14 @@ export default function App() {
     const queue = route.match(/^online\/queue\/(quick|ranked)$/);
     if (queue) return <QueueScreen key={route} mode={queue[1] as "quick" | "ranked"} go={go} />;
     switch (route) {
+    case "penalties":
+      return <PenaltyScreen key="shootout" mode="shootout" go={go} />;
+    case "training":
+      return <TrainingMenu go={go} />;
+    case "training/penalties":
+      return <PenaltyScreen key="practice" mode="practice" go={go} />;
+    case "ball":
+      return <BallDesigner go={go} />;
     case "online":
       return <OnlineHome go={go} />;
     case "rankings":

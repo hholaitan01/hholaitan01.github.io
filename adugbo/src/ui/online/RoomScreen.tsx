@@ -8,6 +8,7 @@ import { TEAMS } from "../../game/teams";
 import { loadBall } from "../../game/ball";
 import { TouchPad, useTouchUi } from "../TouchPad";
 import { NotConnected, savedTeam, TEAM_KEY } from "./OnlineHome";
+import { recordJob } from "../../game/jobs";
 
 declare global {
   interface Window {
@@ -77,6 +78,7 @@ export function RoomScreen({ code, spectate, go }: { code: string; spectate: boo
           break;
         case "result":
           setResult(m);
+          if (!spectate) recordJob({ kind: "online" });
           if (window.__online) window.__online.phase = "result";
           break;
         case "error":

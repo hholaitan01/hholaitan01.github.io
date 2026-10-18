@@ -16,7 +16,8 @@ export function useTouchUi(): boolean {
   return on;
 }
 
-type Slot = "TL" | "TR" | "BL" | "BR";
+export type Slot = "TL" | "TR" | "BL" | "BR";
+export type SlotDef = { label: string; button: Button; flick?: "loft" };
 export type PadMode = "attack" | "defend";
 
 /**
@@ -52,7 +53,9 @@ const STICK_R = 56;
  * On-screen controls for touch devices. Left half: a floating stick that appears where the thumb lands. Right: the
  * action buttons. Everything is fed into the same Keyboard input object the desktop keys use.
  */
-export function TouchPad({ keys, mode, extra }: { keys: Keyboard; mode: PadMode; extra?: { label: string; button: Button } }) {
+export function TouchPad({ keys, mode, extra, slots }: { keys: Keyboard; mode: PadMode; extra?: { label: string; button: Button }; slots?: Partial<Record<Slot, SlotDef | null>> }) {
+  // a screen can relabel or hide buttons (penalties: SHOOT when kicking, DIVE in goal)
+  const slotDef = (slot: Slot): SlotDef | null => (slots && slot in slots ? (slots[slot] ?? null) : SLOTS[mode][slot]);
   const [stick, setStick] = useState<{ ox: number; oy: number; x: number; y: number } | null>(null);
   const [down, setDown] = useState<Partial<Record<Slot, true>>>({});
   const stickId = useRef<number | null>(null);
@@ -110,7 +113,8 @@ export function TouchPad({ keys, mode, extra }: { keys: Keyboard; mode: PadMode;
   const press = (slot: Slot) => (e: RPointerEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
-    const s = SLOTS[mode][slot];
+    const s = slotDef(slot);
+    if (!s) return;
     btn.current.set(e.pointerId, { slot, button: s.button, x: e.clientX, y: e.clientY, flick: s.flick, fired: false });
     keys.press(s.button);
     setDown((d) => ({ ...d, [slot]: true }));
@@ -152,7 +156,8 @@ export function TouchPad({ keys, mode, extra }: { keys: Keyboard; mode: PadMode;
       </div>
       <div className="pad-buttons" style={{ width: box.w, height: box.h }}>
         {(Object.keys(GEOM) as Slot[]).map((slot) => {
-          const g = GEOM[slot], s = SLOTS[mode][slot];
+          const g = GEOM[slot], s = slotDef(slot);
+          if (!s) return null;
           return (
             <div
               key={slot}
