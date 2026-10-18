@@ -61,7 +61,9 @@ try {
     await page.screenshot({ path: `${out}/venue-${c.name}.png` });
     // goal camera: switch to target drill, both posts must be on screen
     await page.getByRole("button", { name: "Target shooting" }).click();
-    await page.waitForTimeout(2500);
+    // wait until the drill has reset and a few frames have rendered with the new camera (software GL is slow)
+    await page.waitForFunction(() => window.__practice.sim.state.drill === "targets", null, { timeout: 60000 });
+    await page.evaluate(() => new Promise((r) => { let n = 0; const f = () => (++n >= 3 ? r() : requestAnimationFrame(f)); requestAnimationFrame(f); }));
     const pr2 = await page.evaluate(() => window.__practice.probe());
     check(`${c.name}: target drill keeps both goal posts and the player in view`, pr2.goalPosts.every(Boolean) && pr2.shirt.inView, JSON.stringify(pr2.goalPosts));
     await page.screenshot({ path: `${out}/venue-${c.name}-goal.png` });

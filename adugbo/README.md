@@ -1,12 +1,13 @@
 # ADUGBO: Street Kings
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
-Work is delivered in stages. **Current stage: 7 — audio and graphics settings.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
+Work is delivered in stages. **All planned stages are built except touch controls (skipped on request). See `docs/RELEASE_REPORT.md` for the
+release-readiness audit: test results, performance, licences, limitations and deployment.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
 
 ## Commands
 
 ```bash
-npm install --legacy-peer-deps   # see note below
+npm ci                 # install the locked dependency versions
 npm run dev            # dev server at http://localhost:5173
 npm run build          # typecheck + production build to dist/
 npm run preview        # serve dist/ at http://localhost:4173
@@ -17,8 +18,8 @@ npm run test:e2e       # browser tests (Playwright + Chromium; builds first)
 npm run inspect:assets # writes docs/asset-inspection.json
 ```
 
-`--legacy-peer-deps`: the installed npm crashed resolving the React 19 / eslint peer ranges; the flag
-works around it and does not change versions.
+Playable build for GitHub Pages: `npm run build:pages` writes `play/`; after merging to `main` the game is at
+https://hholaitan01.github.io/adugbo/play/. (A from-scratch `npm install` without the lockfile needs `--legacy-peer-deps`.)
 
 ## Stage 1: what works
 - `public/assets/characters/footballer.glb`: one realistic footballer (Microsoft Rocketbox, MIT) with 8 swappable
@@ -91,6 +92,7 @@ works around it and does not change versions.
 - Graphics quality low / medium / high in Settings and in practice (see stage 3), day/evening per match.
 
 ## Docs
+- `docs/RELEASE_REPORT.md` — release-readiness audit
 - `docs/AI.md` — AI states and difficulty tuning evidence
 - `docs/ASSET_MANIFEST.md` — sources, licences, decisions, face limitation and workflow
 - `docs/THIRD_PARTY_NOTICES.md` — notices that must ship with the game
