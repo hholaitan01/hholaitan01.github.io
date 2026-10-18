@@ -1,6 +1,6 @@
 # ADUGBO: Street Kings — release-readiness report
 
-Date: 2026-10-18 · Branch: `claude/adugbo-street-kings` · Stack: TypeScript, React 19, Vite 8, three.js r186, Rapier 0.21.
+Date: 2026-10-18 · Stack: TypeScript, React 19, Vite 8, three.js r186, Rapier 0.21.
 
 This report states only what was built and actually run. Where something was not tested, it says so.
 
@@ -142,7 +142,7 @@ The build is static: any static host works, and paths are relative (`base: "./"`
 
 **GitHub Pages (this repository):** the site is served from the `main` branch with no build step. The production
 build is committed in `adugbo/play/`.
-1. Merge `claude/adugbo-street-kings` into `main`.
+1. Merge this branch into `main`.
 2. The game is then at `https://hholaitan01.github.io/adugbo/play/`.
 
 To update it later:
