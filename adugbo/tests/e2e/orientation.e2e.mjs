@@ -48,7 +48,8 @@ try {
   await page.waitForTimeout(400);
   const back = await page.evaluate(() => ({ paused: window.__practice.paused, hud: window.__practice.hud.paused }));
   const pauseMenu = await page.locator(".overlay").filter({ hasText: "Paused" }).waitFor({ timeout: 30000 }).then(() => true, () => false);
-  check("back to landscape: overlay gone, game waits on the pause menu", !(await gate(page)) && pauseMenu, JSON.stringify(back));
+  const gateGone = await page.locator("[data-testid=rotate-gate]").waitFor({ state: "detached", timeout: 30000 }).then(() => true, () => false);
+  check("back to landscape: overlay gone, game waits on the pause menu", gateGone && pauseMenu, JSON.stringify({ ...back, gateGone, pauseMenu }));
   await phone.close();
   // desktop with a tall window is never blocked
   const desk = await browser.newContext({ viewport: { width: 600, height: 900 } });
