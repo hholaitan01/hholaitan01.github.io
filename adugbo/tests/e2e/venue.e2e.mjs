@@ -66,8 +66,9 @@ try {
     check(`${c.name}: target drill keeps both goal posts and the player in view`, pr2.goalPosts.every(Boolean) && pr2.shirt.inView, JSON.stringify(pr2.goalPosts));
     await page.screenshot({ path: `${out}/venue-${c.name}-goal.png` });
     const fps = await page.evaluate(() => window.__practice.hud.fps);
-    results.push({ name: `${c.name}: fps (software GL, informational)`, ok: true, detail: String(fps) });
-    console.log(`INFO ${c.name}: ${fps} fps in software rendering`);
+    const perf = await page.evaluate(() => window.__practice.perf());
+    results.push({ name: `${c.name}: perf (software GL, informational)`, ok: true, detail: JSON.stringify({ fps, ...perf }) });
+    console.log(`INFO ${c.name}: ${fps} fps in software rendering, ${JSON.stringify(perf)}`);
     await ctx.close();
   }
 } finally {

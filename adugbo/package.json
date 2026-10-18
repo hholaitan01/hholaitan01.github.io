@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "ADUGBO: Street Kings \u2014 a browser 3D Nigerian street-football game (three.js + Rapier).",
+  "description": "ADUGBO: Street Kings — a browser 3D Nigerian street-football game (three.js + Rapier).",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "0.21.0",
+    "@fontsource/barlow-condensed": "^5.3.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "three": "0.186.1"

@@ -46,7 +46,8 @@ Some animations were created with Mixamo and are used under Adobe's terms. They 
 and are not offered as standalone files.
 
 ## Fonts
-Barlow Condensed by Jeremy Tribby, SIL Open Font License 1.1, loaded from Google Fonts.
+Barlow Condensed by Jeremy Tribby, SIL Open Font License 1.1, bundled from the @fontsource/barlow-condensed package.
+The full licence ships with the game at `licences/barlow-condensed-OFL.txt`.
 
 ## Code libraries
 three.js (MIT), @dimforge/rapier3d-compat (Apache-2.0), React (MIT), Vite (MIT). Full licence texts ship in

@@ -4,6 +4,7 @@ import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
 const assets = path.join(root, "public/assets");
+const publicDir = path.join(root, "public");
 const manifest = JSON.parse(fs.readFileSync(path.join(assets, "manifest.json"), "utf8"));
 
 function walk(d: string): string[] {
@@ -33,6 +34,10 @@ describe("asset manifest", () => {
           expect(src, `${s} lacks ${k}`).toHaveProperty(k);
         expect(String(src.status)).toMatch(/^accepted/);
       }
+  });
+
+  it("ships the licence texts that must travel with the assets", () => {
+    for (const f of ["licences/rocketbox-MIT.txt", "licences/barlow-condensed-OFL.txt"]) expect(fs.existsSync(path.join(publicDir, f)), f).toBe(true);
   });
 
   it("ships no raw FBX files", () => {

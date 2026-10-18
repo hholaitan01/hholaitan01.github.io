@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Home } from "./ui/Home";
-import { PlayerLab } from "./ui/PlayerLab";
-import { PracticeScreen } from "./ui/PracticeScreen";
 import { MatchSetup } from "./ui/MatchSetup";
-import { MatchScreen } from "./ui/MatchScreen";
+import { Credits } from "./ui/Credits";
+
+// the 3D screens pull in three.js and Rapier (several MB): load them only when needed
+const PlayerLab = lazy(() => import("./ui/PlayerLab").then((m) => ({ default: m.PlayerLab })));
+const PracticeScreen = lazy(() => import("./ui/PracticeScreen").then((m) => ({ default: m.PracticeScreen })));
+const MatchScreen = lazy(() => import("./ui/MatchScreen").then((m) => ({ default: m.MatchScreen })));
 import { HowToPlay } from "./ui/HowToPlay";
 import { SettingsScreen } from "./ui/SettingsScreen";
 import type { MatchConfig } from "./game/match/rules";
@@ -21,7 +24,10 @@ export default function App() {
   const go = (r: string) => {
     location.hash = r === "home" ? "" : `/${r}`;
   };
-  switch (route) {
+  return <Suspense fallback={<div className="loading">Loading…</div>}>{screen()}</Suspense>;
+
+  function screen() {
+    switch (route) {
     case "lab":
       return <PlayerLab />;
     case "practice":
@@ -45,9 +51,12 @@ export default function App() {
       return <MatchScreen key={match.n} config={match.cfg} onExit={() => go("home")} onReplay={() => setMatch({ cfg: match.cfg, n: match.n + 1 })} />;
     case "howto":
       return <HowToPlay onBack={() => go("home")} />;
+    case "credits":
+      return <Credits onBack={() => go("home")} />;
     case "settings":
       return <SettingsScreen onBack={() => go("home")} />;
     default:
       return <Home go={go} />;
+    }
   }
 }

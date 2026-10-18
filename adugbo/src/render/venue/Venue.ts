@@ -5,6 +5,7 @@ import type { QualityProfile, TimeOfDay } from "../../settings/settings";
 import { buildPitch } from "../pitchMesh";
 import { building, mural, type Building } from "./buildings";
 import { canvasTex, pbr, seeded } from "./materials";
+import { mergeStatic } from "./mergeStatic";
 import { cable, chainLink, chairGeometry, floodMast, minibus, powerPole, streetLamp, umbrella } from "./props";
 
 /** Worn artificial turf: mown stripes, bald patches by the goals and centre (generated, original). */
@@ -175,7 +176,11 @@ export class Venue {
       this.group.add(light);
       this.lamps.push({ light, mat: sl.lampMat });
     }
+    this.mergeStats = mergeStatic(this.group);
   }
+
+  /** Static mesh count before/after merging (performance notes). */
+  mergeStats = { before: 0, after: 0 };
 
   private add(b: Building) {
     this.group.add(b.group);
@@ -260,7 +265,12 @@ export class Venue {
     this.hemi.color.set(evening ? 0x6d7fa8 : 0xf1f4f6);
     this.hemi.groundColor.set(evening ? 0x2c2420 : 0x5a4a38);
     this.hemi.intensity = evening ? 0.5 : 0.75;
-    for (const f of this.floods) f.intensity = evening ? 750 : 0;
+    this.floods.forEach((f, i) => {
+      f.intensity = evening ? 750 : 0;
+      // three.js renders a shadow map for every shadow-casting light, lit or not; two diagonal masts are enough
+      f.castShadow = evening && this.q.floodlightShadows && i % 3 === 0;
+      f.visible = evening;
+    });
     for (const m of this.floodLamps) {
       m.emissive.set(evening ? 0xfff6e0 : 0x000000);
       m.emissiveIntensity = evening ? 3 : 0;

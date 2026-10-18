@@ -39,6 +39,8 @@ export abstract class GameView<S extends GameSim> {
   fps = 0;
   /** Milliseconds spent in skinned-animation updates last frame (players, spectators). */
   animMs = 0;
+  /** Milliseconds of simulation (physics, AI, input) last frame. */
+  simMs = 0;
   private frameNo = 0;
   private frames = 0;
   private fpsT = 0;
@@ -157,7 +159,8 @@ export abstract class GameView<S extends GameSim> {
           skinTone: 0.55,
           plain: true,
         },
-        { shadows: this.q.shadows },
+        // background figures don't cast shadows: saves a skinned shadow pass per spectator
+        { shadows: false },
       );
       pf.idleClip = spot.pose === "sit" ? "sit" : i % 2 ? "talk" : "idle";
       pf.root.position.copy(spot.pos);
@@ -213,7 +216,9 @@ export abstract class GameView<S extends GameSim> {
   private loop = () => {
     this.raf = requestAnimationFrame(this.loop);
     const real = this.clock.getDelta(), dt = Math.min(real, 1 / 15);
+    const t0 = performance.now();
     this.step(this.paused ? 0 : dt);
+    this.simMs = performance.now() - t0;
     this.sync(this.paused ? 0 : dt);
     this.renderer.render(this.scene, this.camera);
     this.frames++;
@@ -294,6 +299,23 @@ export abstract class GameView<S extends GameSim> {
       ball: read(new THREE.Vector3(bp.x, bp.y, bp.z)),
       groundNearBall: read(new THREE.Vector3(bp.x + 0.5, 0.02, bp.z + 0.5)),
       goalPosts: [read(new THREE.Vector3(L, 1, gw)), read(new THREE.Vector3(L, 1, -gw))].map((r) => r.inView),
+    };
+  }
+
+  /** Test hook: renderer and CPU cost figures for the current frame. */
+  perf() {
+    const i = this.renderer.info;
+    const mem = (performance as unknown as { memory?: { usedJSHeapSize: number } }).memory;
+    return {
+      drawCalls: i.render.calls,
+      triangles: i.render.triangles,
+      geometries: i.memory.geometries,
+      textures: i.memory.textures,
+      pixelRatio: this.renderer.getPixelRatio(),
+      simMs: +this.simMs.toFixed(2),
+      animMs: +this.animMs.toFixed(2),
+      heapMB: mem ? Math.round(mem.usedJSHeapSize / 1e6) : null,
+      venueMeshes: this.venue.mergeStats,
     };
   }
 

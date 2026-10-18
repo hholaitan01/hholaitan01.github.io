@@ -121,3 +121,5 @@ fieldset.house legend { color: var(--accent); padding: 0 6px; }
 .controlled { position: absolute; bottom: 92px; left: 50%; transform: translateX(-50%); font-size: 16px; color: var(--accent); text-shadow: 0 1px 4px #000; }
 .debug-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 @media (max-width: 700px) { .teams { grid-template-columns: 1fr; } .vs { text-align: center; } }
+.notices { white-space: pre-wrap; font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: rgba(0,0,0,.35); padding: 12px; border-radius: 8px; max-width: 900px; }
+.screen a { color: var(--accent); }
