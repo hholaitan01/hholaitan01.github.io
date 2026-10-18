@@ -8,7 +8,8 @@ import { initPhysics } from "../physics/PhysicsWorld";
 import { Keyboard } from "../controls/keyboard";
 import { Venue } from "./venue/Venue";
 import { profile, type QualityProfile, type Settings } from "../settings/settings";
-import { makeBall } from "./LabScene";
+import { makeBall, paintBallMesh } from "./LabScene";
+import type { BallDesign } from "../game/ball";
 import { AudioManager } from "../audio/AudioManager";
 import { saveSettings } from "../settings/settings";
 import { PORTRAIT_TOUCH } from "../ui/orientation";
@@ -187,6 +188,11 @@ export abstract class GameView<S extends GameSim> {
     });
   }
 
+  /** Repaints the match ball (online: the host's design). */
+  setBallDesign(d: BallDesign) {
+    paintBallMesh(this.ball, d);
+  }
+
   /** Camera looks across the pitch toward -z, so screen up = -z and screen right = +x. */
   protected stickToWorld(s: { x: number; y: number }): V2 {
     return { x: s.x, z: -s.y };
@@ -274,7 +280,13 @@ export abstract class GameView<S extends GameSim> {
     const f = this.focusPlayer();
     this.ring.visible = !!f;
     if (f) this.ring.position.set(f.pos.x, 0.01, f.pos.z);
-    // broadcast-style side camera
+    this.placeCamera(dt);
+    // the crowd bed swells as play nears a goal
+    this.audio.setTension(Math.max(0, 1 - (sim.pitch.length / 2 - Math.abs(b.x)) / 8));
+  }
+
+  /** Broadcast-style side camera following cameraFocus(). Penalties override it with a view from behind the kicker. */
+  protected placeCamera(dt: number) {
     const c = this.cameraFocus();
     if (this.snapCamera) this.camTarget.set(c.x, 0, c.z);
     else this.camTarget.lerp(new THREE.Vector3(c.x, 0, c.z), 1 - Math.exp(-4 * Math.max(dt, 1 / 60)));
@@ -285,8 +297,6 @@ export abstract class GameView<S extends GameSim> {
     this.camera.position.set(this.camTarget.x, height, this.camTarget.z + dist);
     this.camera.lookAt(this.camTarget.x, 0.6, this.camTarget.z - 1);
     this.venue.focus(this.camTarget.x, this.camTarget.z);
-    // the crowd bed swells as play nears a goal
-    this.audio.setTension(Math.max(0, 1 - (sim.pitch.length / 2 - Math.abs(b.x)) / 8));
   }
 
   /**
