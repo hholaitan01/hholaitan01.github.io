@@ -4,8 +4,32 @@ import type { PitchSpec } from "../../game/pitch";
 import type { QualityProfile, TimeOfDay } from "../../settings/settings";
 import { buildPitch } from "../pitchMesh";
 import { building, mural, type Building } from "./buildings";
-import { pbr, seeded } from "./materials";
+import { canvasTex, pbr, seeded } from "./materials";
 import { cable, chainLink, chairGeometry, floodMast, minibus, powerPole, streetLamp, umbrella } from "./props";
+
+/** Worn artificial turf: mown stripes, bald patches by the goals and centre (generated, original). */
+function turfMaterial(w: number, d: number) {
+  const S = 8, W = Math.round(w * S), H = Math.round(d * S);
+  const t = canvasTex(W, H, (c) => {
+    for (let i = 0; i < 12; i++) {
+      c.fillStyle = i % 2 ? "#3c7a35" : "#447f3b";
+      c.fillRect((i * W) / 12, 0, W / 12 + 1, H);
+    }
+    for (let i = 0; i < 9000; i++) {
+      c.fillStyle = `rgba(${Math.random() < 0.5 ? "20,40,15" : "120,150,80"},${Math.random() * 0.25})`;
+      c.fillRect(Math.random() * W, Math.random() * H, 2, 2);
+    }
+    // worn, sandy patches where play concentrates
+    for (const [x, y, r] of [[0.06, 0.5, 0.09], [0.94, 0.5, 0.09], [0.5, 0.5, 0.07]]) {
+      const g = c.createRadialGradient(x * W, y * H, 0, x * W, y * H, r * W);
+      g.addColorStop(0, "rgba(150,125,80,.75)");
+      g.addColorStop(1, "rgba(150,125,80,0)");
+      c.fillStyle = g;
+      c.fillRect(0, 0, W, H);
+    }
+  });
+  return new THREE.MeshStandardMaterial({ map: t, roughness: 0.95 });
+}
 
 /** Spots where the view may place spectators (position, facing yaw, pose). */
 export interface SpectatorSpot {
@@ -53,7 +77,10 @@ export class Venue {
     street.receiveShadow = true;
     this.group.add(street);
     const courtW = 2 * (L + pitch.goalDepth + 0.15), courtD = 2 * (W + 0.3);
-    const court = new THREE.Mesh(new THREE.PlaneGeometry(courtW, courtD), pbr("concrete", { repeat: 6, color: "#86786a", normals: q.normalMaps }));
+    const court = new THREE.Mesh(
+      new THREE.PlaneGeometry(courtW, courtD),
+      pitch.surface === "turf" ? turfMaterial(courtW, courtD) : pbr("concrete", { repeat: 6, color: "#86786a", normals: q.normalMaps }),
+    );
     court.rotation.x = -Math.PI / 2;
     court.receiveShadow = true;
     this.group.add(court);

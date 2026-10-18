@@ -1,7 +1,7 @@
 // Pure animation state selection for a footballer, so it can be unit-tested without WebGL.
 
 export type LocoState = "idle" | "walk" | "jog" | "sprint" | "turnL" | "turnR";
-export type ActionName = "pass" | "shoot" | "kick" | "header" | "cheer";
+export type ActionName = "pass" | "shoot" | "kick" | "header" | "cheer" | "tackle" | "fall" | "diveL" | "diveR" | "save" | "throw";
 
 export interface LocoInput {
   /** Planar speed in m/s. */
@@ -50,4 +50,10 @@ export function locoClip(state: LocoState, inp: LocoInput, stride: Record<string
   }
 }
 
-export const ACTION_CLIP: Record<ActionName, string> = { pass: "pass", shoot: "strike", kick: "kick", header: "header", cheer: "cheer" };
+export const ACTION_CLIP: Record<ActionName, string> = {
+  pass: "pass", shoot: "strike", kick: "kick", header: "header", cheer: "cheer",
+  // a standing poke tackle reuses the short pass swing; "fall" is the Mixamo trip (the tackled player)
+  tackle: "pass", fall: "trip", diveL: "diveL", diveR: "diveR", save: "gkScoop", throw: "gkPass",
+};
+/** Playback rate per action (keeper clips are long and include the recovery). */
+export const ACTION_RATE: Partial<Record<ActionName, number>> = { tackle: 1.4, diveL: 1.3, diveR: 1.3, throw: 1.8, save: 1.2, fall: 1.1 };

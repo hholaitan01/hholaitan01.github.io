@@ -1,12 +1,23 @@
 // Desktop keyboard input. (Touch controls are a separate, later stage.)
 // Movement is reported in camera space: x = right, y = up the screen (away from the camera).
 
-export type Button = "pass" | "shoot" | "lob" | "sprint" | "reset" | "pause";
+export type Button = "pass" | "shoot" | "lob" | "sprint" | "reset" | "pause" | "switch";
 
 const KEYMAP: Record<string, Button | "up" | "down" | "left" | "right"> = {
   KeyW: "up", ArrowUp: "up", KeyS: "down", ArrowDown: "down", KeyA: "left", ArrowLeft: "left", KeyD: "right", ArrowRight: "right",
-  Space: "pass", KeyJ: "pass", KeyK: "shoot", KeyL: "lob", ShiftLeft: "sprint", ShiftRight: "sprint", KeyR: "reset", KeyP: "pause", Escape: "pause",
+  Space: "pass", KeyJ: "pass", KeyK: "shoot", KeyL: "lob", ShiftLeft: "sprint", ShiftRight: "sprint", KeyR: "reset", KeyP: "pause", Escape: "pause", KeyQ: "switch",
 };
+
+/** Match controls: the same keys do different things with and without the ball. */
+export const MATCH_KEY_HELP: [string, string, string][] = [
+  ["W A S D / arrows", "move", "move"],
+  ["Shift", "sprint", "sprint"],
+  ["Space or J", "pass (aim with direction)", "switch to the player nearest the ball"],
+  ["K (hold)", "shoot, hold for power", "standing tackle"],
+  ["L", "lofted pass", "slide tackle"],
+  ["Q", "—", "switch player"],
+  ["P / Esc", "pause", "pause"],
+];
 
 export const KEY_HELP: [string, string][] = [
   ["W A S D / arrows", "move"],

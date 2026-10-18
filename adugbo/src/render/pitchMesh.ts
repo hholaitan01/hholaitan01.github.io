@@ -71,7 +71,27 @@ function ground(p: PitchSpec): THREE.Object3D {
   return g;
 }
 
+/** Four-post goal: two painted bollards (old tyres/cans in real street games). */
+function postGoal(p: PitchSpec, side: number): THREE.Object3D {
+  const g = new THREE.Group();
+  const stripe = canvasTexture(32, 64, (c) => {
+    for (let i = 0; i < 4; i++) {
+      c.fillStyle = i % 2 ? "#111111" : "#f6c90e";
+      c.fillRect(0, i * 16, 32, 16);
+    }
+  });
+  const m = new THREE.MeshStandardMaterial({ map: stripe, roughness: 0.6 });
+  for (const z of [p.goalWidth / 2 + 0.1, -p.goalWidth / 2 - 0.1]) {
+    const b = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.11, 0.6, 14), m);
+    b.position.set(side * (p.length / 2), 0.3, z);
+    b.castShadow = true;
+    g.add(b);
+  }
+  return g;
+}
+
 function goal(p: PitchSpec, side: number): THREE.Object3D {
+  if (p.goalStyle === "posts") return postGoal(p, side);
   const g = new THREE.Group();
   const white = new THREE.MeshStandardMaterial({ color: 0xf2f2f0, roughness: 0.35, metalness: 0.2 });
   const gw = p.goalWidth / 2, gh = p.goalHeight, d = p.goalDepth, r = 0.06;

@@ -80,6 +80,12 @@ export class PhysicsWorld {
   }
 
   private buildGoal(side: number) {
+    if (this.pitch.goalStyle === "posts") {
+      // four-post football: knee-high bollards, nothing to stop the ball behind them
+      const x = side * (this.pitch.length / 2), gw = this.pitch.goalWidth / 2;
+      for (const z of [gw + 0.1, -gw - 0.1]) this.fixed(RAPIER.ColliderDesc.cylinder(0.3, 0.1).setTranslation(x, 0.3, z), "post", 0.8);
+      return;
+    }
     const p = this.pitch, x = side * (this.pitch.length / 2), gw = p.goalWidth / 2, gh = p.goalHeight, d = p.goalDepth, pr = 0.06;
     for (const z of [gw + pr, -gw - pr])
       this.fixed(RAPIER.ColliderDesc.cylinder(gh / 2, pr).setTranslation(x, gh / 2, z), "post", 0.9);
@@ -181,8 +187,8 @@ export class PhysicsWorld {
     const p = this.ball.translation(), L = this.pitch.length / 2;
     if (this.pitch.goals === "none") return 0;
     if (Math.abs(p.z) > this.pitch.goalWidth / 2 || p.y > this.pitch.goalHeight) return 0;
-    // inside the frame: past the line but not behind the net
-    const deep = L + this.pitch.goalDepth + BALL_R;
+    // inside the frame: past the line but not behind the net (open "posts" goals: just past the line)
+    const deep = this.pitch.goalStyle === "posts" ? L + 1.5 : L + this.pitch.goalDepth + BALL_R;
     if (p.x > L + BALL_R && p.x < deep) return 1;
     if (this.pitch.goals === "full" && p.x < -L - BALL_R && p.x > -deep) return -1;
     return 0;

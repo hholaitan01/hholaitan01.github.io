@@ -1,7 +1,7 @@
 # ADUGBO: Street Kings
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
-Work is delivered in stages. **Current stage: 3 — venue.** Match modes, AI opponents and polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
+Work is delivered in stages. **Current stage: 4 — match modes and menus.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
 
 ## Commands
 
@@ -51,6 +51,19 @@ works around it and does not change versions.
   spectator and prop counts; blob shadows on low). Saved in localStorage; switchable in practice.
 - Browser test renders day and evening at each quality on desktop and phone-landscape viewports and checks that the
   player and ball stand out from the ground (luminance contrast or CIE ΔE) and that the goal stays in shot.
+
+## Stage 4: what works
+- Main menu → Play match → mode, teams, side, CPU difficulty, length, time of day → rules for this match → kick-off.
+- Modes: **Street 5s** (cage, keepers), **7-a-side** (open turf, kick-ins, corners, goal kicks), **Four posts**
+  (no keepers, bollard goals, configurable players a side, goal width, first-to score, cage or open street), and
+  **Practice**. The rules screen text is generated from the same config the engine uses.
+- Six fictional teams with home/away kits (automatic clash switch), keeper kits, ratings that feed the simulation.
+- Match engine (`src/game/match/MatchSim.ts`): kick-offs (opponents held out of the circle), restarts with 4 m
+  distance, goals, half-time, full-time, first-to-N, stats (possession, shots, on target, passes, tackles, saves).
+- Keepers: narrow the angle, react to shots with a skill/difficulty-based chance, step-save or dive, catch or parry,
+  claim loose balls and smother in their area, then throw or kick out.
+- Pause menu (resume, restart, quit), full-time screen (stats, rematch, quit), How to play, Settings.
+- Not implemented (stated in the rules screen): fouls, cards, penalties, offside, substitutions, multiplayer.
 
 ## Docs
 - `docs/ASSET_MANIFEST.md` — sources, licences, decisions, face limitation and workflow

@@ -3,7 +3,7 @@ import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { kitMaterial, shirtTexture, type Kit, type KitUniforms } from "../render/kit";
 import { STRIDE_SPEED } from "./anim/clips";
-import { ACTION_CLIP, locoClip, selectLocomotion, type ActionName, type LocoInput, type LocoState } from "./anim/locomotion";
+import { ACTION_CLIP, ACTION_RATE, locoClip, selectLocomotion, type ActionName, type LocoInput, type LocoState } from "./anim/locomotion";
 
 export const HEADS = ["m300", "m006", "m007", "m102", "m130", "sm005", "m016", "m108"] as const;
 export type HeadId = (typeof HEADS)[number];
@@ -180,7 +180,11 @@ export class PlayerPrefab {
     return () => this.listeners.delete(fn);
   }
 
+  /** Name printed on the shirt. */
+  lookName = "";
+
   setLook(look: PlayerLook) {
+    this.lookName = look.name;
     const t = HEAD_TINT[look.head];
     const tone = look.head === "m300" ? look.skinTone : 1;
     const skin = new THREE.Color(t[0] * tone, t[1] * tone, t[2] * tone);
@@ -229,14 +233,19 @@ export class PlayerPrefab {
   }
 
   /** Plays a one-shot action over locomotion. Returns false if the clip is missing or an action is running. */
-  play(action: ActionName): boolean {
-    if (this.action) return false;
+  play(action: ActionName, force = false): boolean {
+    if (this.action && !force) return false;
+    if (this.action && this.actionAction) {
+      this.actionAction.stop();
+      this.action = null;
+      this.actionAction = null;
+    }
     const clip = this.asset.clips.get(ACTION_CLIP[action]);
     if (!clip) return false;
     const a = this.mixer.clipAction(clip);
     a.reset().setLoop(THREE.LoopOnce, 1);
     a.clampWhenFinished = true;
-    a.timeScale = 1;
+    a.timeScale = ACTION_RATE[action] ?? 1;
     a.play();
     this.current.crossFadeTo(a, 0.12, false);
     this.actionAction = a;

@@ -23,6 +23,10 @@ export interface Attributes {
   control: number;
   passing: number;
   shooting: number;
+  /** Tackling and positioning; defaults to 0.6 when absent. */
+  defending?: number;
+  /** Goalkeeping (reach, reactions, handling); only used for keepers. */
+  keeping?: number;
 }
 
 export interface PlayerIntent {
@@ -50,6 +54,13 @@ export class SimPlayer {
   touchCd = 0;
   /** Seconds the player has been in possession. */
   heldFor = 0;
+  /** Seconds left knocked off balance (after a failed tackle or being tackled). */
+  stun = 0;
+  /** Seconds of committed movement (dive, slide) during which velocity is kept rather than steered. */
+  lunge = 0;
+  role: "gk" | "field" = "field";
+  /** Human-controlled right now. */
+  controlled = false;
 
   constructor(
     readonly id: number,
@@ -72,6 +83,18 @@ export class SimPlayer {
 
   /** Integrates movement: acceleration-limited velocity and turn-rate-limited facing. */
   move(dt: number, withBall: boolean, kicking: boolean) {
+    if (this.lunge > 0) {
+      this.lunge = Math.max(0, this.lunge - dt);
+      this.pos.x += this.vel.x * dt;
+      this.pos.z += this.vel.z * dt;
+      this.yawRate = 0;
+      if (this.lunge === 0) this.vel = { x: this.vel.x * 0.3, z: this.vel.z * 0.3 };
+      return;
+    }
+    if (this.stun > 0) {
+      this.stun = Math.max(0, this.stun - dt);
+      kicking = true; // no control while off balance: decelerate in place
+    }
     const target = kicking ? v2() : { x: this.intent.move.x * this.maxSpeed(withBall), z: this.intent.move.z * this.maxSpeed(withBall) };
     const dv = sub(target, this.vel), dl = len(dv);
     const accel = (len(target) > this.speed ? 13 + 5 * this.attrs.pace : 20) * dt;

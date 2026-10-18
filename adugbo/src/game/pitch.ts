@@ -13,6 +13,8 @@ export interface PitchSpec {
   surface: "concrete" | "turf" | "sand";
   /** Goals at both ends ("full") or only at +x ("single", used by practice). */
   goals: "full" | "single" | "none";
+  /** "net": framed goal with crossbar and net. "posts": two bollards, no bar; goals only count below goalHeight. */
+  goalStyle?: "net" | "posts";
 }
 
 export const PRACTICE_PITCH: PitchSpec = {

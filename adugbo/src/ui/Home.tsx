@@ -5,12 +5,15 @@ export function Home({ go }: { go: (route: string) => void }) {
         ADUGBO<span>Street Kings</span>
       </h1>
       <div className="menu">
-        <button className="primary" onClick={() => go("practice")}>
-          Practice
+        <button className="primary" onClick={() => go("play")}>
+          Play match
         </button>
+        <button onClick={() => go("practice")}>Practice</button>
+        <button onClick={() => go("howto")}>How to play</button>
+        <button onClick={() => go("settings")}>Settings</button>
         <button onClick={() => go("lab")}>Player lab</button>
       </div>
-      <p className="muted">Match modes arrive in a later build. Practice currently needs a keyboard.</p>
+      <p className="muted">Keyboard required in this build. Single player against the CPU; no local or online multiplayer.</p>
     </div>
   );
 }

@@ -21,7 +21,9 @@ export type SimEvent =
   | { type: "touch"; player: number; quality: "clean" | "heavy" | "deflect" }
   | { type: "possession"; player: number | null }
   | { type: "hit"; kind: HitKind; speed: number }
-  | { type: "goal"; side: number; scorer: number | null };
+  | { type: "goal"; side: number; scorer: number | null }
+  | { type: "tackle"; player: number; victim: number | null; success: boolean; slide: boolean }
+  | { type: "save"; player: number; kind: "catch" | "parry" | "miss" | "claim" };
 
 const REACH = 0.85; // metres from the player's feet within which the ball can be played
 const CONTROL_HEIGHT = 1.0;
@@ -42,6 +44,8 @@ export class GameSim {
   private acc = 0;
   /** Expected receiver of the last pass (gets priority to control it). */
   passTarget: SimPlayer | null = null;
+  /** Goalkeeper holding the ball in his hands (nobody can take it; it moves with him). */
+  holder: SimPlayer | null = null;
 
   constructor(
     readonly pitch: PitchSpec,
@@ -102,13 +106,22 @@ export class GameSim {
       p.move(dt, this.owner === p, !!p.pending);
       this.physics.movePlayer(p.id, p.pos.x, p.pos.z);
     }
-    this.updatePossession(dt);
+    if (this.passTarget && !this.pendingPass()) {
+      // a pass that has died or run past its man is just a loose ball
+      const bv = this.physics.ballVel;
+      if (Math.hypot(bv.x, bv.z) < 1.2 || this.time - this.passAt > 3.5) this.passTarget = null;
+    }
+    if (this.holder) {
+      const h = this.holder, f = fwd(h.yaw);
+      h.heldFor += dt;
+      this.physics.setBall({ x: h.pos.x + f.x * 0.3, y: 1.05, z: h.pos.z + f.z * 0.3 });
+    } else this.updatePossession(dt);
     this.physics.step();
     for (const h of this.physics.takeHits()) this.events.push({ type: "hit", kind: h.kind, speed: h.speed });
     this.afterStep(dt);
   }
 
-  private setOwner(p: SimPlayer | null) {
+  protected setOwner(p: SimPlayer | null) {
     if (this.owner === p) return;
     this.owner = p;
     if (p) {
@@ -136,7 +149,7 @@ export class GameSim {
     }
     // contest: an opponent (or anyone, when the ball is loose) within reach can take or deflect it
     for (const p of this.players) {
-      if (p === this.owner || p.touchLock > 0 || p.pending) continue;
+      if (p === this.owner || p.touchLock > 0 || p.pending || p.stun > 0) continue;
       const foot = this.footPoint(p, 0.3);
       const d = len(sub(ball, foot));
       if (d > REACH || b.y > CONTROL_HEIGHT) continue;
@@ -146,7 +159,7 @@ export class GameSim {
         const ownerGap = len(sub(ball, this.owner.pos));
         if (ownerGap < 1.0 && this.rand() > 0.02) continue;
       }
-      if (this.passTarget && this.passTarget !== p && this.passTarget.team !== p.team && d > REACH * 0.7) continue;
+      if (this.passTarget && this.passTarget !== p && this.passTarget.team === p.team && !p.controlled) continue;
       this.firstTouch(p, { x: bv.x, y: bv.y, z: bv.z });
       break;
     }
@@ -225,7 +238,7 @@ export class GameSim {
     return null;
   }
 
-  private schedule(p: SimPlayer, action: ActionName, delay: number, exec: () => void) {
+  protected schedule(p: SimPlayer, action: ActionName, delay: number, exec: () => void) {
     p.pending = { action, delay, exec };
     this.events.push({ type: "action", player: p.id, action });
   }
@@ -245,6 +258,11 @@ export class GameSim {
     if (vel.y > 0.5 && b.y < BALL_R + 0.02) this.physics.setBall({ x: b.x, y: BALL_R + 0.02, z: b.z }, vel, { x: 0, y: spinY, z: 0 });
     else this.physics.kick(vel, { x: 0, y: spinY, z: 0 });
     this.events.push({ type: "kick", player: p.id, kind, speed: Math.hypot(vel.x, vel.y, vel.z) });
+  }
+
+  private passAt = 0;
+  private pendingPass() {
+    return this.players.some((p) => p.pending && (p.pending.action === "pass" || p.pending.action === "kick" || p.pending.action === "header"));
   }
 
   /** Best receiver in the aim direction (within ±50°), preferring nearer and more open players. */
@@ -294,13 +312,16 @@ export class GameSim {
       const ex = dir.x * Math.cos(ang) - dir.z * Math.sin(ang), ez = dir.x * Math.sin(ang) + dir.z * Math.cos(ang);
       if (head) {
         const s = Math.min(14, 6 + dist * 0.4);
+        this.passAt = this.time;
         this.strike(p, "header", { x: ex * s, y: 1.5, z: ez * s });
       } else if (lofted) {
         const angle = (38 * Math.PI) / 180, s = Math.min(26, loftSpeed(dist * 0.85, angle));
+        this.passAt = this.time;
         this.strike(p, "lob", { x: ex * s * Math.cos(angle), y: s * Math.sin(angle), z: ez * s * Math.cos(angle) });
       } else {
-        const s = Math.min(24, groundPassSpeed(dist, recv ? 3.5 + dist * 0.25 : 1.5, this.rollDecel));
+        const s = Math.min(24, groundPassSpeed(dist, recv ? 5 + dist * 0.3 : 1.5, this.rollDecel));
         this.strike(p, "pass", { x: ex * s, y: 0, z: ez * s });
+        this.passAt = this.time;
       }
     });
     return recv;
@@ -331,6 +352,76 @@ export class GameSim {
       this.strike(p, head ? "header" : "shot", { x: dir.x * vh, y: vy, z: dir.z * vh }, curl * 10);
     });
     return true;
+  }
+
+  /**
+   * Tackle attempt. A standing poke reaches 1.1 m, a slide 1.9 m (and commits the tackler to the ground).
+   * Success depends on the tackler's defending against the carrier's control; failure leaves the tackler off balance.
+   */
+  tackle(p: SimPlayer, slide = false): boolean {
+    if (p.pending || p.stun > 0 || this.owner === p || this.holder) return false;
+    if (slide) {
+      const f = fwd(p.yaw);
+      p.vel = { x: f.x * Math.max(5, p.speed), z: f.z * Math.max(5, p.speed) };
+      p.lunge = 0.35;
+    }
+    this.schedule(p, "tackle", slide ? 0.22 : 0.14, () => {
+      const ball = this.ball2(), foot = this.footPoint(p, slide ? 0.9 : 0.45);
+      const reach = slide ? 1.0 : 0.75, carrier = this.owner && this.owner.team !== p.team ? this.owner : null;
+      const inReach = len(sub(ball, foot)) < reach && this.physics.ballPos.y < 0.8;
+      let success = false;
+      if (inReach) {
+        const def = p.attrs.defending ?? 0.6, ctl = carrier ? carrier.attrs.control : 0;
+        const chance = carrier ? Math.min(0.9, Math.max(0.15, 0.5 + 0.55 * (def - ctl) + (slide ? 0.12 : 0))) : 1;
+        success = this.rand() < chance;
+      }
+      if (success) {
+        const f = fwd(p.yaw), side = this.rand() < 0.5 ? 1 : -1;
+        const sp = slide ? 7 : 4;
+        this.physics.kick({ x: f.x * sp - f.z * side * 1.5, y: 0, z: f.z * sp + f.x * side * 1.5 });
+        if (carrier) {
+          this.setOwner(null);
+          carrier.stun = slide ? 1.1 : 0.45;
+          carrier.touchLock = 0.5;
+          if (slide) this.events.push({ type: "action", player: carrier.id, action: "fall" });
+        }
+        this.lastTouch = p;
+        p.touchLock = slide ? 0.5 : 0.1;
+      }
+      if (slide) p.stun = Math.max(p.stun, 0.9);
+      else if (!success) p.stun = 0.5;
+      this.events.push({ type: "tackle", player: p.id, victim: carrier?.id ?? null, success, slide });
+    });
+    return true;
+  }
+
+  /** Keeper takes the ball in his hands. */
+  keeperCatch(k: SimPlayer) {
+    this.holder = k;
+    this.passTarget = null;
+    this.setOwner(k);
+    k.heldFor = 0;
+  }
+
+  /** Keeper throws (short) or kicks (long) the ball out to a point. */
+  keeperDistribute(k: SimPlayer, target: V2, long: boolean) {
+    if (this.holder !== k || k.pending) return;
+    k.yaw = yawOf(sub(target, k.pos));
+    this.schedule(k, long ? "kick" : "throw", long ? this.contacts.kick : 0.45, () => {
+      this.holder = null;
+      this.setOwner(null);
+      k.touchLock = 0.5;
+      this.lastTouch = k;
+      const b = this.physics.ballPos, d = sub(target, { x: b.x, z: b.z }), dist = len(d), dir = norm(d);
+      if (long) {
+        const a = (32 * Math.PI) / 180, s = Math.min(26, loftSpeed(dist * 0.85, a));
+        this.physics.setBall({ x: b.x, y: 0.4, z: b.z }, { x: dir.x * s * Math.cos(a), y: s * Math.sin(a), z: dir.z * s * Math.cos(a) });
+      } else {
+        const s = Math.min(18, groundPassSpeed(dist, 4, this.rollDecel));
+        this.physics.setBall({ x: b.x + dir.x * 0.5, y: 0.35, z: b.z + dir.z * 0.5 }, { x: dir.x * s, y: 0.5, z: dir.z * s });
+      }
+      this.events.push({ type: "kick", player: k.id, kind: long ? "clear" : "pass", speed: 0 });
+    });
   }
 
   takeEvents() {

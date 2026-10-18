@@ -2,11 +2,17 @@ import { useEffect, useState } from "react";
 import { Home } from "./ui/Home";
 import { PlayerLab } from "./ui/PlayerLab";
 import { PracticeScreen } from "./ui/PracticeScreen";
+import { MatchSetup } from "./ui/MatchSetup";
+import { MatchScreen } from "./ui/MatchScreen";
+import { HowToPlay } from "./ui/HowToPlay";
+import { SettingsScreen } from "./ui/SettingsScreen";
+import type { MatchConfig } from "./game/match/rules";
 
 const routeOf = () => location.hash.replace(/^#\/?/, "") || "home";
 
 export default function App() {
   const [route, setRoute] = useState(routeOf);
+  const [match, setMatch] = useState<{ cfg: MatchConfig; n: number } | null>(null);
   useEffect(() => {
     const on = () => setRoute(routeOf());
     addEventListener("hashchange", on);
@@ -15,7 +21,33 @@ export default function App() {
   const go = (r: string) => {
     location.hash = r === "home" ? "" : `/${r}`;
   };
-  if (route === "lab") return <PlayerLab />;
-  if (route === "practice") return <PracticeScreen onExit={() => go("home")} />;
-  return <Home go={go} />;
+  switch (route) {
+    case "lab":
+      return <PlayerLab />;
+    case "practice":
+      return <PracticeScreen onExit={() => go("home")} />;
+    case "play":
+      return (
+        <MatchSetup
+          onBack={() => go("home")}
+          onStart={(cfg) => {
+            setMatch({ cfg, n: 0 });
+            go("match");
+          }}
+        />
+      );
+    case "match":
+      // a reload loses the in-memory setup: go back to it rather than show an empty match
+      if (!match) {
+        queueMicrotask(() => go("play"));
+        return null;
+      }
+      return <MatchScreen key={match.n} config={match.cfg} onExit={() => go("home")} onReplay={() => setMatch({ cfg: match.cfg, n: match.n + 1 })} />;
+    case "howto":
+      return <HowToPlay onBack={() => go("home")} />;
+    case "settings":
+      return <SettingsScreen onBack={() => go("home")} />;
+    default:
+      return <Home go={go} />;
+  }
 }
