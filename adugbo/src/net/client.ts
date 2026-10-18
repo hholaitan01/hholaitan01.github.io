@@ -134,6 +134,7 @@ export class RoomLink {
   private ws: WebSocket | null = null;
   private tries = 0;
   private closedByUs = false;
+  private retry: ReturnType<typeof setTimeout> | null = null;
   onMessage: (m: ServerMsg) => void = () => {};
   onState: (s: "connecting" | "open" | "reconnecting" | "closed") => void = () => {};
 
@@ -144,8 +145,15 @@ export class RoomLink {
 
   async connect() {
     this.closedByUs = false;
+    await this.open();
+  }
+
+  private async open() {
     this.onState(this.tries ? "reconnecting" : "connecting");
-    const ws = new WebSocket(await socketUrl(`/api/room/${this.code}`, { role: this.role }));
+    const url = await socketUrl(`/api/room/${this.code}`, { role: this.role });
+    // left while the address was being prepared (or during a retry's backoff): don't take the seat back
+    if (this.closedByUs) return;
+    const ws = new WebSocket(url);
     this.ws = ws;
     ws.onopen = () => {
       this.tries = 0;
@@ -160,7 +168,11 @@ export class RoomLink {
     };
     ws.onclose = (e) => {
       if (this.closedByUs || e.code === 4004 || e.code === 4001) return this.onState("closed");
-      if (this.tries++ < 5) setTimeout(() => void this.connect(), 500 * 2 ** this.tries);
+      if (this.tries++ < 5)
+        this.retry = setTimeout(() => {
+          this.retry = null;
+          if (!this.closedByUs) void this.open();
+        }, 500 * 2 ** this.tries);
       else this.onState("closed");
     };
   }
@@ -175,6 +187,8 @@ export class RoomLink {
 
   close() {
     this.closedByUs = true;
+    if (this.retry) clearTimeout(this.retry);
+    this.retry = null;
     this.ws?.close(1000, "bye");
   }
 }

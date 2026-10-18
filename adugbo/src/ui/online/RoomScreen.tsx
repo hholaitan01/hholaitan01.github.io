@@ -117,7 +117,8 @@ export function RoomScreen({ code, spectate, go }: { code: string; spectate: boo
 
   const me = players.find((p) => p.seat === seat);
   const send = linkRef.current?.send.bind(linkRef.current) ?? (() => {});
-  const shareUrl = `${location.origin}${location.pathname}#/online/room/${code}`;
+  // keep the query: a ?server= address must travel with the invite
+  const shareUrl = `${location.origin}${location.pathname}${location.search}#/online/room/${code}`;
   const copy = async () => {
     try {
       if (navigator.share) await navigator.share({ title: "ADUGBO match", text: `Join my ADUGBO room: ${code}`, url: shareUrl });
