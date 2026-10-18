@@ -6,3 +6,5 @@ raw-sources/
 .DS_Store
 test-results/
 *.tsbuildinfo
+server/node_modules
+server/.wrangler

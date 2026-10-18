@@ -95,6 +95,14 @@ https://hholaitan01.github.io/adugbo/play/. (A from-scratch `npm install` withou
 - Master / effects / crowd volume and mute in Settings, mute button in practice and matches, M key. Saved.
 - Graphics quality low / medium / high in Settings and in practice (see stage 3), day/evening per match.
 
+## Online, penalties, ball designer, today's job
+- Home has every mode as a tile, ours and the ones Monkey Post offers: Play match, Penalty shootout, Training (practice
+  court and penalty practice), Online multiplayer, Ball designer, Watch matches and Settings, with today's job and the
+  rankings card. What was observed on Monkey Post and how ADUGBO does each part: `docs/ONLINE.md`.
+- Online play needs the server in `server/` (Cloudflare Worker + Durable Objects): friendly rooms with codes, quick
+  and ranked matchmaking, an Elo rankings table, a live list to watch matches. It is **not deployed yet**; see
+  `server/README.md`. Without it the online screens say online isn't connected.
+
 ## Touch controls (phones and tablets)
 - Shown only where the main pointer is a touch screen and there is no hover (`(hover: none) and (pointer: coarse)`),
   so desktops, including touch-screen laptops, keep the keyboard and never see it.

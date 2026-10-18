@@ -3,6 +3,7 @@ import { MatchView, type MatchHud } from "../render/MatchView";
 import type { MatchConfig } from "../game/match/rules";
 import { loadSettings } from "../settings/settings";
 import { DebugOverlay } from "./DebugOverlay";
+import { recordJob } from "../game/jobs";
 import { TouchPad, useTouchUi } from "./TouchPad";
 
 declare global {
@@ -39,6 +40,16 @@ export function MatchScreen({ config, onExit, onReplay }: { config: MatchConfig;
       delete window.__match;
     };
   }, [config]);
+
+  // today's job: report the result once at full time
+  const reported = useRef(false);
+  useEffect(() => {
+    const s = view.current?.sim;
+    if (hud?.phase !== "fulltime" || reported.current || !s) return;
+    reported.current = true;
+    const u = config.userTeam, them = 1 - u;
+    recordJob({ kind: "match", mode: config.mode, difficulty: config.difficulty, won: s.score[u] > s.score[them], goalsFor: s.score[u], goalsAgainst: s.score[them] });
+  }, [hud?.phase, config]);
 
   const sim = view.current?.sim;
   const pauseOrFull = hud && (hud.paused || hud.phase === "fulltime");

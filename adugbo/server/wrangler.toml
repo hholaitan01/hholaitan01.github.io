@@ -1,0 +1,18 @@
+# ADUGBO online server: rooms, matchmaking, rankings and the live list (see src/index.ts).
+# Deploy: `npm run deploy` with CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID set (or after `npx wrangler login`).
+name = "adugbo-server"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+[[durable_objects.bindings]]
+name = "LOBBY"
+class_name = "Lobby"
+
+[[durable_objects.bindings]]
+name = "ROOM"
+class_name = "Room"
+
+# SQLite-backed Durable Objects (available on the Workers free plan)
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Lobby", "Room"]
