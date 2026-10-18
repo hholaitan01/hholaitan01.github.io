@@ -92,7 +92,7 @@ try {
   const t3 = await S(() => window.__practice.sim.state.timeLeft);
   check("Resume continues the clock", t3 < t2, `${t2} -> ${t3}`);
   await page.locator(".toolbar").getByRole("button", { name: "Menu" }).click();
-  check("Menu returns to the home screen", await page.getByRole("button", { name: "Player lab" }).isVisible({ timeout: 5000 }).catch(() => false) || (await page.waitForSelector(".home", { timeout: 5000 }).then(() => true, () => false)));
+  check("Menu returns to the home screen", await page.waitForSelector("[data-testid=home]", { timeout: 10000 }).then(() => true, () => false));
   await ctx.close();
 } finally {
   await browser.close();
