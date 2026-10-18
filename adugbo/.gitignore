@@ -1,0 +1,8 @@
+node_modules
+dist
+# raw third-party sources (Mixamo FBX etc.) must never be committed: Mixamo forbids redistributing raw files
+raw-sources/
+*.fbx
+.DS_Store
+test-results/
+*.tsbuildinfo
