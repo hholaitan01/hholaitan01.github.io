@@ -22,7 +22,11 @@ function sock(url) {
   ws.addEventListener("message", (e) => {
     const m = JSON.parse(e.data);
     got.push(m);
-    for (const w of [...waiters]) if (w.f(m)) (waiters.splice(waiters.indexOf(w), 1), w.res(m));
+    for (const w of [...waiters])
+      if (w.f(m)) {
+        waiters.splice(waiters.indexOf(w), 1);
+        w.res(m);
+      }
   });
   const closed = new Promise((res) => ws.addEventListener("close", (e) => res(e.code)));
   const open = new Promise((res, rej) => (ws.addEventListener("open", res), ws.addEventListener("error", rej)));
