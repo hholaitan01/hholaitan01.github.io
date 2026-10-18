@@ -46,6 +46,9 @@ export interface UserInput {
   pass?: number;
   shoot?: number;
   lob?: number;
+  /** Through ball (into the receiver's path), released this frame with power; `throughLofted` plays it in the air. */
+  through?: number;
+  throughLofted?: boolean;
   /** Pressed this frame. */
   switchPlayer?: boolean;
 }
@@ -503,7 +506,7 @@ export class MatchSim extends GameSim {
     const aim = len(inp.move) > 0.1 ? inp.move : fwd(u.yaw);
     const hasBall = this.owner === u || this.canPlay(u) !== null;
     if (this.holder === u) {
-      if (inp.pass !== undefined || inp.lob !== undefined) {
+      if (inp.pass !== undefined || inp.lob !== undefined || inp.through !== undefined) {
         const recv = this.pickReceiver(u, aim);
         const target = recv ? recv.pos : { x: u.pos.x + aim.x * 15, z: u.pos.z + aim.z * 15 };
         this.keeperDistribute(u, target, inp.lob !== undefined || len(sub(target, u.pos)) > 20);
@@ -519,6 +522,8 @@ export class MatchSim extends GameSim {
         this.pass(u, aim, inp.pass);
       } else if (inp.lob !== undefined) {
         this.pass(u, aim, inp.lob, true);
+      } else if (inp.through !== undefined) {
+        this.pass(u, aim, inp.through, !!inp.throughLofted, true);
       }
     } else {
       // defending: shoot = tackle, lob = slide tackle, pass = switch player

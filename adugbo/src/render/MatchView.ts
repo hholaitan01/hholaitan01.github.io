@@ -16,6 +16,8 @@ export interface MatchHud {
   message: string;
   controlled: string;
   hasBall: boolean;
+  /** The user's side has the ball (the touch pad shows its attacking buttons); kept through loose balls. */
+  attacking: boolean;
   power: number;
   powerFor: "shoot" | "pass" | null;
   paused: boolean;
@@ -52,6 +54,10 @@ export class MatchView extends GameView<MatchSim> {
       if (r.button === "pass") inp.pass = power;
       if (r.button === "shoot") inp.shoot = power;
       if (r.button === "lob") inp.lob = power;
+      if (r.button === "through") {
+        inp.through = power;
+        inp.throughLofted = !!r.flick;
+      }
     }
     const sp = k.holdTime("shoot"), pp = k.holdTime("pass");
     this.hud.power = Math.min(1, Math.max(sp, pp) / 0.8);
@@ -99,6 +105,7 @@ export class MatchView extends GameView<MatchSim> {
       message: sim.message,
       controlled: sim.controlled ? (this.prefabs.get(sim.controlled.id)?.lookName ?? "") : "",
       hasBall: !!sim.controlled && sim.owner === sim.controlled,
+      attacking: sim.owner ? sim.owner.team === sim.cfg.userTeam : (this.hud?.attacking ?? sim.restart?.team === sim.cfg.userTeam),
       power: this.hud?.power ?? 0,
       powerFor: this.hud?.powerFor ?? null,
       paused: this.paused,

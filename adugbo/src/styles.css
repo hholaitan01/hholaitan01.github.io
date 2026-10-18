@@ -130,3 +130,29 @@ fieldset.house legend { color: var(--accent); padding: 0 6px; }
 .rotate-icon { font-size: 64px; animation: rotateHint 2.4s ease-in-out infinite; }
 @keyframes rotateHint { 0%, 25% { transform: rotate(0deg); } 50%, 75% { transform: rotate(-90deg); } 100% { transform: rotate(0deg); } }
 @media (prefers-reduced-motion: reduce) { .rotate-icon { animation: none; transform: rotate(-90deg); } }
+
+/* ---- touch pad (phones and tablets only; see TouchPad.tsx) ---- */
+.touchpad { position: absolute; inset: 0; pointer-events: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.touchpad .stick-zone { position: absolute; left: 0; bottom: 0; width: 45%; top: 64px; pointer-events: auto; touch-action: none; }
+.touchpad .stick-base { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid rgba(255,255,255,.55);
+  background: radial-gradient(circle, rgba(255,255,255,.12), rgba(0,0,0,.25)); }
+.touchpad .stick-base.idle { transform: none; opacity: .45; }
+.touchpad .stick-knob { position: absolute; left: 50%; top: 50%; width: 44%; height: 44%; border-radius: 50%; background: rgba(255,255,255,.85);
+  box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.touchpad .pad-buttons { position: absolute; right: calc(30px + env(safe-area-inset-right)); bottom: calc(22px + env(safe-area-inset-bottom)); }
+.touchpad .pad-btn { position: absolute; border-radius: 50%; pointer-events: auto; touch-action: none; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; background: rgba(12,16,14,.55); border: 2px solid rgba(255,255,255,.7); color: #fff;
+  font-weight: 800; font-size: 14px; letter-spacing: .02em; text-shadow: 0 1px 3px #000; }
+.touchpad .pad-btn small { font-size: 9px; font-weight: 600; opacity: .75; }
+.touchpad .pad-btn.dash { background: rgba(246,201,14,.35); border-color: var(--accent); }
+.touchpad .pad-btn.down { background: rgba(246,201,14,.75); color: #111; text-shadow: none; transform: scale(.94); }
+.touchpad[data-mode="defend"] .pad-btn:not(.dash) { border-color: #e5383b; }
+.touchpad .pad-extra { position: absolute; right: calc(30px + env(safe-area-inset-right)); bottom: calc(240px * var(--pad-scale, 1)); pointer-events: auto;
+  touch-action: none; padding: 6px 12px; border-radius: 16px; background: rgba(12,16,14,.7); border: 1px solid rgba(255,255,255,.6); font-weight: 700; font-size: 13px; }
+/* with the pad on screen, the game buttons move to the top-left out of the thumbs' way */
+.game.touch .toolbar { top: 8px; bottom: auto; right: 8px; left: auto; justify-content: flex-end; max-width: calc(50% - 170px); z-index: 2; }
+.game.touch details.keys { display: none; }
+.game.touch .toolbar button { padding: 6px 10px; font-size: 13px; }
+.game.touch .fps { display: none; }
+.game.touch .power { bottom: 16px; }
+.game.touch .controlled { bottom: 34px; }

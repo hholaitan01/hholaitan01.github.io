@@ -447,7 +447,11 @@ export class GameSim {
    * Ground pass. `power` 0..1 only matters when there is no receiver (pass into space).
    * Returns the chosen receiver, if any.
    */
-  pass(p: SimPlayer, aim: V2, power: number, lofted = false): SimPlayer | null {
+  /**
+   * Pass toward `aim`: to the best receiver that way, led by his run, or into space if nobody is there. A `through`
+   * ball is played into the space ahead of the receiver (4–9 m beyond him, further with more power) for him to run on to.
+   */
+  pass(p: SimPlayer, aim: V2, power: number, lofted = false, through = false): SimPlayer | null {
     if (p.pending || !this.canPlay(p)) return null;
     const head = this.canPlay(p) === "head";
     const recv = this.pickReceiver(p, len(aim) > 0.1 ? aim : fwd(p.yaw));
@@ -456,6 +460,11 @@ export class GameSim {
       // lead the runner by his velocity over the estimated travel time
       const d0 = len(sub(recv.pos, p.pos)), tEst = d0 / (lofted ? 14 : 12);
       target = { x: recv.pos.x + recv.vel.x * tEst, z: recv.pos.z + recv.vel.z * tEst };
+      if (through) {
+        // into his path: the way he is running, or on along the line of the pass if he is standing
+        const run = len(recv.vel) > 1 ? norm(recv.vel) : norm(sub(recv.pos, p.pos)), lead = 4 + 5 * power;
+        target = { x: target.x + run.x * lead, z: target.z + run.z * lead };
+      }
     } else {
       const a = norm(len(aim) > 0.1 ? aim : fwd(p.yaw)), dist = 6 + power * 20;
       target = { x: p.pos.x + a.x * dist, z: p.pos.z + a.z * dist };
@@ -478,7 +487,8 @@ export class GameSim {
         this.passAt = this.time;
         this.strike(p, "lob", { x: ex * s * Math.cos(angle), y: s * Math.sin(angle), z: ez * s * Math.cos(angle) });
       } else {
-        const s = Math.min(24, groundPassSpeed(dist, recv ? 5 + dist * 0.3 : 1.5, this.rollDecel));
+        // to feet it arrives firm; into space (or through) it arrives slow enough to run on to
+        const s = Math.min(24, groundPassSpeed(dist, recv && !through ? 5 + dist * 0.3 : 1.5, this.rollDecel));
         this.strike(p, "pass", { x: ex * s, y: 0, z: ez * s });
         this.passAt = this.time;
       }

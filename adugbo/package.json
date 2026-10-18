@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "inspect:assets": "node tools/inspect-assets.mjs",
-    "test:e2e": "npm run build && node tests/e2e/lab.e2e.mjs && node tests/e2e/practice.e2e.mjs && node tests/e2e/venue.e2e.mjs && node tests/e2e/match.e2e.mjs && node tests/e2e/orientation.e2e.mjs",
+    "test:e2e": "npm run build && node tests/e2e/lab.e2e.mjs && node tests/e2e/practice.e2e.mjs && node tests/e2e/venue.e2e.mjs && node tests/e2e/match.e2e.mjs && node tests/e2e/orientation.e2e.mjs && node tests/e2e/touch.e2e.mjs",
     "build:pages": "tsc -b && vite build --outDir play --emptyOutDir"
   },
   "dependencies": {

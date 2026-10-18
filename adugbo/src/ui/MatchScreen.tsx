@@ -3,6 +3,7 @@ import { MatchView, type MatchHud } from "../render/MatchView";
 import type { MatchConfig } from "../game/match/rules";
 import { loadSettings } from "../settings/settings";
 import { DebugOverlay } from "./DebugOverlay";
+import { TouchPad, useTouchUi } from "./TouchPad";
 
 declare global {
   interface Window {
@@ -19,6 +20,7 @@ export function MatchScreen({ config, onExit, onReplay }: { config: MatchConfig;
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [debug, setDebug] = useState(() => new URLSearchParams(location.search).has("debug"));
+  const touch = useTouchUi();
 
   useEffect(() => {
     const v = new MatchView(host.current!, { ...loadSettings(), timeOfDay: config.timeOfDay });
@@ -41,7 +43,7 @@ export function MatchScreen({ config, onExit, onReplay }: { config: MatchConfig;
   const sim = view.current?.sim;
   const pauseOrFull = hud && (hud.paused || hud.phase === "fulltime");
   return (
-    <div className="game">
+    <div className={touch ? "game touch" : "game"}>
       <div className="game-view" ref={host} />
       {!hud && !error && <div className="loading">Loading match… {Math.round(progress * 100)}%</div>}
       {error && <div className="loading error">Could not start the match: {error}</div>}
@@ -80,6 +82,7 @@ export function MatchScreen({ config, onExit, onReplay }: { config: MatchConfig;
             </button>
           </div>
           {debug && view.current && <DebugOverlay view={view.current} />}
+          {touch && view.current && !pauseOrFull && <TouchPad keys={view.current.keys} mode={hud.attacking ? "attack" : "defend"} />}
           <div className="fps">
             {hud.fps} fps · anim {hud.animMs.toFixed(1)} ms
           </div>

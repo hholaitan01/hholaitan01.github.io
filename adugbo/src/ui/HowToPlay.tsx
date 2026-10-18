@@ -5,8 +5,46 @@ export function HowToPlay({ onBack }: { onBack: () => void }) {
   return (
     <div className="screen">
       <h2>How to play</h2>
-      <p className="muted">This build is played with a keyboard. Touch controls are not built yet.</p>
-      <h3>Match controls</h3>
+      <p className="muted">Keyboard on computers. On phones and tablets an eFootball-style touch pad appears instead (it is hidden on desktop).</p>
+      <h3>Touch controls (phones and tablets)</h3>
+      <table className="keys-table">
+        <thead>
+          <tr>
+            <th>Control</th>
+            <th>With the ball</th>
+            <th>Without the ball</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Left thumb, anywhere on the left half</td>
+            <td>move (the stick appears where you touch)</td>
+            <td>move</td>
+          </tr>
+          <tr>
+            <td>Bottom-left button</td>
+            <td>PASS (flick up: lofted pass)</td>
+            <td>SWITCH player</td>
+          </tr>
+          <tr>
+            <td>Top-left button</td>
+            <td>THROUGH ball (flick up: lofted through ball)</td>
+            <td>SLIDE tackle</td>
+          </tr>
+          <tr>
+            <td>Top-right button</td>
+            <td>SHOOT (hold for power)</td>
+            <td>TACKLE</td>
+          </tr>
+          <tr>
+            <td>Big bottom-right button</td>
+            <td>DASH (hold)</td>
+            <td>DASH (hold)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p className="muted">In practice a BALL button brings the ball back to your feet. Pause and mute are at the top of the screen.</p>
+      <h3>Match controls (keyboard)</h3>
       <table className="keys-table">
         <thead>
           <tr>

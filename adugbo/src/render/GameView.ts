@@ -27,7 +27,8 @@ export abstract class GameView<S extends GameSim> {
   protected asset!: FootballerAsset;
   protected prefabs = new Map<number, PlayerPrefab>();
   protected ball = makeBall();
-  protected keys = new Keyboard();
+  /** Keyboard plus the touch pad, which feeds the same buttons (see TouchPad.tsx). */
+  readonly keys = new Keyboard();
   protected spectators: PlayerPrefab[] = [];
   private blobs: THREE.Mesh[] = [];
   private ring!: THREE.Mesh;
