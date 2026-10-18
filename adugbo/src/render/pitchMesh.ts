@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import type { PitchSpec } from "../game/pitch";
+import { boardTexture } from "./venue/ground";
 
 function canvasTexture(w: number, h: number, draw: (g: CanvasRenderingContext2D) => void, srgb = true) {
   const c = document.createElement("canvas");
@@ -143,11 +144,13 @@ function goal(p: PitchSpec, side: number): THREE.Object3D {
 
 function boards(p: PitchSpec): THREE.Object3D {
   const g = new THREE.Group();
-  const mat = new THREE.MeshStandardMaterial({ color: 0x23384d, roughness: 0.6 });
-  const cap = new THREE.MeshStandardMaterial({ color: 0xf6c90e, roughness: 0.5 });
+  const back = new THREE.MeshStandardMaterial({ color: 0x2c2a26, roughness: 0.8 });
+  const cap = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5 });
   const L = p.length / 2, W = p.width / 2, h = p.wallHeight, t = 0.12;
   const add = (w: number, x: number, z: number, rotY: number) => {
-    const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, t), mat);
+    // painted slogans on both faces (box faces: +x, -x, +y, -y, +z, -z)
+    const face = new THREE.MeshStandardMaterial({ map: boardTexture(w, h), roughness: 0.75 });
+    const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, t), [back, back, back, back, face, face]);
     b.position.set(x, h / 2, z);
     b.rotation.y = rotY;
     b.castShadow = b.receiveShadow = true;

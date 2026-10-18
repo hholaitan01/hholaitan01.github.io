@@ -25,7 +25,8 @@ export function makeBall(): THREE.Mesh {
     }
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
-  const m = new THREE.Mesh(new THREE.SphereGeometry(0.11, 32, 20), new THREE.MeshStandardMaterial({ map: t, roughness: 0.45 }));
+  // a faint self-light keeps the ball readable against the sun-bleached court, even in shadow
+  const m = new THREE.Mesh(new THREE.SphereGeometry(0.11, 32, 20), new THREE.MeshStandardMaterial({ map: t, roughness: 0.45, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: 0.18 }));
   m.castShadow = true;
   return m;
 }

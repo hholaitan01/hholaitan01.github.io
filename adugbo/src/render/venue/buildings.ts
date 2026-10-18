@@ -84,7 +84,8 @@ export interface Building {
   signs: THREE.MeshStandardMaterial[];
 }
 
-const PASTELS = ["#e8d9b5", "#d9a86c", "#b9d3df", "#e3b7b0", "#c8d8a8", "#f0e6d2", "#d6c3e0", "#c9b38f"];
+// Lagos paint: bright pinks, yellows, sky blues and mint, plus the odd faded cream
+const PASTELS = ["#e99ab0", "#f2c94c", "#8ec5e8", "#9fd8b4", "#f4b183", "#c9a6e0", "#f0e6d2", "#e7d26a"];
 
 /**
  * A 1–3 storey Lagos-style block: painted plaster walls, barred windows, corrugated zinc roof,
