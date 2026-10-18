@@ -19,7 +19,8 @@ try {
   const page = await ctx.newPage();
   collectErrors(page, errs, "practice");
   await page.goto("http://127.0.0.1:4173/");
-  await page.getByRole("button", { name: "Practice" }).click();
+  await page.getByRole("button", { name: /^Training/ }).click();
+  await page.getByRole("button", { name: /Practice court/ }).click();
   await page.waitForSelector("[data-testid=practice-hud]", { timeout: 90000 });
   const S = (fn) => page.evaluate(fn);
   const user = () => S(() => { const s = window.__practice.sim; return { x: s.user.pos.x, z: s.user.pos.z, owner: s.owner?.id ?? null, bx: s.physics.ballPos.x, goals: s.state.goals, shots: s.state.shots, passes: s.state.passes }; });

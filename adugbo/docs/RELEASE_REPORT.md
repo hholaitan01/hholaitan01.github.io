@@ -6,13 +6,17 @@ This report states only what was built and actually run. Where something was not
 
 ## 1. Verdict
 
-A single-player browser football game with three match modes, practice drills, CPU opponents at three difficulty
-levels, a Lagos-inspired venue in day and evening lighting, audio, and settings. Computers play with the keyboard;
-phones and tablets get an eFootball-style touch pad (never shown on desktop). It builds and passes its automated
-checks from a fresh clone.
+A browser football game with three match modes against the CPU, penalty shootouts and penalty practice, practice
+drills, a ball designer, daily jobs, CPU opponents at three difficulty levels, a Lagos-inspired venue in day and evening
+lighting, audio and settings, plus online play (friendly rooms, quick and ranked matchmaking, an Elo rankings table and
+watching live matches) through a small Cloudflare server in `server/`. Computers play with the keyboard; phones and
+tablets get an eFootball-style touch pad (never shown on desktop). It builds and passes its automated checks.
 
 It has **not been run on any real device**. Every browser test used Chromium with software (SwiftShader) WebGL on a
-server; the touch pad was tested with real touch events on an emulated phone, not on a physical one.
+server; the touch pad was tested with real touch events on an emulated phone. **The online server has not been
+deployed**: online play was tested between browsers on one machine against the server running locally under
+Cloudflare's own runtime (`wrangler dev`). Until it is deployed and its address built in, the live game's online
+screens say online play isn't connected.
 
 ## 2. Commands
 
@@ -22,8 +26,11 @@ npm ci                 # install exactly the locked versions (Node 22, npm 10 te
 npm run dev            # http://localhost:5173
 npm run typecheck
 npm run lint
-npm test               # 47 unit/simulation tests (Vitest, Node)
-npm run test:e2e       # builds, then 6 Playwright browser suites (needs Chromium; see tests/e2e/browser.mjs)
+npm test               # 60 unit/simulation tests (Vitest, Node)
+npm run test:e2e       # builds, then 7 Playwright browser suites (needs Chromium; see tests/e2e/browser.mjs)
+cd server && npm ci && npm run dev    # the online server on 127.0.0.1:8787 (another terminal)
+node server/test/server.e2e.mjs       # 27 server checks over real HTTP/WebSocket
+npm run test:e2e:online               # online play in real browsers against that server
 npm run build          # production build → dist/
 npm run build:pages    # production build → play/ (what GitHub Pages serves)
 npm run inspect:assets # regenerates docs/asset-inspection.json
@@ -37,6 +44,8 @@ npm run inspect:assets # regenerates docs/asset-inspection.json
 | Area | What works |
 |---|---|
 | Modes | Street 5s (cage, monkey posts: 1.5 m × 0.75 m framed goals, no keepers) · 7-a-side (open turf; kick-ins, corners, goal kicks) · Four posts (no keepers, bollard goals; players a side, goal width, first-to score and walls configurable) · Practice (free play, 60 s target shooting, 60 s passing circuit) |
+| More modes | Penalty shootout v CPU (five each, early finish, sudden death; you kick and keep) · Training: practice court and penalty practice with a streak · Ball designer (8 patterns × 3 colours, presets, 3D preview; your ball is used in your matches) · Today's job (one of ten daily challenges, week strip) |
+| Online | Friendly rooms with a 5-letter code or link · Quick match (anyone, 90-second halves) · Ranked (rating bands widening ±100 → ±250 → anyone; Elo K = 32) · Rankings table · Watch live matches (search, watcher count, reactions) · 30-second forfeit · online name and "let others watch" in Settings. See `docs/ONLINE.md` |
 | Flow | Main menu → setup (mode, teams, side, difficulty, length, day/evening) → rules screen generated from the same config the engine uses → kick-off → pause (resume, restart, quit) → full-time stats (possession, shots, on target, passes, tackles, saves) → rematch |
 | Teams | Fourteen street sides named after Lagos neighbourhoods (Onipanu, Mushin, Ojuelegba, Idumota and more) with home/away kits, automatic kit-clash switch, distinct keeper kits, ratings that feed the simulation |
 | Physics (Rapier) | Ball mass, bounce, rolling resistance per surface, air drag, Magnus curl; posts, crossbar, nets, boards and chain-link fence as colliders; whole-ball-over-the-line goals |
@@ -77,13 +86,16 @@ Aim shots across the goal by holding up/down on release. Practice adds R (ball b
 |---|---|
 | Typecheck (`tsc -b`) | pass |
 | Lint (ESLint + typescript-eslint + react-hooks) | pass, 0 warnings |
-| Unit/simulation (Vitest) | **47/47** in 6 files: asset manifest, locomotion blend space, Rapier physics (bounce, rolling distance vs analytic value, net, post, bar, Magnus curl, boards, fence), gameplay (dribbling by touches, turning, walk-in goal, pass-and-return, contact timing and alignment, air kick, interception, first touch, shot accuracy, target drill), full CPU-vs-CPU matches in all three modes, shoot-near-an-opponent tackles, difficulty ordering |
+| Unit/simulation (Vitest) | **60/60** in 9 files (adds online: two humans in one match, snapshot playback and interpolation, input clamping, Elo and bands; penalties: scoring rates, contact frame, keeper dives, shootout rules, a whole shootout; daily jobs). The original 6 files: asset manifest, locomotion blend space, Rapier physics (bounce, rolling distance vs analytic value, net, post, bar, Magnus curl, boards, fence), gameplay (dribbling by touches, turning, walk-in goal, pass-and-return, contact timing and alignment, air kick, interception, first touch, shot accuracy, target drill), full CPU-vs-CPU matches in all three modes, shoot-near-an-opponent tackles, difficulty ordering |
 | Browser — Player lab (`lab.e2e.mjs`) | **26/26**: model, contact frames, every button drives the state machine, directional clips, rendered foot on its contact point (≤ 3 mm), viewer, head swap, desktop + phone-landscape viewports |
 | Browser — Practice (`practice.e2e.mjs`) | **12/12**: real key events for dribble, shot and goal, pass and return, audio unlock and sounds, mute persistence, drills, pause/resume, menu |
 | Browser — Venue (`venue.e2e.mjs`) | **21/21**: day/evening × quality × desktop/phone; player and ball contrast against the ground; goal kept in shot |
 | Browser — Match (`match.e2e.mjs`) | **14/14**: setup, four-post house rules on the rules screen, kick-off by keyboard, whistle, AI debug overlay, pause, full-time stats, rematch, quit, how-to-play, settings |
 | Browser — Orientation (`orientation.e2e.mjs`) | **8/8**: rotate screen on upright phones, pause while upright, desktop never blocked |
 | Browser — Touch (`touch.e2e.mjs`) | **16/16**: pad on an emulated phone and never on desktop; real touch events for stick, PASS, flick-up lofted pass, THROUGH, SHOOT with power bar, DASH with two fingers, defending layout, SWITCH and TACKLE |
+| Browser — Modes (`modes.e2e.mjs`) | **12/12**: home tiles and today's job, a real penalty (aim, power, kick) and a real dive, the end screen, penalty practice, training, ball designer save, and the saved ball used in play |
+| Server (`server/test/server.e2e.mjs`) | **27/27** against `wrangler dev`: guest passes and bad tokens, friendly room seats and a full room, start with teams and the host's ball, snapshots to guest and spectator, input only to the host, live list, reactions, results, ranked pairing and Elo +16/−16, rankings and position, quick pairing, watching turned off, a 30-second forfeit |
+| Browser — Online (`online.e2e.mjs`) | **15/15**, three browsers against the local server: create and join a friendly room, ready, the guest's keys move the guest's player in the host's match, the guest's screen follows (within 1.5 m), the match on the Watch list, a spectator, watcher count, reactions, full time on both screens; two fresh players through ranked matchmaking to a ±16 rating change and the rankings table; the "not connected" screen without a server |
 | Fresh clone | `npm ci`, typecheck, lint, test, build all pass from a clean clone |
 
 Difficulty, monkey-post 5s (10 seeded 2×2-minute matches per pairing, identical ratings, sides swapped): hard v easy
@@ -138,8 +150,13 @@ Not done: no measurement on real phones, tablets or GPUs; no thermal or battery 
 
 - **Not tested on real devices** or browsers other than Chromium; Safari/iOS is untested. The touch pad has only
   been driven in emulation.
-- No fouls, cards, penalties, offside, substitutions or stamina. The rules screen states this.
-- **No multiplayer**, local or online, and none is advertised.
+- No fouls, cards, penalties in matches (the shootout is its own mode), offside, substitutions or stamina. The rules
+  screen states this.
+- **Online play is not deployed** (see Deployment) and has only been tested on one machine. The home player's browser
+  runs the match and is trusted with it; the guest sees it about 0.1–0.2 s late with no prediction; a hidden host tab
+  stalls the match; there is no host migration. Details in `docs/ONLINE.md`.
+- Online penalty shootouts (Monkey Post has them) are not built; penalties are against the CPU.
+- No local (same-device) two-player mode.
 - Teams keep the same ends for the whole match.
 - The touch pad's defending layout has no eFootball "match-up" (auto-press) button, because the game has no such
   action. Its buttons are mapped to what the game does have (switch, slide, tackle, dash).
@@ -165,4 +182,7 @@ Opening `https://hholaitan01.github.io/adugbo/` (without `/play/`) shows the unb
 Use the `/play/` URL.
 
 **Other hosts:** `npm run build`, then upload `dist/` (Netlify, Cloudflare Pages, Vercel or any static server).
-No server code, environment variables or API keys are needed.
+
+**Online server:** see `server/README.md`. `cd server && npx wrangler login && npm run deploy` on a Cloudflare account
+(the Workers free plan is enough), then rebuild the game with `VITE_ADUGBO_SERVER=<the printed URL> npm run build:pages`.
+Without that, everything except online play works; the online screens say so.

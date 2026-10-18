@@ -78,6 +78,18 @@ export function HowToPlay({ onBack }: { onBack: () => void }) {
           </li>
         ))}
       </ul>
+      <h3>Penalties</h3>
+      <ul className="tips">
+        <li>Taking a kick: move the aim ring in the goal with W A S D or the arrows (the stick on a phone), hold K (SHOOT) for power and release. More power is faster but less accurate, and it rises.</li>
+        <li>In goal: as they run up, hold left or right and press K (DIVE on a phone) to dive that way; press it with no direction to stay up the middle.</li>
+        <li>Shootout: five kicks each, then sudden death. Penalty practice (in Training) keeps your streak.</li>
+      </ul>
+      <h3>Online</h3>
+      <ul className="tips">
+        <li>Friendly: create a room and send the 5-letter code (or the invite link) to a friend. Quick match: anyone who is searching, two 90-second halves. Ranked: someone near your rating; wins and losses move your rating on the Rankings table.</li>
+        <li>The home player's device runs the match, so the away player sees it a moment later. Keep the game on screen, and use a steady connection.</li>
+        <li>Leaving a match for 30 seconds gives it to the other player. Watch matches lists live games; turn off watching for your own in Settings.</li>
+      </ul>
       <h3>Modes</h3>
       {(Object.keys(MODES) as ModeId[]).map((m) => (
         <div key={m}>
