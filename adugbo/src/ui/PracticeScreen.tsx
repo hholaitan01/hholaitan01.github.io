@@ -38,7 +38,8 @@ export function PracticeScreen({ onExit }: { onExit: () => void }) {
   }, [settings]);
 
   const change = (s: Partial<Settings>) => {
-    const next = { ...settings, ...s };
+    // start from what is saved (in-game mute may have changed it)
+    const next = { ...loadSettings(), ...s };
     saveSettings(next);
     setSettings(next);
   };

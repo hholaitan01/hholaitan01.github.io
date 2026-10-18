@@ -38,6 +38,9 @@ No attribution required; credited with thanks. https://quaternius.com
 Created using Concrete034, Asphalt031, PaintedPlaster017, CorrugatedSteel005 and Metal063 from ambientCG.com,
 licensed under the Creative Commons CC0 1.0 Universal License.
 
+## Kenney (CC0 1.0)
+Sound effects from Impact Sounds by Kenney (www.kenney.nl), CC0.
+
 ## Mixamo (Adobe)
 Some animations were created with Mixamo and are used under Adobe's terms. They are embedded in the game
 and are not offered as standalone files.

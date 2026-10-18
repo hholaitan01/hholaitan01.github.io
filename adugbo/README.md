@@ -1,7 +1,7 @@
 # ADUGBO: Street Kings
 
 A browser street-football game built with TypeScript, React, Vite, three.js and Rapier.
-Work is delivered in stages. **Current stage: 6 — animation polish.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
+Work is delivered in stages. **Current stage: 7 — audio and graphics settings.** Animation and audio polish come in later stages and are not in the build yet. Touch controls are not built; practice needs a keyboard.
 
 ## Commands
 
@@ -82,6 +82,13 @@ works around it and does not change versions.
 - Profiling: animation cost per frame shown in the HUD; spectators animate every other frame on low/medium.
 - Animation viewer in the Player lab: every clip with source, scrubbing, slow motion, jump-to-contact, measured
   stride, direction control and foot trails for spotting foot sliding.
+
+## Stage 7: what works
+- Sound: ball kicks scaled by strike speed, shots, post/crossbar, boards, fence, net and tackle impacts (Kenney CC0),
+  stereo-panned by screen position; synthesised referee whistle on kick-offs, goals, half-time and full-time;
+  synthesised crowd murmur that swells near the goals, "ooh" on saves and woodwork, roar on goals; street rumble.
+- Master / effects / crowd volume and mute in Settings, mute button in practice and matches, M key. Saved.
+- Graphics quality low / medium / high in Settings and in practice (see stage 3), day/evening per match.
 
 ## Docs
 - `docs/AI.md` — AI states and difficulty tuning evidence

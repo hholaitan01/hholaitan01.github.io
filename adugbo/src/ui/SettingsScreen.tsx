@@ -28,7 +28,29 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
           </select>
         </label>
       </div>
-      <p className="muted">Settings are saved on this device.</p>
+      <h3>Sound</h3>
+      <div className="options">
+        {(
+          [
+            ["masterVolume", "Master volume"],
+            ["sfxVolume", "Ball and effects"],
+            ["crowdVolume", "Crowd and street"],
+          ] as const
+        ).map(([k, label]) => (
+          <label key={k}>
+            {label} {Math.round(s[k] * 100)}%
+            <input aria-label={label} type="range" min={0} max={1} step={0.05} value={s[k]} onChange={(e) => change({ [k]: +e.target.value })} />
+          </label>
+        ))}
+        <label>
+          Mute
+          <input aria-label="Mute" type="checkbox" checked={s.muted} onChange={(e) => change({ muted: e.target.checked })} />
+        </label>
+      </div>
+      <p className="muted">
+        Sound effects: Kenney Impact Sounds (CC0). Whistle, crowd and street ambience are synthesised in the game; there is no
+        music or commentary. Settings are saved on this device.
+      </p>
       <div className="btns">
         <button className="primary" onClick={onBack}>
           Back

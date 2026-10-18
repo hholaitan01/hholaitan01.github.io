@@ -45,6 +45,8 @@ try {
   await page.waitForTimeout(250);
   await page.screenshot({ path: `${out}/practice-shot.png` });
   await page.waitForFunction(() => window.__practice.sim.state.goals > 0, null, { timeout: 40000 }).catch(() => {});
+  const snd = await S(() => ({ running: window.__practice.audio.running, played: [...window.__practice.audio.played] }));
+  check("audio unlocked by the first key press and plays kick/shot/goal sounds", snd.running && snd.played.includes("shot") && snd.played.includes("goal"), JSON.stringify(snd));
   u = await user();
   check("K shoots and scores from close range", u.shots === 1 && u.goals === 1, JSON.stringify(u));
 
@@ -62,6 +64,13 @@ try {
   u = await user();
   check("partner returns the ball to the user", u.owner === 0, JSON.stringify(u));
 
+  // M toggles mute and the choice is saved
+  await page.keyboard.press("KeyM");
+  await page.waitForFunction(() => window.__practice.muted === true, null, { timeout: 40000 }).catch(() => {});
+  const saved = await S(() => JSON.parse(localStorage.getItem("adugbo.settings.v1")).muted);
+  check("M mutes and the setting persists", saved === true);
+  await page.keyboard.press("KeyM");
+  await page.waitForFunction(() => window.__practice.muted === false, null, { timeout: 40000 }).catch(() => {});
   // drill switch: target shooting shows a timer and lit target
   await page.getByRole("button", { name: "Target shooting" }).click();
   await page.waitForFunction(() => /Target shooting/i.test(document.querySelector("[data-testid=practice-hud]")?.textContent ?? ""), null, { timeout: 40000 }).catch(() => {});

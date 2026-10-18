@@ -63,6 +63,7 @@ export class PracticeView extends GameView<PracticeSim> {
     const sim = this.sim, u = sim.user, k = this.keys;
     for (const b of k.takeTaps()) {
       if (b === "pause") this.paused = !this.paused;
+      if (b === "mute") this.toggleMute();
       if (b === "reset" && !this.paused) sim.ballToUser();
     }
     if (this.paused || sim.state.finished) {

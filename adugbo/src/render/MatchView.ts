@@ -41,6 +41,7 @@ export class MatchView extends GameView<MatchSim> {
     const sim = this.sim, k = this.keys;
     const inp: UserInput = { move: this.stickToWorld(k.stick()), sprint: k.held("sprint") };
     for (const b of k.takeTaps()) {
+      if (b === "mute") this.toggleMute();
       if (b === "pause" && sim.phase !== "fulltime") this.paused = !this.paused;
       if (b === "switch") inp.switchPlayer = true;
     }
@@ -57,7 +58,15 @@ export class MatchView extends GameView<MatchSim> {
     this.hud.powerFor = sp > 0 ? "shoot" : pp > 0 ? "pass" : null;
     if (this.paused || dt === 0) return;
     sim.applyUser(inp);
+    const before = sim.phase;
     sim.update(dt);
+    // referee whistle on phase changes
+    if (before !== sim.phase) {
+      if (sim.phase === "play" && (before === "kickoff" || before === "restart")) this.audio.whistle(1);
+      if (sim.phase === "goal") this.audio.whistle(1);
+      if (sim.phase === "halftime") this.audio.whistle(2, true);
+      if (sim.phase === "fulltime") this.audio.whistle(3, true);
+    }
     this.eventLog = sim.consume();
     this.onEvents(this.eventLog);
     // the scoring side celebrates

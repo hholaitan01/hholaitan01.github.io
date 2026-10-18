@@ -1,11 +1,11 @@
 // Desktop keyboard input. (Touch controls are a separate, later stage.)
 // Movement is reported in camera space: x = right, y = up the screen (away from the camera).
 
-export type Button = "pass" | "shoot" | "lob" | "sprint" | "reset" | "pause" | "switch";
+export type Button = "pass" | "shoot" | "lob" | "sprint" | "reset" | "pause" | "switch" | "mute";
 
 const KEYMAP: Record<string, Button | "up" | "down" | "left" | "right"> = {
   KeyW: "up", ArrowUp: "up", KeyS: "down", ArrowDown: "down", KeyA: "left", ArrowLeft: "left", KeyD: "right", ArrowRight: "right",
-  Space: "pass", KeyJ: "pass", KeyK: "shoot", KeyL: "lob", ShiftLeft: "sprint", ShiftRight: "sprint", KeyR: "reset", KeyP: "pause", Escape: "pause", KeyQ: "switch",
+  Space: "pass", KeyJ: "pass", KeyK: "shoot", KeyL: "lob", ShiftLeft: "sprint", ShiftRight: "sprint", KeyR: "reset", KeyP: "pause", Escape: "pause", KeyQ: "switch", KeyM: "mute",
 };
 
 /** Match controls: the same keys do different things with and without the ball. */
@@ -17,6 +17,7 @@ export const MATCH_KEY_HELP: [string, string, string][] = [
   ["L", "lofted pass", "slide tackle"],
   ["Q", "—", "switch player"],
   ["P / Esc", "pause", "pause"],
+  ["M", "mute / unmute", "mute / unmute"],
 ];
 
 export const KEY_HELP: [string, string][] = [
@@ -27,6 +28,7 @@ export const KEY_HELP: [string, string][] = [
   ["L", "lofted pass"],
   ["R", "ball back to your feet"],
   ["P / Esc", "pause"],
+  ["M", "mute / unmute"],
 ];
 
 export class Keyboard {

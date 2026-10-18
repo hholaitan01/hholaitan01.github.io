@@ -4,6 +4,11 @@ export type TimeOfDay = "day" | "evening";
 export interface Settings {
   quality: Quality;
   timeOfDay: TimeOfDay;
+  /** 0..1 */
+  masterVolume: number;
+  sfxVolume: number;
+  crowdVolume: number;
+  muted: boolean;
 }
 
 export interface QualityProfile {
@@ -35,7 +40,7 @@ const KEY = "adugbo.settings.v1";
 /** Phones default to medium, everything else to high. */
 export function defaultSettings(): Settings {
   const coarse = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
-  return { quality: coarse ? "medium" : "high", timeOfDay: "day" };
+  return { quality: coarse ? "medium" : "high", timeOfDay: "day", masterVolume: 0.8, sfxVolume: 0.9, crowdVolume: 0.6, muted: false };
 }
 
 export function loadSettings(): Settings {
@@ -44,9 +49,14 @@ export function loadSettings(): Settings {
     const raw = localStorage.getItem(KEY);
     if (!raw) return d;
     const s = JSON.parse(raw) as Partial<Settings>;
+    const vol = (v: unknown, def: number) => (typeof v === "number" && v >= 0 && v <= 1 ? v : def);
     return {
       quality: s.quality === "low" || s.quality === "medium" || s.quality === "high" ? s.quality : d.quality,
       timeOfDay: s.timeOfDay === "evening" ? "evening" : "day",
+      masterVolume: vol(s.masterVolume, d.masterVolume),
+      sfxVolume: vol(s.sfxVolume, d.sfxVolume),
+      crowdVolume: vol(s.crowdVolume, d.crowdVolume),
+      muted: s.muted === true,
     };
   } catch {
     return d;

@@ -50,6 +50,8 @@ try {
   await page.waitForFunction(() => window.__match.sim.phase === "play", null, { timeout: 60000 }).catch(() => {});
   s = await st();
   check("kick-off is taken and play starts", s.phase === "play", JSON.stringify(s));
+  const whistled = await page.evaluate(() => window.__match.audio.played.includes("whistle"));
+  check("referee whistle sounds at kick-off", whistled);
   // let it run a little, moving the user
   await page.keyboard.down("KeyD");
   await page.waitForTimeout(3000);
@@ -96,8 +98,9 @@ try {
   await page.getByRole("button", { name: "Back" }).click();
   await page.getByRole("button", { name: "Settings" }).click();
   await page.getByLabel("Graphics quality").selectOption("medium");
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("adugbo.settings.v1")).quality);
-  check("settings screen saves quality", saved === "medium", saved);
+  await page.getByLabel("Master volume").fill("0.3");
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("adugbo.settings.v1")));
+  check("settings screen saves quality and volume", saved.quality === "medium" && Math.abs(saved.masterVolume - 0.3) < 0.01, JSON.stringify(saved));
   await ctx.close();
 } finally {
   await browser.close();

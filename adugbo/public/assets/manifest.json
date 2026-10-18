@@ -153,6 +153,114 @@
         "ambientcg-Metal063"
       ],
       "modifications": "resized and re-encoded (tools/pipeline/textures-ambientcg.mjs)"
+    },
+    "audio/kick_0.mp3": {
+      "description": "sound effect from impactSoft_medium_000.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 1874,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/kick_1.mp3": {
+      "description": "sound effect from impactSoft_medium_001.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 2396,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/kick_2.mp3": {
+      "description": "sound effect from impactSoft_medium_002.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 2135,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/shot_0.mp3": {
+      "description": "sound effect from impactPunch_heavy_000.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 7098,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/shot_1.mp3": {
+      "description": "sound effect from impactPunch_heavy_001.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 6053,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/post_0.mp3": {
+      "description": "sound effect from impactMetal_medium_000.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 3441,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/post_1.mp3": {
+      "description": "sound effect from impactMetal_medium_001.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 2135,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/board_0.mp3": {
+      "description": "sound effect from impactPlank_medium_000.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 8404,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/board_1.mp3": {
+      "description": "sound effect from impactPlank_medium_001.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 8404,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/fence_0.mp3": {
+      "description": "sound effect from impactTin_medium_000.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 2135,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/net_0.mp3": {
+      "description": "sound effect from impactSoft_heavy_000.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 6053,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
+    },
+    "audio/tackle_0.mp3": {
+      "description": "sound effect from impactPunch_medium_000.ogg",
+      "format": "MP3 mono 80 kbps",
+      "downloadBytes": 5008,
+      "sources": [
+        "kenney-impact-sounds"
+      ],
+      "modifications": "converted from OGG to mono MP3 with ffmpeg"
     }
   },
   "sources": {
@@ -287,6 +395,19 @@
       "status": "accepted",
       "verifiedOn": "2026-10-17",
       "note": "Licence page: 'You can include the raw files in your project, for example a video game.'"
+    },
+    "kenney-impact-sounds": {
+      "name": "Kenney Impact Sounds 1.0",
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "author": "Kenney (www.kenney.nl)",
+      "licence": "CC0 1.0 (License.txt in the pack: 'free to use in personal, educational and commercial projects')",
+      "commercialUse": true,
+      "modification": true,
+      "attribution": "not required (credited)",
+      "redistribution": true,
+      "originalFormat": "OGG Vorbis",
+      "status": "accepted",
+      "verifiedOn": "2026-10-18"
     }
   },
   "rejected": {

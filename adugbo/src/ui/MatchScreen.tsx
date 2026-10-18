@@ -75,6 +75,9 @@ export function MatchScreen({ config, onExit, onReplay }: { config: MatchConfig;
           <div className="toolbar">
             <button onClick={() => view.current && (view.current.paused = !view.current.paused)}>{hud.paused ? "Resume" : "Pause"}</button>
             <button onClick={() => setDebug((d) => !d)}>{debug ? "Hide AI debug" : "AI debug"}</button>
+            <button aria-pressed={view.current?.muted} onClick={() => view.current?.toggleMute()}>
+              {view.current?.muted ? "Unmute" : "Mute"}
+            </button>
           </div>
           {debug && view.current && <DebugOverlay view={view.current} />}
           <div className="fps">

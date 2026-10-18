@@ -77,9 +77,17 @@ Everything else in the venue is generated in code and original: buildings, barre
 names (no real businesses, brands or phone numbers), the generic yellow minibuses (no make or logo), umbrellas,
 chairs, poles, cables, floodlights, chain-link fence and the "ADUGBO" mural. The sky uses three.js's `Sky` shader (MIT).
 
+## Audio (stage 7)
+
+| Files | Source | Licence | Commercial | Attribution | Redistribution |
+|---|---|---|---|---|---|
+| `audio/kick_*`, `shot_*`, `post_*`, `board_*`, `fence_*`, `net_0`, `tackle_0` (12 files, 63 KB) | Kenney Impact Sounds 1.0 (kenney.nl/assets/impact-sounds) | CC0 1.0 — pack `License.txt`: "free to use in personal, educational and commercial projects" | Yes | Not required (credited) | Yes |
+
+Converted from OGG to mono MP3 for Safari. The referee whistle, crowd murmur and reactions, street rumble and UI
+tick are synthesised with Web Audio in `src/audio/AudioManager.ts` (original). There is **no music, no commentary,
+no recorded crowd and no club anthem** in the game.
+
 ## Other assets
 - Ball: generated in code (`makeBall` in `src/render/LabScene.ts`), original.
 - Team names, kits, badges: invented, generated in code (`src/game/teams.ts`, `src/render/kit.ts`).
 - Font: Barlow Condensed (SIL OFL 1.1) from Google Fonts.
-- Environment textures, HDRIs and audio are recorded here when they are added in later stages
-  (planned sources: Poly Haven CC0, ambientCG CC0, Kenney CC0).

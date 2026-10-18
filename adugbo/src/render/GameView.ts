@@ -9,6 +9,8 @@ import { Keyboard } from "../controls/keyboard";
 import { Venue } from "./venue/Venue";
 import { profile, type QualityProfile, type Settings } from "../settings/settings";
 import { makeBall } from "./LabScene";
+import { AudioManager } from "../audio/AudioManager";
+import { saveSettings } from "../settings/settings";
 
 /**
  * Shared renderer + loop for practice and matches: venue, player prefabs driven by a GameSim, ball, blob shadows,
@@ -42,6 +44,10 @@ export abstract class GameView<S extends GameSim> {
   private fpsT = 0;
   /** Last frame's sim events (for tests and sound). */
   eventLog: SimEvent[] = [];
+  readonly audio: AudioManager;
+  private unlock = () => {
+    void this.audio.unlock().then(() => this.audio.startAmbience(this.q.spectators / 12, this.settings.timeOfDay === "evening"));
+  };
 
   constructor(
     protected host: HTMLElement,
@@ -57,6 +63,24 @@ export abstract class GameView<S extends GameSim> {
     this.ro = new ResizeObserver(() => this.resize());
     this.ro.observe(host);
     this.resize();
+    this.audio = new AudioManager(settings);
+    // browsers only start audio from a user gesture
+    addEventListener("pointerdown", this.unlock);
+    addEventListener("keydown", this.unlock);
+  }
+
+  get muted() {
+    return this.settings.muted;
+  }
+  toggleMute() {
+    (this.settings as { muted: boolean }).muted = !this.settings.muted;
+    this.audio.setSettings(this.settings);
+    saveSettings(this.settings);
+  }
+
+  /** Horizontal screen position of a world point, −1..1 (for stereo panning). */
+  protected screenX(x: number, z: number) {
+    return new THREE.Vector3(x, 0.5, z).project(this.camera).x;
   }
 
   /** Loads the footballer and Rapier; returns contact times measured from the clips. */
@@ -161,7 +185,24 @@ export abstract class GameView<S extends GameSim> {
   readonly contactLog: { kind: string; gap: number }[] = [];
 
   protected onEvents(ev: SimEvent[]) {
+    const a = this.audio, b = this.sim.physics.ballPos, x = this.screenX(b.x, b.z);
     for (const e of ev) {
+      if (e.type === "kick") {
+        if (e.kind === "shot" || e.kind === "clear" || e.speed > 18) a.play("shot", { gain: Math.min(1, 0.5 + e.speed / 40), x });
+        else a.play("kick", { gain: Math.min(1, 0.35 + e.speed / 25), x });
+      }
+      if (e.type === "touch" && e.quality !== "clean") a.play("kick", { gain: 0.35, rate: 1.2, x });
+      if (e.type === "hit") {
+        const g = Math.min(1, e.speed / 18);
+        if (e.kind === "post" || e.kind === "bar") {
+          a.play("post", { gain: 0.4 + g * 0.6, x });
+          if (e.speed > 8) a.react("ooh");
+        } else if (e.kind === "wall") a.play(b.y > (this.sim.pitch.wallHeight ?? 1.2) ? "fence" : "board", { gain: 0.2 + g * 0.7, x });
+        else if (e.kind === "net") a.play("net", { gain: 0.3 + g * 0.5, x });
+      }
+      if (e.type === "tackle" && e.success) a.play("tackle", { gain: e.slide ? 0.9 : 0.6, x });
+      if (e.type === "save" && (e.kind === "catch" || e.kind === "parry" || e.kind === "block")) a.react("ooh");
+      if (e.type === "goal") a.react("goal");
       if (e.type === "kick" && e.gap !== undefined) this.contactLog.push({ kind: e.kind, gap: e.gap });
       // dives, falls and saves interrupt whatever the player was doing
       if (e.type === "action") this.prefabs.get(e.player)?.play(e.action, e.action === "fall" || e.action.startsWith("dive") || e.action === "save");
@@ -221,6 +262,8 @@ export abstract class GameView<S extends GameSim> {
     this.camera.position.set(this.camTarget.x, height, this.camTarget.z + dist);
     this.camera.lookAt(this.camTarget.x, 0.6, this.camTarget.z - 1);
     this.venue.focus(this.camTarget.x, this.camTarget.z);
+    // the crowd bed swells as play nears a goal
+    this.audio.setTension(Math.max(0, 1 - (sim.pitch.length / 2 - Math.abs(b.x)) / 8));
   }
 
   /**
@@ -263,6 +306,9 @@ export abstract class GameView<S extends GameSim> {
   }
 
   dispose() {
+    removeEventListener("pointerdown", this.unlock);
+    removeEventListener("keydown", this.unlock);
+    this.audio.dispose();
     cancelAnimationFrame(this.raf);
     this.ro.disconnect();
     this.keys.dispose();
