@@ -227,9 +227,11 @@ export abstract class GameView<S extends GameSim> {
     this.raf = requestAnimationFrame(this.loop);
     const real = this.clock.getDelta(), dt = Math.min(real, 1 / 15);
     const t0 = performance.now();
-    this.step(this.paused ? 0 : dt);
+    // portrait on a phone halts play no matter what the pause key does
+    const halted = this.paused || this.portraitMq.matches;
+    this.step(halted ? 0 : dt);
     this.simMs = performance.now() - t0;
-    this.sync(this.paused ? 0 : dt);
+    this.sync(halted ? 0 : dt);
     this.renderer.render(this.scene, this.camera);
     this.frames++;
     this.fpsT += real;

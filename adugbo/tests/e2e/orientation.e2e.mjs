@@ -31,13 +31,24 @@ try {
   check("practice runs in landscape", (await page.evaluate(() => window.__practice.paused)) === false);
   // turning upright mid-game pauses it and shows the overlay
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.waitForTimeout(400);
+  await page.waitForFunction(() => window.__practice.paused === true, null, { timeout: 30000 }).catch(() => {});
   const paused = await page.evaluate(() => window.__practice.paused);
   check("turning upright mid-game shows the overlay and pauses play", (await gate(page)) && paused === true, `paused ${paused}`);
   await page.screenshot({ path: `${out}/orientation-portrait-ingame.png` });
+  // a keyboard's pause key must not restart play behind the rotate screen
+  await page.keyboard.press("KeyP");
+  await page.waitForFunction(() => window.__practice.paused === false, null, { timeout: 30000 }).catch(() => {});
+  const t0 = await page.evaluate(() => window.__practice.sim.time);
+  await page.waitForTimeout(1500);
+  const t1 = await page.evaluate(() => window.__practice.sim.time);
+  check("pause key in portrait does not restart play behind the overlay", t1 === t0, `sim time ${t0} -> ${t1}`);
+  await page.keyboard.press("KeyP");
+  await page.waitForFunction(() => window.__practice.paused === true, null, { timeout: 30000 }).catch(() => {});
   await page.setViewportSize({ width: 844, height: 390 });
   await page.waitForTimeout(400);
-  check("back to landscape: overlay gone, game waits on the pause menu", !(await gate(page)) && (await page.locator("[data-testid=paused], .overlay").first().isVisible()));
+  const back = await page.evaluate(() => ({ paused: window.__practice.paused, hud: window.__practice.hud.paused }));
+  const pauseMenu = await page.locator(".overlay").filter({ hasText: "Paused" }).waitFor({ timeout: 30000 }).then(() => true, () => false);
+  check("back to landscape: overlay gone, game waits on the pause menu", !(await gate(page)) && pauseMenu, JSON.stringify(back));
   await phone.close();
   // desktop with a tall window is never blocked
   const desk = await browser.newContext({ viewport: { width: 600, height: 900 } });
